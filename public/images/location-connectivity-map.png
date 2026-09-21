@@ -1,0 +1,94 @@
+IMPORTANT — UPDATE ONLY THE LOCATION MAP / LOCATION SECTION.
+Do NOT redesign unrelated sections.
+
+I have attached the exact building image that must be used in this section.
+
+IMAGE REQUIREMENT:
+- Use the attached building image EXACTLY as provided.
+- Do NOT generate a new building image.
+- Do NOT replace it with Unsplash, stock photography, AI-generated alternatives, or any random image.
+- Do NOT crop important parts of the building.
+- Do NOT blur the building.
+- Do NOT apply a heavy dark overlay.
+- Keep the image sharp, bright, premium and clearly visible.
+- Preserve the original image composition as much as possible.
+- The attached image is the ONLY image to use for the right-side visual panel.
+
+LOCATION SECTION UI:
+
+Create a premium two-column Location section.
+
+LEFT CARD:
+- Heading: "Our Exact Location"
+- Small supporting text: "Find us on Google Maps"
+- Premium dark-green circular location-pin icon.
+- Top-right rounded dark-green button:
+  "Open in Google Maps →"
+- Below the heading area, show the actual Google Maps / map embed.
+- Keep the map inside a rounded rectangular frame.
+- Map should have clean rounded corners.
+- Maintain a premium ivory/white card background.
+- Add subtle border and soft shadow.
+- Do not make the map unnecessarily small.
+
+RIGHT CARD:
+- Heading: "Location Map"
+- Supporting text: "Key landmarks and connectivity"
+- Premium dark-green circular compass/location icon.
+- Top-right outlined button:
+  "DOWNLOAD MAP"
+- Below this header, display the ATTACHED BUILDING IMAGE.
+- This exact attached image must replace the currently generated/random building image.
+- Image should be large and clearly visible.
+- Use object-fit: cover only if absolutely necessary.
+- Prefer object-fit: contain / carefully controlled cropping so the building remains visually complete.
+- Keep the image sharp and high quality.
+- Give the image rounded corners.
+- Add a very subtle inner border.
+- Do NOT blur the image.
+
+IMAGE OVERLAY:
+At the bottom-left of the building image, keep a small elegant translucent ivory information panel:
+
+"Kankarbagh, Patna"
+"Connected to schools, hospitals, markets and major roads"
+
+The overlay must NOT cover the important architectural portion of the image.
+Keep enough padding around the text.
+Use dark forest-green text.
+
+VISUAL STYLE:
+- Background: warm ivory / off-white.
+- Primary: deep forest green.
+- Accent: champagne/golden yellow.
+- White cards.
+- Premium luxury real-estate aesthetic.
+- Elegant serif headings + modern sans-serif body text.
+- Rounded corners but not overly rounded.
+- Soft luxury shadows.
+- Clean spacing.
+- No generic template look.
+
+LAYOUT:
+- Two equal-width cards on desktop.
+- Proper gap between the two cards.
+- Both cards should have matching height.
+- On desktop, the building image should occupy most of the right card.
+- Do not leave unnecessary empty space inside either card.
+- On tablet/mobile, stack the cards vertically.
+- Maintain comfortable mobile padding.
+
+INTERACTION:
+- "Open in Google Maps" must actually open the project's Google Maps location in a new tab.
+- "DOWNLOAD MAP" should download/open the provided map asset.
+- Add subtle hover elevation to both cards.
+- Add a very subtle image scale/parallax effect on hover, but NEVER make the image blurry.
+- Keep animations smooth and premium, not flashy.
+
+MOST IMPORTANT:
+The attached building image is the exact visual asset for this section.
+DO NOT generate, search for, or substitute another building image.
+Use the attached image as-is.
+
+Do not change the content or layout of other website sections.
+Only improve/update this Location section.
