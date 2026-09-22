@@ -32,23 +32,540 @@ const values=[['01','Quality Construction','Using premium materials and latest t
 export function About() { return <section className="about-premium"><div className="about-orbit orbit-one"/><div className="about-dots"/><div className="about-premium-inner"><div className="about-editorial"><div className="about-story"><span className="about-eyebrow">OUR STORY <i/></span><h2>About<br/><em>Bigrahpuram Developers</em></h2><span className="about-tagline">BUILDING BETTER TOMORROW</span><p><strong>Bigrahpuram Developers Pvt. Ltd.</strong> is a trusted name in Patna&apos;s real estate sector with over 15 years of experience in delivering quality residential and commercial projects. Our commitment to excellence, transparency, and customer satisfaction has made us one of the most reliable developers in Bihar.</p><div className="value-grid">{values.map(([n,title,desc,Icon])=><div className="value-card" key={n}><span className="value-number">{n}</span><span className="value-icon"><Icon size={23}/></span><div><h3>{title}</h3><p>{desc}</p></div></div>)}</div><div className="about-highlight"><strong>B.S. HITECH</strong> is our flagship project in the prime location of Kankarbagh, designed to redefine luxury living in Patna with world-class amenities and thoughtful design.</div><div className="about-actions"><a className="about-primary" href="/overview">KNOW MORE ABOUT US <ArrowRight size={16}/></a><button className="journey-button"><span><Play size={16} fill="currentColor"/></span><b>Our Journey<small>WATCH VIDEO</small></b></button></div></div><div className="about-composition"><div className="about-image-frame"><img src={officeImage} alt="Bigrahpuram Developers office"/><span className="about-experience"><b>15+</b><small>Years of<br/>Excellence</small></span><div className="project-float"><img src={heroImage} alt="B.S. HITECH project"/></div></div><div className="about-side-label"><i/>PEOPLE<br/>SPACES<br/>BETTER<br/>LIVES</div></div></div></div><div className="about-stats">{[['15+','Years of Experience',Home],['50+','Happy Customers',Sprout],['Multiple','Projects Completed',Home],['Stronger','Bihar Tomorrow',Sprout]].map(([n,l,Icon])=><div key={l}><Icon size={31}/><span><b>{n}</b><small>{l}</small></span></div>)}</div></section> }
 
 const projectHighlights = [['Prime Location','3km from Patna Junction, near major landmarks',MapPin],['RERA Approved','BH-RERA Registration No: BR/Patna/123456',Check],['Vastu Compliant','Thoughtfully designed layouts',Sprout],['Premium Specifications','High-quality materials and finishes',Home],['Green Living','60% open and green area',Sprout],['Security','24/7 surveillance and gated community',ShieldCheck]]
-export function ProjectOverview() { return <section id="overview" className="project-overview"><div className="project-overview-inner"><div className="project-heading-row"><div><span className="project-eyebrow">THE PROJECT <i/></span><h2>Project <em>Overview</em></h2></div><div className="project-side-label"><i/>MODERN<br/>LIVING<br/>BRIGHTER<br/>TOMORROW</div></div><div className="project-overview-grid"><div className="project-visual"><img src="/assets/overview/project-building.png" alt="B.S. HITECH modern apartment towers"/><span className="project-script">A Better<br/>Tomorrow</span><div className="towers-badge"><Home size={20}/><b>4</b><span>TOWERS</span><small>A GRAND<br/>LIFESTYLE</small></div><div className="project-image-bar"><div><Sprout/><b>60%<small>Green Area</small></b></div><div><Home/><b>4 Acres<small>Land Area</small></b></div><div><Home/><b>1BHK 2BHK 3BHK<small>Premium Apartments</small></b></div></div></div><div className="project-copy"><span className="project-eyebrow">ABOUT THE PROJECT <i/></span><h3>B.S. HITECH <em>- Luxury Redefined</em></h3><p>Located in the heart of Kankarbagh, Patna, B.S. HITECH offers premium 1BHK, 2BHK and 3BHK apartments designed for modern living. Spread across 4 acres with 4 towers, the project boasts 60% green area and world-class amenities.</p><div className="highlights-title"><h4>Project Highlights</h4><i/></div><div className="highlight-grid">{projectHighlights.map(([title,desc,Icon])=><article className="highlight-card" key={title}><span><Icon/></span><b>{title}</b><i/><p>{desc}</p></article>)}</div><div className="project-price">With prices starting at just ₹5000/sqft and flexible payment plans, B.S. HITECH offers the perfect blend of luxury, location and lifestyle.</div><div className="project-actions"><a href="/floor-plans">EXPLORE FLOOR PLANS <ArrowRight/></a><button><span><Play size={17} fill="currentColor"/></span><b>Watch Project Video<small>A CLOSER LOOK</small></b></button></div></div></div></div><div className="project-bottom-strip"><span>KANKARBAGH, PATNA</span><span>LIVE&nbsp; | &nbsp;GROW&nbsp; | &nbsp;BELONG</span></div></section> }
+export function ProjectOverview() {
+  return (
+    <section id="overview" className="project-overview">
+      <div className="project-overview-inner">
+        <div className="project-heading-row">
+          <div>
+            <span className="project-eyebrow">THE PROJECT <i /></span>
+            <h2>Project <em>Overview</em></h2>
+          </div>
+        </div>
+        <div className="project-overview-grid">
+          <div className="project-visual">
+            <img src="/assets/overview/project-building.png" alt="B.S. HITECH modern apartment towers" />
+            <span className="project-script">A Better<br />Tomorrow</span>
+            <div className="towers-badge">
+              <Home size={18} />
+              <b>4</b>
+              <span>TOWERS</span>
+              <small>A GRAND<br />LIFESTYLE</small>
+            </div>
+            <div className="project-image-bar">
+              <div>
+                <Sprout size={18} />
+                <b>60%<small>Green Area</small></b>
+              </div>
+              <div>
+                <Home size={18} />
+                <b>4 Acres<small>Land Area</small></b>
+              </div>
+              <div>
+                <Home size={18} />
+                <b>1BHK 2BHK 3BHK<small>Premium Apartments</small></b>
+              </div>
+            </div>
+          </div>
+          <div className="project-copy">
+            <span className="project-eyebrow">ABOUT THE PROJECT <i /></span>
+            <h3>B.S. HITECH <em>- Luxury Redefined</em></h3>
+            <p>
+              Located in the heart of Kankarbagh, Patna, B.S. HITECH offers premium 1BHK, 2BHK and 3BHK apartments designed for modern living. Spread across 4 acres with 4 towers, the project boasts 60% green area and world-class amenities.
+            </p>
+            <div className="highlights-title">
+              <h4>Project Highlights</h4>
+              <i />
+            </div>
+            <div className="highlight-grid">
+              {projectHighlights.map(([title, desc, Icon]) => (
+                <article className="highlight-card" key={title as string}>
+                  <span className="highlight-icon">
+                    <Icon size={17} />
+                  </span>
+                  <div className="highlight-body">
+                    <b>{title as string}</b>
+                    <p>{desc as string}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div className="project-price">
+              With prices starting at just ₹5000/sqft and flexible payment plans, B.S. HITECH offers the perfect blend of luxury, location and lifestyle.
+            </div>
+            <div className="project-actions">
+              <a href="/floor-plans">
+                EXPLORE FLOOR PLANS <ArrowRight size={15} />
+              </a>
+              <button type="button">
+                <span>
+                  <Play size={16} fill="currentColor" />
+                </span>
+                <b>
+                  Watch Project Video
+                  <small>A CLOSER LOOK</small>
+                </b>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
-const choiceCards = [['Trusted Developer','15+ years of experience with a proven track record of quality construction and timely delivery.',Award],['Prime Location','Strategic location in Kankarbagh with excellent connectivity to all parts of Patna.',MapPin],['Green Living','60% open green area with landscaped gardens and ample breathing space.',TreePine],['RERA Approved','Full compliance with RERA regulations ensuring transparency and buyer protection.',ShieldCheck],['Premium Specifications','High-quality construction materials and premium finishes throughout the project.',Home],['Value for Money','Competitive pricing starting at ₹5500/sqft with flexible payment options.',Sprout]]
-export function WhyChoose() { return <section className="why-choose"><div className="why-linework"/><div className="why-leaves why-leaves-left"/><div className="why-leaves why-leaves-right"/><div className="why-building"><img src="/assets/overview/project-building.png" alt=""/></div><div className="why-badge"><span>INVEST<br/>IN A<br/>BETTER<br/>TOMORROW</span><b><ArrowRight/></b></div><div className="why-side-label"><i/>BUILDING<br/>HAPPIER<br/>COMMUNITIES</div><div className="why-inner"><div className="why-intro"><span className="why-eyebrow"><i/>A SMARTER TOMORROW<i/></span><h2>Why Choose <em>B.S. HITECH</em></h2><p>More than a home, it&apos;s a better way of living. Discover the advantages<br className="desktop-only"/> that make B.S. HITECH the perfect choice for your future.</p></div><div className="why-grid">{choiceCards.map(([title,desc,Icon],i)=><article className={`why-card ${i%2===0?'gold-corner':'green-corner'}`} key={title}><span className="why-number">0{i+1}</span><div className="why-icon"><Icon/></div><h3>{title}</h3><p>{desc}</p><button aria-label={`Learn more about ${title}`}><ArrowRight/></button></article>)}</div><div className="why-metrics"><div><b>15+</b><span>Years of Trust</span></div><div><Award/><span>Happy<br/>Families</span></div><div><Leaf/><span>Stronger<br/>Communities</span></div><div><Sun/><span>Brighter<br/>Bihar</span></div></div></div></section> }
+const whyCardsData = [
+  {
+    num: '01',
+    title: 'Trusted\nDeveloper',
+    desc: '15+ years of experience with a proven track record of quality construction and timely delivery.',
+    badgeType: 'gold',
+    Icon: Award,
+    image: '/images/why-choose/trusted-developer.jpg'
+  },
+  {
+    num: '02',
+    title: 'Prime\nLocation',
+    desc: 'Strategic location in Kankarbagh with excellent connectivity to all parts of Patna.',
+    badgeType: 'green',
+    Icon: MapPin,
+    image: '/images/why-choose/prime-location.jpg'
+  },
+  {
+    num: '03',
+    title: 'Green\nLiving',
+    desc: '60% open green area with landscaped gardens and ample breathing space.',
+    badgeType: 'gold',
+    Icon: TreePine,
+    image: '/images/why-choose/green-living.jpg'
+  },
+  {
+    num: '04',
+    title: 'RERA\nApproved',
+    desc: 'Full compliance with RERA regulations ensuring transparency and buyer protection.',
+    badgeType: 'green',
+    Icon: ShieldCheck,
+    image: '/images/why-choose/rera-approved.jpg'
+  },
+  {
+    num: '05',
+    title: 'Premium\nSpecifications',
+    desc: 'High-quality construction materials and premium finishes throughout the project.',
+    badgeType: 'gold',
+    Icon: Home,
+    image: '/images/why-choose/premium-specs.jpg'
+  },
+  {
+    num: '06',
+    title: 'Value for\nMoney',
+    desc: 'Competitive pricing starting at ₹5500/sqft with flexible payment options.',
+    badgeType: 'green',
+    Icon: Sprout,
+    image: '/images/why-choose/value-money.jpg'
+  }
+]
+
+export function WhyChoose() {
+  return (
+    <section id="why-choose" className="why-choose-luxury">
+      {/* Decorative foliage accents at top */}
+      <div className="why-top-foliage" aria-hidden="true">
+        <svg viewBox="0 0 450 120" fill="none" className="why-foliage-svg">
+          <path d="M0 0 C60 40 140 20 220 5 C300 -10 380 30 450 0 L450 0 L0 0 Z" fill="#1b4d42" opacity="0.08"/>
+          <path d="M120 0 C150 35 180 50 240 30 C200 65 150 45 120 0 Z" fill="#1b4d42" opacity="0.25"/>
+          <path d="M210 0 C235 42 270 52 320 25 C280 60 230 48 210 0 Z" fill="#1b4d42" opacity="0.2"/>
+        </svg>
+      </div>
+
+      {/* Top right vertical branding */}
+      <div className="why-top-tagline">
+        <i className="why-tagline-line" />
+        <span>LIVE<br/>GROW<br/>BELONG</span>
+      </div>
+
+      <div className="why-luxury-container">
+        {/* Main 2-column editorial structure */}
+        <div className="why-main-layout">
+          {/* Left column: Editorial intro + building architectural curve */}
+          <div className="why-editorial-col">
+            <div className="why-eyebrow-luxury">
+              <i />
+              <span>A SMARTER TOMORROW</span>
+              <i />
+            </div>
+
+            <h2 className="why-hero-title">
+              <span className="why-title-small">Why Choose</span>
+              <span className="why-title-brand-gold">BIGRAHPURAM</span>
+              <span className="why-title-brand-green">DEVELOPERS</span>
+            </h2>
+
+            <p className="why-hero-desc">
+              More than a home, it&apos;s a better way of living. Discover the advantages that make Bigrahpuram Developers the perfect choice for your future.
+            </p>
+
+            {/* Architectural building visual composition */}
+            <div className="why-arch-composition">
+              <div className="why-arch-backdrop" />
+              <img
+                src="/images/why-choose/building-entrance.jpg"
+                alt="Bigrahpuram Developers luxury residential building"
+                className="why-arch-img"
+              />
+            </div>
+          </div>
+
+          {/* Right column: 3 columns x 2 rows = 6 feature cards */}
+          <div className="why-cards-col">
+            <div className="why-cards-grid">
+              {whyCardsData.map((item) => {
+                const IconComponent = item.Icon
+                const isGold = item.badgeType === 'gold'
+                return (
+                  <article className="why-ref-card" key={item.num}>
+                    {/* Left text content panel */}
+                    <div className="why-card-content">
+                      <div className="why-card-header">
+                        <div className={`why-card-badge ${isGold ? 'badge-gold' : 'badge-green'}`}>
+                          <IconComponent size={20} strokeWidth={2.2} />
+                        </div>
+                        <span className="why-card-num">{item.num}</span>
+                      </div>
+
+                      <h3 className="why-card-title">
+                        {item.title.split('\n').map((line, idx) => (
+                          <span key={idx} className="block">{line}</span>
+                        ))}
+                      </h3>
+                      <i className="why-card-rule" />
+
+                      <p className="why-card-desc">{item.desc}</p>
+
+                      <div className="why-card-footer">
+                        <span className="why-card-learn">LEARN MORE</span>
+                        <button className="why-card-arrow" aria-label={`Learn more about ${item.title.replace('\n', ' ')}`}>
+                          <ArrowRight size={13} strokeWidth={2.2} />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Right side organic curved image */}
+                    <div className="why-card-image-wrap">
+                      <img src={item.image} alt="" className="why-card-img" />
+                      <svg className="why-card-s-curve" viewBox="0 0 44 140" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M 0 0 C 30 35, 2 85, 28 140 L 0 140 Z" fill="#FFFFFF" />
+                      </svg>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom statistics bar spanning under cards */}
+        <div className="why-stats-bar-wrapper">
+          <div className="why-stats-bar">
+            <div className="why-stat-unit">
+              <span className="why-stat-badge-icon">
+                <Award size={34} strokeWidth={1.8} />
+              </span>
+              <div className="why-stat-copy">
+                <b className="why-stat-large">15+</b>
+                <span className="why-stat-label">Years of Trust</span>
+              </div>
+            </div>
+
+            <i className="why-stat-sep" />
+
+            <div className="why-stat-unit">
+              <span className="why-stat-badge-icon">
+                <Users size={32} strokeWidth={1.8} />
+              </span>
+              <div className="why-stat-copy">
+                <strong className="why-stat-head">Happy</strong>
+                <span className="why-stat-label">Families</span>
+              </div>
+            </div>
+
+            <i className="why-stat-sep" />
+
+            <div className="why-stat-unit">
+              <span className="why-stat-badge-icon">
+                <Leaf size={32} strokeWidth={1.8} />
+              </span>
+              <div className="why-stat-copy">
+                <strong className="why-stat-head">Stronger</strong>
+                <span className="why-stat-label">Communities</span>
+              </div>
+            </div>
+
+            <i className="why-stat-sep" />
+
+            <div className="why-stat-unit">
+              <span className="why-stat-badge-icon">
+                <Sun size={32} strokeWidth={1.8} />
+              </span>
+              <div className="why-stat-copy">
+                <strong className="why-stat-head">Brighter</strong>
+                <span className="why-stat-label">Bihar</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom right delicate gold leaf line art */}
+          <div className="why-bottom-leaf-art" aria-hidden="true">
+            <svg viewBox="0 0 120 120" fill="none" className="why-leaf-line-svg">
+              <path d="M10 110 C30 70, 70 30, 110 10 C100 50, 60 90, 10 110 Z" stroke="#D6A84F" strokeWidth="1.2" opacity="0.65"/>
+              <path d="M10 110 Q 55 55 110 10" stroke="#D6A84F" strokeWidth="1" opacity="0.5"/>
+              <path d="M45 75 Q 65 65 80 50" stroke="#D6A84F" strokeWidth="0.8" opacity="0.45"/>
+              <path d="M30 90 Q 50 82 60 70" stroke="#D6A84F" strokeWidth="0.8" opacity="0.45"/>
+              <path d="M65 55 Q 85 45 95 32" stroke="#D6A84F" strokeWidth="0.8" opacity="0.45"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 const amenityImages = ['/images/amenities/swimming-pool.png','/images/amenities/gym.png','/images/amenities/clubhouse.png','/images/amenities/childrens-play-area.png','/images/amenities/sports-facilities.png','/images/amenities/parking.png','/images/amenities/landscaped-gardens.png','/images/amenities/security.png']
 const amenityCards = [['Swimming Pool','Olympic-size swimming pool with separate kids’ section and trained lifeguards.',Waves],['Fully Equipped Gym','State-of-the-art fitness center with modern equipment and trained instructors.',Dumbbell],['Club House','Spacious club house with party hall, indoor games and banquet facilities.',Wine],["Children's Play Area",'Safe and fun play zone with modern play equipment for kids of all ages.',Baby],['Sports Facilities','Badminton court, basketball and more for an active lifestyle.',Trophy],['Ample Parking','Designated parking spaces for residents and visitors with 24/7 access.',CarFront],['Landscaped Gardens','Beautifully designed green spaces for relaxation and a healthier environment.',Leaf],['24/7 Security','Gated community with CCTV surveillance and trained security personnel.',ShieldCheck]]
-export function AmenitiesShowcase() { return <section id="amenities" className="amenities-showcase"><div className="amenities-bg"/><div className="amenities-foliage amenities-foliage-left"/><div className="amenities-foliage amenities-foliage-top"/><div className="amenities-building"><img src="/assets/overview/project-building.png" alt=""/></div><div className="amenities-side-note"><i/>PEOPLE<br/>SPACES<br/>COMMUNITY<br/>HAPPIER LIVES</div><div className="amenities-inner"><div className="amenities-heading"><span className="amenities-eyebrow">EXPLORE A BRIGHTER TOMORROW</span><h2>World-Class <em>Amenities</em></h2><p>Thoughtfully designed spaces for a healthier, happier and more fulfilling lifestyle.</p></div><div className="amenities-layout"><aside className="amenities-rail"><span>OUR AMENITIES <i/></span><div className="amenities-script">Live<br/>Play<br/>Relax</div>{[['Live Better',Waves],['Stay Active',Dumbbell],['Feel Secure',ShieldCheck],['Grow Together',Users]].map(([label,Icon])=><div className="amenity-rail-item" key={label}><Icon/><span>{label}</span></div>)}<button className="amenities-cta"><b><ArrowRight/></b><span>EXPLORE AMENITIES<small>A RICHER EVERYDAY</small></span></button><div className="amenities-rail-panel">More<br/>Than Amenities<br/><em>A Better Life</em><i/></div></aside><div className="amenities-grid">{amenityCards.map(([title,desc,Icon],i)=><article className="amenity-card" key={title}><div className="amenity-card-image" style={{backgroundImage:`url(${amenityImages[i]})`,backgroundPosition:'center',backgroundSize:'cover'}}><strong>0{i+1}</strong></div><div className="amenity-icon"><Icon/></div><div className="amenity-card-copy"><h3>{title}</h3><p>{desc}</p><button aria-label={`Explore ${title}`}><ArrowRight/></button></div></article>)}</div></div><div className="amenities-strip">{[['Premium','Lifestyle',Award],['Happy','Families',Users],['Healthy','Living',Leaf],['Safer','Community',ShieldCheck],['Brighter','Tomorrow',Home]].map(([a,b,Icon])=><div key={a}><Icon/><span>{a}<small>{b}</small></span></div>)}<button><ArrowRight/></button></div><div className="amenities-footer"><span>B.S. HITECH<small>KANKARBAGH, PATNA</small></span><b>AMENITIES TODAY&nbsp; | &nbsp; A BRIGHTER TOMORROW</b></div></div></section> }
+export function AmenitiesShowcase() { return <section id="amenities" className="amenities-showcase"><div className="amenities-bg"/><div className="amenities-foliage amenities-foliage-left"/><div className="amenities-foliage amenities-foliage-top"/><div className="amenities-building"><img src="/assets/overview/project-building.png" alt=""/></div><div className="amenities-side-note"><i/>PEOPLE<br/>SPACES<br/>COMMUNITY<br/>HAPPIER LIVES</div><div className="amenities-inner"><div className="amenities-heading"><span className="amenities-eyebrow">EXPLORE A BRIGHTER TOMORROW</span><h2>World-Class <em>Amenities</em></h2><p>Thoughtfully designed spaces for a healthier, happier and more fulfilling lifestyle.</p></div><div className="amenities-layout"><aside className="amenities-rail"><span>OUR AMENITIES <i/></span>{[['Live Better',Waves],['Stay Active',Dumbbell],['Feel Secure',ShieldCheck],['Grow Together',Users]].map(([label,Icon])=><div className="amenity-rail-item" key={label}><Icon/><span>{label}</span></div>)}<button className="amenities-cta"><b><ArrowRight/></b><span>EXPLORE AMENITIES<small>A RICHER EVERYDAY</small></span></button><div className="amenities-rail-panel">More<br/>Than Amenities<br/><em>A Better Life</em><i/></div></aside><div className="amenities-grid">{amenityCards.map(([title,desc,Icon],i)=><article className="amenity-card" key={title}><div className="amenity-card-image" style={{backgroundImage:`url(${amenityImages[i]})`,backgroundPosition:'center',backgroundSize:'cover'}}><strong>0{i+1}</strong></div><div className="amenity-icon"><Icon/></div><div className="amenity-card-copy"><h3>{title}</h3><p>{desc}</p><button aria-label={`Explore ${title}`}><ArrowRight/></button></div></article>)}</div></div><div className="amenities-strip">{[['Premium','Lifestyle',Award],['Happy','Families',Users],['Healthy','Living',Leaf],['Safer','Community',ShieldCheck],['Brighter','Tomorrow',Home]].map(([a,b,Icon])=><div key={a}><Icon/><span>{a}<small>{b}</small></span></div>)}<button><ArrowRight/></button></div><div className="amenities-footer"><span>B.S. HITECH<small>KANKARBAGH, PATNA</small></span><b>AMENITIES TODAY&nbsp; | &nbsp; A BRIGHTER TOMORROW</b></div></div></section> }
 
 export function OverviewSection() { return <section className="section overview-grid"><Reveal><SectionHeading eyebrow="B.S. HITECH / KANKARBAGH" title={<>A considered address<br/><em>for a considered life.</em></>} text="A premium gated community in Khemni Chak, Kankarbagh, Patna — shaped around space, light and everyday connection."/><div className="spec-list">{['1 / 2 / 3 BHK residences','Vastu compliant homes','Premium specifications','24/7 surveillance'].map((x,i)=><div key={x}><b>0{i+1}</b><span>{x}</span><Check size={16}/></div>)}</div></Reveal><Reveal className="overview-visual"><img src={heroImage} alt="B.S. HITECH residences"/><div className="floating-spec"><b>4</b><span>Towers<br/>of distinction</span></div></Reveal></section> }
 
 const amenities=['Swimming Pool','Fully Equipped Gym','Club House',"Children's Play Area",'Sports Facilities','Ample Parking','Landscaped Gardens','24/7 Security']
 export function Amenities({full=false}) { const [active,setActive]=useState(0); return <section className={full?'section amenities full':'section amenities'}><div className="amenity-visual"><img src={heroImage} alt={amenities[active]}/><div className="amenity-caption"><span>0{active+1} / 08</span><h3>{amenities[active]}</h3><p>A thoughtfully planned amenity that makes everyday living more rewarding.</p></div></div><div className="amenity-nav"><SectionHeading eyebrow="Designed around you" title={<>More room<br/><em>to live well.</em></>}/>{amenities.map((item,i)=><button key={item} className={i===active?'active':''} onClick={()=>setActive(i)}><span>0{i+1}</span>{item}<ArrowRight size={15}/></button>)}</div></section> }
 
-const floorPlansData=[{name:'1BHK',eyebrow:'1 BHK APARTMENT',title:'Smart Living,',accent:'Greater Possibilities',desc:'A thoughtfully designed 1BHK home that offers the perfect blend of comfort, functionality and modern living. Ideal for young professionals and small families.',carpet:'550 sq.ft.',built:'750 sq.ft.',config:'1 Bedroom, 1 Bathroom, Living/Dining, Kitchen',price:'₹37.5 – ₹41.25 Lakhs',plan:'/images/floorplans/1bhk-plan.png',phrase:'Compact\\nSmart\\nBeautiful'},{name:'2BHK',eyebrow:'2 BHK APARTMENT',title:'Room to Grow,',accent:'Designed for Life',desc:'A considered 2BHK residence with generous proportions, flexible spaces and a calm, connected rhythm for modern families.',carpet:'850 sq.ft.',built:'1150 sq.ft.',config:'2 Bedrooms, 2 Bathrooms, Living/Dining, Kitchen, Balcony',price:'₹57.5 – ₹63.25 Lakhs',plan:'/images/floorplans/2bhk-plan.png',phrase:'Thoughtful\\nWarm\\nWelcoming'},{name:'3BHK',eyebrow:'3 BHK APARTMENT',title:'More Space,',accent:'More Possibilities',desc:'A generous 3BHK home with room for every chapter, from quiet mornings to effortless entertaining and everyday family life.',carpet:'1250 sq.ft.',built:'1650 sq.ft.',config:'3 Bedrooms, 2 Bathrooms, Living/Dining, Kitchen, 2 Balconies, Utility',price:'₹82.5 – ₹90.75 Lakhs',plan:'/images/floorplans/3bhk-plan.png',phrase:'Open\\nElevated\\nExceptional'}]
-const galleryItems=[['3D Floor Plan','plan'],['Living Room','/images/floorplans/interior-living.png'],['Bedroom','/images/floorplans/interior-bedroom.png'],['Kitchen','/images/floorplans/interior-kitchen.png'],['Bathroom','/images/amenities/clubhouse.png'],['Balcony','/images/amenities/landscaped-gardens.png']]
-export function FloorPlans({full=false}) { const [active,setActive]=useState(0); const [view,setView]=useState('3D'); const [gallery,setGallery]=useState(0); const [modal,setModal]=useState(false); const p=floorPlansData[active]; const visual=gallery===0||view==='3D'?p.plan:galleryItems[gallery][1] as string; const changeBhk=(i:number)=>{setActive(i);setGallery(0);setView('3D')}; return <section id="floor-plans" className="floorplans-premium"><div className="floor-bg-building"><img src={heroImage} alt="B.S. HITECH residential building"/></div><div className="floor-leaf floor-leaf-top"/><div className="floor-leaf floor-leaf-bottom"/><div className="floor-left-note"><i/>SPACES<br/>PLANNED<br/>FOR A BRIGHTER<br/>TOMORROW<i/></div><div className="floor-right-note"><i/>MODERN<br/>HOMES<br/>HAPPIER<br/>PEOPLE</div><div className="floor-script">More<br/>Than Just<br/>A Home</div><div className="floor-floating-note">A<br/>BETTER<br/>WAY OF<br/>LIVING<i/></div><div className="floor-inner"><div className="floor-heading"><span><i/>THE RESIDENCES<i/></span><h2>Floor <em>Plans</em></h2><p>Designed around your needs, built for a better life.</p><div className="floor-tabs">{floorPlansData.map((x,i)=><button key={x.name} className={i===active?'active':''} onClick={()=>changeBhk(i)}>{x.name}</button>)}</div></div><div className="floor-main"><div className="floor-visual"><div className="floor-visual-label">{p.phrase.split('\\n').map((line)=><span key={line}>{line}</span>)}</div><div className="floor-image-wrap"><img key={`${active}-${gallery}-${view}`} src={visual} alt={`${p.name} ${galleryItems[gallery][0]}`} /></div><div className="floor-view-controls">{[['3D',Rotate3d],['2D',PanelTop],['Interior',Sofa],['360°',Compass]].map(([label,Icon])=><button key={label} className={view===label?'active':''} onClick={()=>{setView(label as string);if(label==='Interior')setGallery(1)}}><Icon/><span>{label==='3D'?'3D View':label==='2D'?'2D Plan':label==='360°'?'360° Tour':'Interior View'}</span></button>)}</div><div className="floor-compass"><Compass/><span>N</span><b>E</b><i>S</i><em>W</em></div><button className="floor-larger" onClick={()=>setModal(true)}><Maximize2/> View Larger</button>{view==='360°'&&<div className="tour-overlay"><Compass/><b>360° immersive tour</b><span>Drag to explore the residence</span></div>}</div><div className="floor-info"><span className="floor-info-eyebrow"><i/>{p.eyebrow}</span><h3>{p.title}<em>{p.accent}</em></h3><p>{p.desc}</p><div className="floor-specs"><div><span><PanelTop/>Carpet Area</span><b>{p.carpet}</b></div><div><span><Building2/>Super Built-up Area</span><b>{p.built}</b></div><div><span><Home/>Configuration</span><b>{p.config}</b></div><div><span><Tag/>Price Range</span><b>{p.price}</b></div><div><span><Compass/>Facing</span><b>East / West / North / South</b></div></div><div className="floor-actions"><a href="#floor-plan-download"><Download/> Download Floor Plan <ArrowRight/></a><a href="/contact"><Mail/> Enquire Now <ArrowRight/></a></div></div></div><div className="floor-gallery"><button aria-label="Previous gallery image" onClick={()=>setGallery((gallery+galleryItems.length-1)%galleryItems.length)}><ChevronLeft/></button><div>{galleryItems.map(([label,src],i)=><button key={label} className={gallery===i?'active':''} onClick={()=>{setGallery(i);setView(i===0?'3D':'Interior')}}><img src={i===0?p.plan:src as string} alt={`${p.name} ${label}`}/><span>{label}</span></button>)}</div><button aria-label="Next gallery image" onClick={()=>setGallery((gallery+1)%galleryItems.length)}><ChevronRight/></button></div></div><div className="floor-brand-strip"><span><b>B.S. HITECH</b><small>KANKARBAGH, PATNA</small></span>{[['Thoughtful','Designs',Home],['Premium','Quality',Award],['Prime','Location',MapPin],['Great','Value',ShieldCheck]].map(([a,b,Icon])=><span key={a}><Icon/><b>{a}<small>{b}</small></b></span>)}<em>LIVE&nbsp; | &nbsp;GROW&nbsp; | &nbsp;BELONG</em></div>{modal&&<div className="floor-modal" role="dialog" aria-modal="true" aria-label="Expanded floor plan"><button onClick={()=>setModal(false)} aria-label="Close expanded floor plan"><X/></button><img src={p.plan} alt={`${p.name} expanded 3D floor plan`}/></div>}</section> }
+const floorPlansData=[{name:'1BHK',eyebrow:'1 BHK APARTMENT',title:'Smart Living,',accent:'Greater Possibilities',desc:'Thoughtfully designed 1BHK home offering comfort, functionality and effortless modern living.',carpet:'550 sq.ft.',built:'750 sq.ft.',config:'1 Bedroom, 1 Bathroom, Living/Dining, Kitchen',price:'₹37.5 – ₹41.25 Lakhs',plan:'/images/floorplans/1bhk-plan.png',phrase:'Compact\\nSmart\\nBeautiful'},{name:'2BHK',eyebrow:'2 BHK APARTMENT',title:'Room to Grow,',accent:'Designed for Life',desc:'Considered 2BHK residence with generous proportions and flexible spaces for modern families.',carpet:'850 sq.ft.',built:'1150 sq.ft.',config:'2 Bedrooms, 2 Bathrooms, Living/Dining, Kitchen, Balcony',price:'₹57.5 – ₹63.25 Lakhs',plan:'/images/floorplans/2bhk-plan.png',phrase:'Thoughtful\\nWarm\\nWelcoming'},{name:'3BHK',eyebrow:'3 BHK APARTMENT',title:'More Space,',accent:'More Possibilities',desc:'Expansive 3BHK residence crafted for family comfort, seamless living and effortless entertaining.',carpet:'1250 sq.ft.',built:'1650 sq.ft.',config:'3 Bedrooms, 2 Bathrooms, Living/Dining, Kitchen, 2 Balconies, Utility',price:'₹82.5 – ₹90.75 Lakhs',plan:'/images/floorplans/3bhk-plan.png',phrase:'Open\\nElevated\\nExceptional'}]
+const galleryItems = [
+  ['3D Floor Plan', 'plan'],
+  ['Living Room', '/images/floorplans/interior-living.png'],
+  ['Bedroom', '/images/floorplans/interior-bedroom.png'],
+  ['Kitchen', '/images/floorplans/interior-kitchen.png'],
+  ['Bathroom', '/images/amenities/clubhouse.png'],
+  ['Balcony', '/images/amenities/landscaped-gardens.png']
+]
+
+export function FloorPlans({ full = false }: { full?: boolean }) {
+  const [active, setActive] = useState(0)
+  const [view, setView] = useState('3D')
+  const [gallery, setGallery] = useState(0)
+  const [modal, setModal] = useState(false)
+  const p = floorPlansData[active]
+  const visual = gallery === 0 || view === '3D' ? p.plan : (galleryItems[gallery][1] as string)
+  const changeBhk = (i: number) => {
+    setActive(i)
+    setGallery(0)
+    setView('3D')
+  }
+
+  return (
+    <section id="floor-plans" className="floorplans-premium">
+      <div className="floor-bg-building">
+        <img src={heroImage} alt="B.S. HITECH residential building" />
+      </div>
+      <div className="floor-leaf floor-leaf-top" />
+      <div className="floor-leaf floor-leaf-bottom" />
+      <div className="floor-left-note">
+        <i />SPACES<br />PLANNED<br />FOR A BRIGHTER<br />TOMORROW<i />
+      </div>
+      <div className="floor-right-note">
+        <i />MODERN<br />HOMES<br />HAPPIER<br />PEOPLE
+      </div>
+      <div className="floor-floating-note">
+        A<br />BETTER<br />WAY OF<br />LIVING<i />
+      </div>
+      <div className="floor-inner">
+        <div className="floor-heading">
+          <span><i />THE RESIDENCES<i /></span>
+          <h2>Floor <em>Plans</em></h2>
+          <p>Designed around your needs, built for a better life.</p>
+          <div className="floor-tabs">
+            {floorPlansData.map((x, i) => (
+              <button
+                key={x.name}
+                className={i === active ? 'active' : ''}
+                onClick={() => changeBhk(i)}
+              >
+                {x.name}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="floor-main">
+          <div className="floor-visual">
+            <div className="floor-visual-label">
+              {p.phrase.split('\\n').map((line) => (
+                <span key={line}>{line}</span>
+              ))}
+            </div>
+            <div className="floor-image-wrap">
+              <img
+                key={`${active}-${gallery}-${view}`}
+                src={visual}
+                alt={`${p.name} ${galleryItems[gallery][0]}`}
+              />
+            </div>
+            <div className="floor-view-controls">
+              {[
+                ['3D', Rotate3d],
+                ['2D', PanelTop],
+                ['Interior', Sofa],
+                ['360°', Compass]
+              ].map(([label, Icon]) => (
+                <button
+                  key={label as string}
+                  className={view === label ? 'active' : ''}
+                  onClick={() => {
+                    setView(label as string)
+                    if (label === 'Interior') setGallery(1)
+                  }}
+                >
+                  <Icon />
+                  <span>
+                    {label === '3D'
+                      ? '3D View'
+                      : label === '2D'
+                      ? '2D Plan'
+                      : label === '360°'
+                      ? '360° Tour'
+                      : 'Interior View'}
+                  </span>
+                </button>
+              ))}
+            </div>
+            <div className="floor-compass">
+              <Compass />
+              <span>N</span>
+              <b>E</b>
+              <i>S</i>
+              <em>W</em>
+            </div>
+            <button className="floor-larger" onClick={() => setModal(true)}>
+              <Maximize2 /> View Larger
+            </button>
+            {view === '360°' && (
+              <div className="tour-overlay">
+                <Compass />
+                <b>360° immersive tour</b>
+                <span>Drag to explore the residence</span>
+              </div>
+            )}
+          </div>
+          <div className="floor-info">
+            <span className="floor-info-eyebrow">
+              <i />{p.eyebrow}
+            </span>
+            <h3>
+              {p.title}<em>{p.accent}</em>
+            </h3>
+            <p>{p.desc}</p>
+            <div className="floor-specs">
+              <div>
+                <span><PanelTop />Carpet Area</span>
+                <b>{p.carpet}</b>
+              </div>
+              <div>
+                <span><Building2 />Super Built-up Area</span>
+                <b>{p.built}</b>
+              </div>
+              <div>
+                <span><Home />Configuration</span>
+                <b>{p.config}</b>
+              </div>
+              <div>
+                <span><Tag />Price Range</span>
+                <b>{p.price}</b>
+              </div>
+              <div>
+                <span><Compass />Facing</span>
+                <b>East / West / North / South</b>
+              </div>
+            </div>
+            <div className="floor-actions">
+              <a href="#floor-plan-download">
+                <Download /> Download Floor Plan <ArrowRight />
+              </a>
+              <a href="/contact">
+                <Mail /> Enquire Now <ArrowRight />
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="floor-gallery">
+          <button
+            aria-label="Previous gallery image"
+            onClick={() =>
+              setGallery((gallery + galleryItems.length - 1) % galleryItems.length)
+            }
+          >
+            <ChevronLeft />
+          </button>
+          <div>
+            {galleryItems.map(([label, src], i) => (
+              <button
+                key={label}
+                className={gallery === i ? 'active' : ''}
+                onClick={() => {
+                  setGallery(i)
+                  setView(i === 0 ? '3D' : 'Interior')
+                }}
+              >
+                <img
+                  src={i === 0 ? p.plan : (src as string)}
+                  alt={`${p.name} ${label}`}
+                />
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
+          <button
+            aria-label="Next gallery image"
+            onClick={() => setGallery((gallery + 1) % galleryItems.length)}
+          >
+            <ChevronRight />
+          </button>
+        </div>
+      </div>
+      <div className="floor-brand-strip">
+        <span>
+          <b>B.S. HITECH</b>
+          <small>KANKARBAGH, PATNA</small>
+        </span>
+        {[
+          ['Thoughtful', 'Designs', Home],
+          ['Premium', 'Quality', Award],
+          ['Prime', 'Location', MapPin],
+          ['Great', 'Value', ShieldCheck]
+        ].map(([a, b, Icon]) => (
+          <span key={a as string}>
+            <Icon />
+            <b>
+              {a as string}
+              <small>{b as string}</small>
+            </b>
+          </span>
+        ))}
+        <em>LIVE&nbsp; | &nbsp;GROW&nbsp; | &nbsp;BELONG</em>
+      </div>
+      {modal && (
+        <div
+          className="floor-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Expanded floor plan"
+        >
+          <button onClick={() => setModal(false)} aria-label="Close expanded floor plan">
+            <X />
+          </button>
+          <img src={p.plan} alt={`${p.name} expanded 3D floor plan`} />
+        </div>
+      )}
+    </section>
+  )
+}
 
 const paymentPlans=[{number:'01',title:'Standard Payment Plan',subtitle:'A simple and straightforward plan for comfortable home buying.',image:'/images/payment-plans/standard-lifestyle.png',overlay:['A','Smarter','Way to','Own'],rows:[['On Booking','10%'],['Within 30 days of Booking','15%'],['On Completion of Foundation','15%'],['On Completion of Plinth','10%'],['On Completion of Roof Slab','25%'],['On Completion of Finishing','20%'],['On Possession','5%']]},{number:'02',title:'Early Bird Discount Plan',subtitle:'Special benefits for early decision makers.',image:'/images/payment-plans/early-bird-lifestyle.png',overlay:['A','Brighter','Way to','Choose'],rows:[['On Booking (5% Discount)','20%'],['Within 60 days of Booking','30%'],['On Completion of Structure','30%'],['On Possession','20%']],note:'5% discount applicable only on bookings before September 2025'},{number:'03',title:'Bank Linked Plan',subtitle:'Easy home loans with our trusted banking partners.',image:'/images/payment-plans/bank-linked-lifestyle.png',overlay:['A','Trusted','Way to','Own'],rows:[['On Booking','10%'],['Within 30 days of Booking','10%'],['Construction Linked (Bank Disbursement)','75%'],['On Possession','5%']],note:'We have tie-ups with all major banks for home loans at attractive interest rates'}]
 const paymentIcons=[CalendarDays,Sun,Building2,Building2,Home,Tag,KeyRound]
