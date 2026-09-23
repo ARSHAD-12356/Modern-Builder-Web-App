@@ -9,12 +9,12 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
+        url: '/assets/BIGRAHPURM LOGO1.jpg.jpeg',
       },
       {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
+        url: '/icon-light-32x32.png',
+        sizes: '32x32',
+        type: 'image/png',
       },
       {
         url: '/icon.svg',
@@ -22,6 +22,7 @@ export const metadata: Metadata = {
       },
     ],
     apple: '/apple-icon.png',
+    shortcut: '/favicon.ico',
   },
 }
 

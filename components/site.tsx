@@ -5,7 +5,7 @@ import { ArrowRight, Award, Baby, Bath, Building2, CalendarDays, CarFront, Check
 
 export const heroImage = '/assets/hero/bs-hitech-hero.png'
 export const officeImage = '/assets/about/bigrahpuram-office.png'
-export const logoImage = '/assets/brand/bigrahpuram-logo.jpeg'
+export const logoImage = '/assets/BIGRAHPURM LOGO1.jpg.jpeg'
 
 const nav = [['Home','top'],['Overview','overview'],['Amenities','amenities'],['Floor Plans','floor-plans'],['Payment Plan','payment-plan'],['Testimonials','testimonials'],['FAQ','faq'],['Contact','contact']]
 
