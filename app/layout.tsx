@@ -4,7 +4,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'B.S. HITECH | Luxury Living in Patna',
-  description: 'Premium RERA approved residences by Bigrahpuram Developers in Kankarbagh, Patna.',
+  description: 'Premium RERA approved residences by Bigrahpurm Developers in Kankarbagh, Patna.',
   generator: 'v0.app',
   icons: {
     icon: [
