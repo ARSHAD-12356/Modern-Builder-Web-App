@@ -110,7 +110,60 @@ export function ProjectOverview() {
           </div>
         </div>
       </div>
+      <ProjectBrandStrip />
     </section>
+  )
+}
+
+export function ProjectBrandStrip() {
+  return (
+    <div className="project-brand-strip" role="region" aria-label="Project Highlights">
+      <div className="project-brand-strip-inner">
+        <div className="project-brand-strip-brand">
+          <b>BIGRAHPURAM DEVELOPERS</b>
+          <small>KANKARBAGH, PATNA</small>
+        </div>
+        <div className="project-brand-strip-divider" />
+        <div className="project-brand-strip-features">
+          <div className="project-brand-strip-item">
+            <Home size={22} />
+            <div>
+              <b>Thoughtful</b>
+              <small>Designs</small>
+            </div>
+          </div>
+          <div className="project-brand-strip-item">
+            <Award size={22} />
+            <div>
+              <b>Premium</b>
+              <small>Quality</small>
+            </div>
+          </div>
+          <div className="project-brand-strip-item">
+            <MapPin size={22} />
+            <div>
+              <b>Prime</b>
+              <small>Location</small>
+            </div>
+          </div>
+          <div className="project-brand-strip-divider" />
+          <div className="project-brand-strip-item">
+            <ShieldCheck size={22} />
+            <div>
+              <b>Great</b>
+              <small>Value</small>
+            </div>
+          </div>
+        </div>
+        <div className="project-brand-strip-slogan">
+          <span>LIVE</span>
+          <i>|</i>
+          <span>GROW</span>
+          <i>|</i>
+          <span>BELONG</span>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -529,27 +582,7 @@ export function FloorPlans({ full = false }: { full?: boolean }) {
           </button>
         </div>
       </div>
-      <div className="floor-brand-strip">
-        <span>
-          <b>B.S. HITECH</b>
-          <small>KANKARBAGH, PATNA</small>
-        </span>
-        {[
-          ['Thoughtful', 'Designs', Home],
-          ['Premium', 'Quality', Award],
-          ['Prime', 'Location', MapPin],
-          ['Great', 'Value', ShieldCheck]
-        ].map(([a, b, Icon]) => (
-          <span key={a as string}>
-            <Icon />
-            <b>
-              {a as string}
-              <small>{b as string}</small>
-            </b>
-          </span>
-        ))}
-        <em>LIVE&nbsp; | &nbsp;GROW&nbsp; | &nbsp;BELONG</em>
-      </div>
+      <ProjectBrandStrip />
       {modal && (
         <div
           className="floor-modal"
@@ -569,24 +602,288 @@ export function FloorPlans({ full = false }: { full?: boolean }) {
 
 const paymentPlans=[{number:'01',title:'Standard Payment Plan',subtitle:'A simple and straightforward plan for comfortable home buying.',image:'/images/payment-plans/standard-lifestyle.png',overlay:['A','Smarter','Way to','Own'],rows:[['On Booking','10%'],['Within 30 days of Booking','15%'],['On Completion of Foundation','15%'],['On Completion of Plinth','10%'],['On Completion of Roof Slab','25%'],['On Completion of Finishing','20%'],['On Possession','5%']]},{number:'02',title:'Early Bird Discount Plan',subtitle:'Special benefits for early decision makers.',image:'/images/payment-plans/early-bird-lifestyle.png',overlay:['A','Brighter','Way to','Choose'],rows:[['On Booking (5% Discount)','20%'],['Within 60 days of Booking','30%'],['On Completion of Structure','30%'],['On Possession','20%']],note:'5% discount applicable only on bookings before September 2025'},{number:'03',title:'Bank Linked Plan',subtitle:'Easy home loans with our trusted banking partners.',image:'/images/payment-plans/bank-linked-lifestyle.png',overlay:['A','Trusted','Way to','Own'],rows:[['On Booking','10%'],['Within 30 days of Booking','10%'],['Construction Linked (Bank Disbursement)','75%'],['On Possession','5%']],note:'We have tie-ups with all major banks for home loans at attractive interest rates'}]
 const paymentIcons=[CalendarDays,Sun,Building2,Building2,Home,Tag,KeyRound]
-export function PaymentPlan({full=false}) { const [active,setActive]=useState(0); const plan=paymentPlans[active]; const selectPlan=(next:number)=>setActive(next); const advancePlan=()=>setActive((active+1)%paymentPlans.length); return <section id="payment-plan" className="payment-premium"><div className="payment-building"><img src="/assets/overview/project-building.png" alt="B.S. HITECH luxury apartment building"/></div><div className="payment-leaf payment-leaf-top"/><div className="payment-leaf payment-leaf-bottom"/><div className="payment-top-left"><i/>SMART<br/>PAYMENTS<br/>BRIGHTER<br/>TOMORROW<i/></div><div className="payment-script">Your<br/>Dream Home<br/>Made Easier</div><div className="payment-inner"><div className="payment-heading"><span><i/>OWN TODAY. A BRIGHTER TOMORROW<i/></span><h2>Flexible <em>Payment Plans</em></h2><p>Transparent. Convenient. Designed Around You.</p></div><div className="payment-layout"><div className="payment-center"><div className="payment-plan-head"><b>{plan.number}</b><div><h3>{plan.title}</h3><p>{plan.subtitle}</p></div><span className="payment-popular">{active===0?'Most Popular':''}</span><button aria-label={`Close ${plan.title} and open the next plan`} onClick={advancePlan}><ChevronDown/></button></div><div className="payment-expanded"><div className="payment-interior"><img src={plan.image} alt={`${plan.title} lifestyle interior`}/><div><span>{plan.overlay.map((line)=><span key={line}>{line}<br/></span>)}</span><i/> <small>Invest in<br/>Happiness</small></div></div><div className="payment-table"><div className="payment-table-head"><b>Milestone</b><b>Percentage</b></div>{plan.rows.map(([label,value],i)=>{const Icon=paymentIcons[i]||KeyRound; return <div className="payment-row" key={label}><span><Icon/>{label}</span><b>{value}</b></div>})}<p className="payment-note"><strong>!</strong> Note: Payment schedule is indicative and subject to terms &amp; conditions.</p></div></div>{active!==0&&<div className="payment-alt-body">{plan.rows.map(([label,value],i)=><div key={label}><span>{String(i+1).padStart(2,'0')} {label}</span><b>{value}</b></div>)}<small>{plan.note}</small></div>}{paymentPlans.map((item,i)=>i!==active&&<button className="payment-collapsed" key={item.number} onClick={()=>setActive(i)}><b>{item.number}</b><span><strong>{item.title}</strong><small>{item.subtitle}</small></span><ChevronDown/></button>)}</div><aside className="payment-side"><div className="payment-side-photo"><img src="/images/payment-plans/right-lifestyle.png" alt="Luxury home interior"/><div className="payment-side-copy"><h3>Flexible<br/>Plans<br/><em>Brighter<br/>Futures</em></h3><div><span><Check/></span><p>Easy &amp; Transparent<br/>Process</p></div><div><span><Tag/></span><p>Multiple Payment<br/>Options</p></div><div><span><Building2/></span><p>Trusted Banking<br/>Partners</p></div><div><span><ShieldCheck/></span><p>Hassle-Free Home Buying</p></div></div><a href="/contact" className="payment-side-cta"><Phone/><span><b>Need a Custom Plan?</b><small>Talk to Our Experts</small></span><ArrowRight/></a></div></aside></div></div><div className="payment-feature-bar">{[['Flexible','Options',Award],['Greater','Affordability',Users],['Secure','Investment',ShieldCheck],['A Better','Tomorrow',Leaf]].map(([a,b,Icon])=><div key={a}><Icon/><span>{a}<br/>{b}</span></div>)}<button aria-label="Begin your journey"><ArrowRight/></button><span className="payment-feature-cta">BEGIN YOUR<br/>JOURNEY TODAY</span></div></section> }
+export function PaymentPlan({full=false}:{full?:boolean}) {
+  const [activePlan, setActivePlan] = useState<number | null>(null);
+
+  const togglePlan = (index: number) => {
+    setActivePlan((prev) => (prev === index ? null : index));
+  };
+
+  const activeItem = activePlan !== null ? paymentPlans[activePlan] : null;
+  const secondaryPlans = activePlan !== null 
+    ? paymentPlans.filter((_, i) => i !== activePlan)
+    : [];
+
+  return (
+    <section id="payment-plan" className="payment-premium">
+      {/* Left: Full-Height Architectural Building Tower Visual */}
+      <div className="payment-building-col">
+        <img
+          src="/images/payment-plans/building-tower.png"
+          alt="B.S. HITECH luxury apartment building"
+        />
+      </div>
+
+      <div className="payment-main-row">
+        {/* Center Column: Heading + Subtitle + Focused Accordion Viewport */}
+        <div className="payment-center-col">
+          <div className="payment-heading">
+            <h2>Flexible <em>Payment Plans</em></h2>
+            <p>Transparent. Convenient. Designed Around You.</p>
+            <div className="payment-heading-line" />
+          </div>
+
+          <div className="payment-accordion-viewport">
+            {activePlan === null ? (
+              /* DEFAULT STATE: All 3 collapsed */
+              <div className="payment-accordion-stack default-stack">
+                {paymentPlans.map((plan, i) => (
+                  <button
+                    key={plan.number}
+                    type="button"
+                    className="payment-card-collapsed"
+                    onClick={() => togglePlan(i)}
+                    aria-label={`Open ${plan.title}`}
+                  >
+                    <b className="payment-card-num">{plan.number}</b>
+                    <div className="payment-card-info">
+                      <h3>{plan.title}</h3>
+                      <p>{plan.subtitle}</p>
+                    </div>
+                    <span className="payment-card-arrow">
+                      <ChevronDown />
+                    </span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              /* FOCUSED VIEWPORT STATE: Active plan moves to PRIMARY TOP position with expanded content */
+              <div className="payment-accordion-stack active-stack" key={`active-${activePlan}`}>
+                {/* PRIMARY ACTIVE ACCORDION */}
+                <div className="payment-card-primary">
+                  <button
+                    type="button"
+                    className="payment-card-primary-header"
+                    onClick={() => togglePlan(activePlan)}
+                    aria-label={`Collapse ${activeItem!.title}`}
+                  >
+                    <b className="payment-card-num active">{activeItem!.number}</b>
+                    <div className="payment-card-info">
+                      <h3>{activeItem!.title}</h3>
+                      <p>{activeItem!.subtitle}</p>
+                    </div>
+                    <span className="payment-card-arrow rotated">
+                      <ChevronDown />
+                    </span>
+                  </button>
+
+                  <div className="payment-card-primary-body">
+                    <div className="payment-expanded">
+                      <div className="payment-interior">
+                        <img
+                          src={activeItem!.image}
+                          alt={`${activeItem!.title} lifestyle interior`}
+                        />
+                        <div>
+                          <span>
+                            {activeItem!.overlay.map((line) => (
+                              <span key={line}>{line}<br /></span>
+                            ))}
+                          </span>
+                          <i />
+                          <small>Invest in<br />Happiness</small>
+                        </div>
+                      </div>
+
+                      <div className="payment-table">
+                        <div className="payment-table-head">
+                          <b>Milestone</b>
+                          <b>Percentage</b>
+                        </div>
+                        {activeItem!.rows.map(([label, value], rowIndex) => {
+                          const Icon = paymentIcons[rowIndex] || KeyRound;
+                          return (
+                            <div className="payment-row" key={label}>
+                              <span><Icon />{label}</span>
+                              <b>{value}</b>
+                            </div>
+                          );
+                        })}
+                        {activeItem!.note && (
+                          <p className="payment-note">
+                            <strong>!</strong> Note: {activeItem!.note}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* SECONDARY COLLAPSED ITEMS */}
+                <div className="payment-secondary-list">
+                  {secondaryPlans.map((plan) => {
+                    const originalIndex = paymentPlans.findIndex((p) => p.number === plan.number);
+                    return (
+                      <button
+                        key={plan.number}
+                        type="button"
+                        className="payment-card-collapsed secondary"
+                        onClick={() => togglePlan(originalIndex)}
+                        aria-label={`Switch to ${plan.title}`}
+                      >
+                        <b className="payment-card-num">{plan.number}</b>
+                        <div className="payment-card-info">
+                          <h3>{plan.title}</h3>
+                          <p>{plan.subtitle}</p>
+                        </div>
+                        <span className="payment-card-arrow">
+                          <ChevronDown />
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column: Large Lifestyle Feature Panel */}
+        <aside className="payment-side">
+          <div className="payment-side-photo">
+            <img
+              src="/images/payment-plans/right-lifestyle.png"
+              alt="Luxury home interior"
+            />
+            <div className="payment-side-copy">
+              <h3>Flexible<br />Plans<br /><em>Brighter<br />Futures</em></h3>
+              <div className="payment-side-benefit">
+                <span><Check /></span>
+                <p>Easy &amp; Transparent<br />Process</p>
+              </div>
+              <div className="payment-side-benefit">
+                <span><Tag /></span>
+                <p>Multiple Payment<br />Options</p>
+              </div>
+              <div className="payment-side-benefit">
+                <span><Building2 /></span>
+                <p>Trusted Banking<br />Partners</p>
+              </div>
+              <div className="payment-side-benefit">
+                <span><ShieldCheck /></span>
+                <p>Hassle-Free Home Buying</p>
+              </div>
+            </div>
+
+            <a href="/contact" className="payment-side-cta">
+              <Phone />
+              <span>
+                <b>Need a Custom Plan?</b>
+                <small>Talk to Our Experts</small>
+              </span>
+              <ArrowRight />
+            </a>
+          </div>
+        </aside>
+      </div>
+
+      {/* Bottom Feature Benefits Bar */}
+      <div className="payment-feature-bar">
+        {[
+          ['Flexible', 'Options', Award],
+          ['Greater', 'Affordability', Users],
+          ['Secure', 'Investment', ShieldCheck],
+          ['A Better', 'Tomorrow', Leaf],
+        ].map(([a, b, Icon]) => (
+          <div key={a as string}>
+            <Icon />
+            <span>{a}<br />{b}</span>
+          </div>
+        ))}
+        <button aria-label="Begin your journey"><ArrowRight /></button>
+        <span className="payment-feature-cta">BEGIN YOUR<br />JOURNEY TODAY</span>
+      </div>
+    </section>
+  );
+}
 
 export function Location() { return <section className="section location"><div className="location-map"><div className="map-grid"/><div className="map-pin"><MapPin fill="currentColor"/></div><span className="map-label">B.S. HITECH</span></div><div className="location-copy"><SectionHeading eyebrow="Where life connects" title={<>Close to what<br/><em>matters most.</em></>} text="Khemni Chak, Kankarbagh, Patna-800027"/><div className="nearby"><div><b>3 KM</b><span>Patna Junction</span></div><div><b>NEARBY</b><span>Schools & hospitals</span></div><div><b>EASY</b><span>Shopping & connectivity</span></div></div><a className="text-link" href="/contact">Get directions <ArrowRight size={16}/></a></div></section> }
 
 export function Gallery({full=false}) { const [active,setActive]=useState(0); const imgs=[heroImage,heroImage,heroImage]; return <section className={full?'section gallery full':'section gallery'}><SectionHeading eyebrow="A glimpse of better living" title={<>See the<br/><em>difference.</em></>}/><div className="gallery-grid">{imgs.map((img,i)=><button key={i} className={`gallery-item g${i}`} onClick={()=>setActive(i)}><img src={img} alt={`B.S. HITECH view ${i+1}`}/><span>View {String(i+1).padStart(2,'0')} <ArrowRight size={15}/></span></button>)}</div>{full&&<div className="lightbox-note">Project imagery can be replaced with approved gallery assets.</div>}</section> }
 
 const testimonialData=[{name:'Priya Singh',role:'Investor',review:'The location of B.S. HITECH is perfect with all amenities nearby. The construction quality is superior to other projects we considered. The team was very professional throughout the buying process.',image:'/images/testimonials/priya-singh.png'},{name:'Anil Mishra',role:'Future Resident',review:"We're extremely satisfied with our decision to invest in B.S. HITECH. The payment plans were flexible, and the customer service team was always available to address our queries. The amenities are world-class.",image:'/images/testimonials/anil-mishra.png'},{name:'Sunita Roy',role:'Homeowner',review:"The after-sales service at B.S. HITECH is exceptional. They've been very responsive to all our requests even after possession. The community they've built here is wonderful with great neighbors.",image:'/images/testimonials/sunita-roy.png'},{name:'Rajesh Kumar',role:'Resident',review:'A thoughtfully planned community with excellent construction quality and a location that makes daily life effortless.',image:'/images/testimonials/rajesh-kumar.png'},{name:'Vikram Patel',role:'NRI Investor',review:'The transparency and attention to detail gave our family complete confidence in choosing our new home.',image:'/images/testimonials/vikram-patel.png'}]
-export function Testimonials({full=false}) { const [active,setActive]=useState(1); const [paused,setPaused]=useState(false); const [direction,setDirection]=useState(1); const total=testimonialData.length; const go=(nextDirection:number)=>{setDirection(nextDirection);setActive((active+nextDirection+total)%total)}; const card=(index:number)=>testimonialData[(active+index+total)%total]; return <section id="testimonials" className="testimonials-editorial" onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)}><div className="testimonials-building"><img src="/images/testimonials/building.png" alt="B.S. HITECH luxury apartment building"/><div className="testimonials-brand"><b>B.S. HITECH</b><small>KANKARBAGH, PATNA</small><span>LIVE | GROW | BELONG</span></div></div><div className="testimonials-left-label">HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></div><div className="testimonials-script">More<br/>Than Homes<br/>Relationships</div><div className="testimonials-inner"><div className="testimonials-heading"><span><i/>REAL PEOPLE. REAL EXPERIENCES<i/></span><h2>What Our <em>Customers</em> Say</h2><p>Homes that create smiles, stories and stronger futures.</p></div><div className={`testimonial-stage swipe-${direction}`} key={active}><button className="testimonial-arrow prev" onClick={()=>go(-1)} aria-label="Previous testimonial"><ChevronLeft/></button><article className="testimonial-side testimonial-side-left"><TestimonialCard data={card(-1)} side/></article><article className="testimonial-featured"><div className="featured-ribbon"><Star/> FEATURED<br/>STORY</div><span className="testimonial-quote">“</span><StarRow/><p>{card(0).review}</p><div className="testimonial-author"><img src={card(0).image} alt={card(0).name}/><span><b>{card(0).name}</b><small>{card(0).role}</small></span><strong>99<small>HAPPY<br/>CUSTOMER</small></strong></div></article><article className="testimonial-side testimonial-side-right"><TestimonialCard data={card(1)} side/></article><button className="testimonial-arrow next" onClick={()=>go(1)} aria-label="Next testimonial"><ChevronRight/></button></div><div className="testimonial-avatars">{testimonialData.map((item,i)=><button key={item.name} className={i===active?'active':''} onClick={()=>setActive(i)} aria-label={`Show ${item.name}`}><img src={item.image} alt=""/></button>)}<span>+100<br/><small>More</small></span></div><div className="testimonial-community">JOIN OUR HAPPY COMMUNITY</div><div className="testimonial-dots">{testimonialData.map((item,i)=><button key={item.name} className={i===active?'active':''} onClick={()=>setActive(i)} aria-label={`Go to ${item.name}`}/>)}</div><div className="testimonial-trust"><div><Users/><b>15+<small>Years of Experience</small></b></div><div><Star/><b>50+<small>Happy Customers</small></b></div><div><Building2/><b>Multiple<small>Projects Completed</small></b></div><div><HeartIcon/><b>Stronger<small>Bihar Tomorrow</small></b></div><a href="/contact"><ArrowRight/>BECOME A PART<br/>OF OUR STORY</a></div></div>{!paused&&<AutoRotate onRotate={()=>go(1)}/>}</section> }
+export function Testimonials({full=false}) {
+  const [active,setActive]=useState(1);
+  const [paused,setPaused]=useState(false);
+  const [direction,setDirection]=useState(1);
+  const total=testimonialData.length;
+  const go=(nextDirection:number)=>{setDirection(nextDirection);setActive((active+nextDirection+total)%total)};
+  const card=(index:number)=>testimonialData[(active+index+total)%total];
+  return (
+    <>
+    <section id="testimonials" className="testimonials-editorial" onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)}>
+      <div className="testimonials-building">
+        <img src="/whychoosebuilding.png" alt="B.S. HITECH luxury apartment building"/>
+      </div>
+      <div className="testimonials-inner">
+        <div className="testimonials-main-group">
+          <div className="testimonials-heading">
+            <span className="testimonials-eyebrow"><i/>REAL PEOPLE. REAL EXPERIENCES<i/></span>
+            <h2>What Our <em>Customers</em> Say</h2>
+            <p>Homes that create smiles, stories and stronger futures.</p>
+            <div className="testimonials-divider"/>
+          </div>
+          <div className={`testimonial-stage swipe-${direction}`} key={active}>
+            <button className="testimonial-arrow prev" onClick={()=>go(-1)} aria-label="Previous testimonial"><ChevronLeft size={20}/></button>
+            <article className="testimonial-side testimonial-side-left"><TestimonialCard data={card(-1)} side/></article>
+            <article className="testimonial-featured">
+              <div className="featured-ribbon"><Star size={11} fill="currentColor"/> FEATURED<br/>STORY</div>
+              <span className="testimonial-quote">“</span>
+              <StarRow/>
+              <p>{card(0).review}</p>
+              <div className="testimonial-author">
+                <img src={card(0).image} alt={card(0).name}/>
+                <span><b>{card(0).name}</b><small>{card(0).role}</small></span>
+                <strong>99<small>HAPPY<br/>CUSTOMER</small></strong>
+              </div>
+            </article>
+            <article className="testimonial-side testimonial-side-right"><TestimonialCard data={card(1)} side/></article>
+            <button className="testimonial-arrow next" onClick={()=>go(1)} aria-label="Next testimonial"><ChevronRight size={20}/></button>
+          </div>
+          <div className="testimonial-community-block">
+            <div className="testimonial-avatars">
+              {testimonialData.map((item,i)=><button key={item.name} className={i===active?'active':''} onClick={()=>setActive(i)} aria-label={`Show ${item.name}`}><img src={item.image} alt=""/></button>)}
+              <span>+100<br/><small>More</small></span>
+            </div>
+            <div className="testimonial-community">JOIN OUR HAPPY COMMUNITY</div>
+            <div className="testimonial-dots">
+              {testimonialData.map((item,i)=><button key={item.name} className={i===active?'active':''} onClick={()=>setActive(i)} aria-label={`Go to ${item.name}`}/>)}
+            </div>
+          </div>
+        </div>
+        <div className="testimonial-trust">
+          <div><Users size={20}/><b>15+<small>Years of Experience</small></b></div>
+          <div><Star size={20}/><b>50+<small>Happy Customers</small></b></div>
+          <div><Building2 size={20}/><b>Multiple<small>Projects Completed</small></b></div>
+          <div><HeartIcon/><b>Stronger<small>Bihar Tomorrow</small></b></div>
+          <a href="/contact"><ArrowRight size={15}/>BECOME A PART<br/>OF OUR STORY</a>
+        </div>
+      </div>
+      {!paused&&<AutoRotate onRotate={()=>go(1)}/>}
+    </section>
+    <ProjectBrandStrip />
+    </>
+  );
+}
 function TestimonialCard({data,side=false}:{data:typeof testimonialData[number];side?:boolean}){return <><span className="testimonial-quote">“</span><StarRow/><p>{data.review}</p><div className="testimonial-author"><img src={data.image} alt={data.name}/><span><b>{data.name}</b><small>{data.role}</small></span><strong>”</strong></div></>}
-function StarRow(){return <div className="testimonial-stars"><Star size={20} fill="currentColor"/><Star size={20} fill="currentColor"/><Star size={20} fill="currentColor"/><Star size={20} fill="currentColor"/><Star size={20} fill="currentColor"/></div>}
-function AutoRotate({onRotate}:{onRotate:()=>void}){useEffect(()=>{const timer=window.setInterval(onRotate,3800);return()=>window.clearInterval(timer)},[onRotate]);return null}
+function StarRow(){return <div className="testimonial-stars"><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/></div>}
+function AutoRotate({onRotate}:{onRotate:()=>void}){useEffect(()=>{const timer=window.setInterval(onRotate,2200);return()=>window.clearInterval(timer)},[onRotate]);return null}
 function HeartIcon(){return <span className="heart-icon">♡</span>}
+const faqData=[{q:'Is BIGRAHPURAM DEVELOPERS RERA approved?',a:'Yes, BIGRAHPURAM DEVELOPERS is fully RERA approved with registration number BH-RERA/Patna/123456. All necessary approvals and clearances are in place.',c:'Project'},{q:'Is the location good for my family?',a:'BIGRAHPURAM DEVELOPERS is located at Khemni Chak, Kankarbagh, Patna-800027, approximately 3 km from Patna Junction with convenient access to schools, hospitals and daily essentials.',c:'Location'},{q:'Is the area safe?',a:'The community is designed as a secure, gated development with 24/7 surveillance and trained security personnel.',c:'Location'},{q:'Is the price negotiable?',a:'Our team will guide you through the latest pricing, offers and available payment options for your preferred apartment.',c:'Pricing'},{q:'Why costlier than others nearby?',a:'The pricing reflects premium specifications, thoughtful planning, generous green areas and world-class amenities.',c:'Pricing'},{q:'Do you have flexible payment plans?',a:'Yes. Standard, Early Bird and Bank Linked plans are available with construction-linked milestones.',c:'Payments'},{q:'What facilities will I get?',a:'Residents can enjoy a swimming pool, gym, club house, children’s play area, sports facilities, parking, landscaped gardens and 24/7 security.',c:'Amenities'},{q:'What are the maintenance charges?',a:'Maintenance charges are shared transparently before booking and depend on the apartment configuration and selected services.',c:'Amenities'},{q:'Is resale easy?',a:'The prime location, thoughtful planning and strong project specifications support long-term livability and resale value.',c:'Project'},{q:'Will my family be happy here?',a:'With open green areas, family-friendly amenities and connected everyday spaces, BIGRAHPURAM DEVELOPERS is planned around happier living.',c:'Amenities'},{q:'Will you help with renting/resale?',a:'Our relationship team will support homeowners with guidance for renting or resale after possession.',c:'Project'},{q:'What is the expected possession date?',a:'The expected possession schedule is shared clearly with buyers as part of the booking and agreement process.',c:'Possession'},{q:'Do you offer home loan assistance?',a:'Yes. We work with trusted banking partners and help buyers understand suitable home loan options.',c:'Payments'},{q:'Can I customize my apartment?',a:'Customization options may be discussed with the project team subject to design, construction and approval guidelines.',c:'Project'},{q:'What documents are required for booking?',a:'The booking process generally requires identity, address and payment documentation. Our team will provide the complete checklist.',c:'Legal'}]
+const faqCategories=[['All',15,Home],['Project',4,Building2],['Location',2,MapPin],['Pricing',2,Tag],['Amenities',3,Users],['Payments',2,PanelTop],['Legal',1,ShieldCheck],['Possession',1,KeyRound]] as const
+export function FAQ({full=false}) { const [active,setActive]=useState(0); const [category,setCategory]=useState('All'); const visible=category==='All'?faqData:faqData.filter(item=>item.c===category); const open=visible.findIndex((item)=>faqData.indexOf(item)===active); return <section id="faq" className="faq-editorial"><div className="faq-building"><img src={heroImage} alt="BIGRAHPURAM DEVELOPERS modern apartment building"/><div className="faq-building-label"><b>BIGRAHPURAM DEVELOPERS</b><small>KANKARBAGH, PATNA</small><span>LIVE | GROW | BELONG</span></div></div><div className="faq-inner"><div className="faq-heading"><span><i/>ANSWERS FOR A BRIGHTER TOMORROW<i/></span><h2>Frequently Asked <em>Questions</em></h2><p>Get all the information you need about BIGRAHPURAM DEVELOPERS —<br/> clear answers, complete transparency.</p></div><div className="faq-trust">{[['Trusted','Information',ShieldCheck],['Transparent','Process',PanelTop],['Dedicated','Support',Phone],['A Better','Tomorrow',Home]].map(([a,b,Icon])=><div key={a as string}><span><Icon/></span><b>{a as string}<small>{b as string}</small></b></div>)}</div><div className="faq-layout"><aside className="faq-categories"><nav>{faqCategories.map(([label,count,Icon])=><button key={label} className={category===label?'active':''} onClick={()=>{setCategory(label);setActive(0)}}><Icon/><span>{label}</span><b>{count}</b></button>)}</nav><div className="faq-quote">“<p>Informed<br/>buyers make<br/>happier<br/>homeowners.</p><i/></div></aside><div className="faq-accordion">{visible.map((item,i)=>{const index=faqData.indexOf(item); const isOpen=active===index; return <div className={`faq-row ${isOpen?'open':''}`} key={item.q}><button onClick={()=>setActive(isOpen?-1:index)}><span>{String(index+1).padStart(2,'0')}</span><b>{item.q}</b><ChevronDown/></button><div className="faq-answer"><p>{item.a}</p></div></div>})}</div><div className="faq-right"><article className="faq-contact"><Leaf size={38}/><h3>Still Have<br/>Questions?</h3><p>Our team is happy to help you with any other queries.</p><a href="/contact">Contact Us <ArrowRight/></a><i/><div><Phone/><span>+91 98765 43210<small>Mon - Sat: 9AM - 7PM</small></span></div><div><Mail/><span>info@bshitech.com<small>We reply within 24 hrs</small></span></div><div><MapPin/><span>Kankarbagh, Patna<small>Visit our site office</small></span></div></article><article className="faq-tour"><h3>Let&apos;s Find<br/>Your Answers<br/>Together.</h3><i/><div><img src="/images/floorplans/interior-living.png" alt="Luxury apartment interior"/><button aria-label="Play virtual tour"><Play fill="currentColor"/></button></div><b>Take a<br/>Virtual Tour</b><small>EXPLORE YOUR<br/>FUTURE HOME</small><a href="/gallery"><ArrowRight/></a></article></div></div></div><ProjectBrandStrip /></section> }
 
-const faqData=[{q:'Is B.S. HITECH RERA approved?',a:'Yes, B.S. HITECH is fully RERA approved with registration number BH-RERA/Patna/123456. All necessary approvals and clearances are in place.',c:'Project'},{q:'Is the location good for my family?',a:'B.S. HITECH is located at Khemni Chak, Kankarbagh, Patna-800027, approximately 3 km from Patna Junction with convenient access to schools, hospitals and daily essentials.',c:'Location'},{q:'Is the area safe?',a:'The community is designed as a secure, gated development with 24/7 surveillance and trained security personnel.',c:'Location'},{q:'Is the price negotiable?',a:'Our team will guide you through the latest pricing, offers and available payment options for your preferred apartment.',c:'Pricing'},{q:'Why costlier than others nearby?',a:'The pricing reflects premium specifications, thoughtful planning, generous green areas and world-class amenities.',c:'Pricing'},{q:'Do you have flexible payment plans?',a:'Yes. Standard, Early Bird and Bank Linked plans are available with construction-linked milestones.',c:'Payments'},{q:'What facilities will I get?',a:'Residents can enjoy a swimming pool, gym, club house, children’s play area, sports facilities, parking, landscaped gardens and 24/7 security.',c:'Amenities'},{q:'What are the maintenance charges?',a:'Maintenance charges are shared transparently before booking and depend on the apartment configuration and selected services.',c:'Amenities'},{q:'Is resale easy?',a:'The prime location, thoughtful planning and strong project specifications support long-term livability and resale value.',c:'Project'},{q:'Will my family be happy here?',a:'With open green areas, family-friendly amenities and connected everyday spaces, B.S. HITECH is planned around happier living.',c:'Amenities'},{q:'Will you help with renting/resale?',a:'Our relationship team will support homeowners with guidance for renting or resale after possession.',c:'Project'},{q:'What is the expected possession date?',a:'The expected possession schedule is shared clearly with buyers as part of the booking and agreement process.',c:'Possession'},{q:'Do you offer home loan assistance?',a:'Yes. We work with trusted banking partners and help buyers understand suitable home loan options.',c:'Payments'},{q:'Can I customize my apartment?',a:'Customization options may be discussed with the project team subject to design, construction and approval guidelines.',c:'Project'},{q:'What documents are required for booking?',a:'The booking process generally requires identity, address and payment documentation. Our team will provide the complete checklist.',c:'Legal'}]
-const faqCategories=[['All',15,Home],['Project',3,Building2],['Location',2,MapPin],['Pricing',2,Tag],['Amenities',2,Users],['Payments',2,PanelTop],['Legal',2,ShieldCheck],['Possession',2,KeyRound]] as const
-export function FAQ({full=false}) { const [active,setActive]=useState(0); const [category,setCategory]=useState('All'); const visible=category==='All'?faqData:faqData.filter(item=>item.c===category); const open=visible.findIndex((item)=>faqData.indexOf(item)===active); return <section id="faq" className="faq-editorial"><div className="faq-building"><img src={heroImage} alt="B.S. HITECH modern apartment building"/><div className="faq-building-label"><b>B.S. HITECH</b><small>KANKARBAGH, PATNA</small><span>LIVE | GROW | BELONG</span></div></div><div className="faq-side-label">HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></div><div className="faq-script">Good<br/>Questions<br/>Build<br/>Better Futures<i/></div><div className="faq-inner"><div className="faq-heading"><span><i/>ANSWERS FOR A BRIGHTER TOMORROW<i/></span><h2>Frequently Asked<br/><em>Questions</em></h2><p>Get all the information you need about B.S. HITECH —<br/> clear answers, complete transparency.</p></div><div className="faq-trust">{[['Trusted','Information',ShieldCheck],['Transparent','Process',PanelTop],['Dedicated','Support',Phone],['A Better','Tomorrow',Home]].map(([a,b,Icon])=><div key={a as string}><span><Icon/></span><b>{a as string}<small>{b as string}</small></b></div>)}</div><div className="faq-layout"><aside className="faq-categories"><nav>{faqCategories.map(([label,count,Icon])=><button key={label} className={category===label?'active':''} onClick={()=>{setCategory(label);setActive(0)}}><Icon/><span>{label}</span><b>{count}</b></button>)}</nav><div className="faq-quote">“<p>Informed<br/>buyers make<br/>happier<br/>homeowners.</p><i/></div></aside><div className="faq-accordion">{visible.map((item,i)=>{const index=faqData.indexOf(item); const isOpen=active===index; return <div className={`faq-row ${isOpen?'open':''}`} key={item.q}><button onClick={()=>setActive(isOpen?-1:index)}><span>{String(index+1).padStart(2,'0')}</span><b>{item.q}</b><ChevronDown/></button><div className="faq-answer"><p>{item.a}</p></div></div>})}</div><div className="faq-right"><article className="faq-contact"><Leaf size={38}/><h3>Still Have<br/>Questions?</h3><p>Our team is happy to help you with any other queries.</p><a href="/contact">Contact Us <ArrowRight/></a><i/><div><Phone/><span>+91 98765 43210<small>Mon - Sat: 9AM - 7PM</small></span></div><div><Mail/><span>info@bshitech.com<small>We reply within 24 hrs</small></span></div><div><MapPin/><span>Kankarbagh, Patna<small>Visit our site office</small></span></div></article><article className="faq-tour"><h3>Let&apos;s Find<br/>Your Answers<br/>Together.</h3><i/><div><img src="/images/floorplans/interior-living.png" alt="Luxury apartment interior"/><button aria-label="Play virtual tour"><Play fill="currentColor"/></button></div><b>Take a<br/>Virtual Tour</b><small>EXPLORE YOUR<br/>FUTURE HOME</small><a href="/gallery"><ArrowRight/></a></article></div></div></div></section> }
-
-export function Contact({full=false}) { const [sent,setSent]=useState(false); return <section id="contact" className="contact-editorial"><div className="contact-bg"><img src={heroImage} alt="B.S. HITECH luxury residential building"/></div><div className="contact-side-label">HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></div><div className="contact-inner"><div className="contact-heading"><span><i/>LET&apos;S CONNECT<i/></span><h2>Contact <em>Us</em></h2><p>We&apos;d love to hear from you! Whether you have questions, want a site visit,<br/>or are ready to book your dream home — our team is here to help.</p></div><div className="contact-grid"><article className="contact-info-card"><span className="contact-eyebrow">GET IN TOUCH</span><h3>We&apos;re Here<br/>For You</h3><button className="talk-button" aria-label="Call our sales team"><Phone/><small>LET&apos;S<br/>TALK</small></button><p>Have questions about B.S. HITECH? Our team is ready to assist you with all your queries regarding the project, pricing, availability and more.</p><hr/><div className="contact-info-grid"><div><MapPin/><span><b>Site Address</b>Khemni Chak,<br/>Kankarbagh, Patna-800027</span></div><div><Phone/><span><b>Phone</b>+91 8757911159<br/>(Sales Team)</span></div><div><Mail/><span><b>Email</b>sales@bshightech.com</span></div><div><CalendarDays/><span><b>Office Hours</b>Monday to Saturday<br/>10:00 AM - 7:00 PM</span></div></div><div className="contact-map"><div><MapPin size={32}/><button>Open in Maps <ArrowRight size={16}/></button></div><span><b>Visit Our Site</b>See the location and<br/>explore the neighbourhood.<button>Open in Maps <ArrowRight size={16}/></button></span></div></article><form className="contact-form-card" onSubmit={(e)=>{e.preventDefault();setSent(true)}}>{sent?<div className="contact-success"><Check/><h3>Thank you for reaching out.</h3><p>Our team will get in touch shortly.</p><button type="button" onClick={()=>setSent(false)}>Send another enquiry</button></div>:<><span className="contact-eyebrow">ENQUIRE NOW</span><h3>Tell Us About Your Interest</h3><p className="form-subtitle">Fill out the form and our team will get in touch with you shortly.</p><div className="form-fields"><label>Full Name*<input required placeholder="Enter your name"/></label><label>Email*<input required type="email" placeholder="Enter your email"/></label><label>Phone*<input required placeholder="10-digit number"/></label><label>Interested In*<select defaultValue="" required><option value="" disabled>Select Option</option><option>1 BHK</option><option>2 BHK</option><option>3 BHK</option><option>Site Visit</option><option>General Enquiry</option></select></label><label className="message-field">Message<textarea required rows={3} placeholder="Type your message here..."/></label></div><div className="form-submit"><label className="consent"><input type="checkbox" required/>I agree to be contacted by B.S. HITECH team.</label><button type="submit">Send Enquiry <ArrowRight/></button></div><div className="privacy"><ShieldCheck/><span><b>Your information is safe with us.</b>We respect your privacy and will never share your details with third parties.</span></div></>}</form></div><div className="contact-trust"><span>Quick<br/><b>Response</b></span><span>Dedicated<br/><b>Support</b></span><span>Transparent<br/><b>Process</b></span><span>Your Dream<br/><b>Our Priority</b></span><span>Have a Quick Question?<small>Chat with our team on WhatsApp</small></span><a href="https://wa.me/918757911159" aria-label="Chat on WhatsApp">◔</a></div></div><div className="contact-bottom-script">A<br/>Brighter<br/>Tomorrow<br/>Together</div><div className="contact-brand"><b>B.S. HITECH</b><small>KANKARBAGH, PATNA</small><i/></div></section> }
+export function Contact({full=false}) { const [sent,setSent]=useState(false); return <section id="contact" className="contact-editorial"><div className="contact-bg"><img src={heroImage} alt="B.S. HITECH luxury residential building"/></div><div className="contact-side-label">HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></div><div className="contact-inner"><div className="contact-heading"><span><i/>LET&apos;S CONNECT<i/></span><h2>Contact <em>Us</em></h2><p>We&apos;d love to hear from you! Whether you have questions, want a site visit,<br/>or are ready to book your dream home — our team is here to help.</p></div><div className="contact-grid"><article className="contact-info-card"><span className="contact-eyebrow">GET IN TOUCH</span><h3>We&apos;re Here<br/>For You</h3><button className="talk-button" aria-label="Call our sales team"><Phone/><small>LET&apos;S<br/>TALK</small></button><p>Have questions about B.S. HITECH? Our team is ready to assist you with all your queries regarding the project, pricing, availability and more.</p><hr/><div className="contact-info-grid"><div><MapPin/><span><b>Site Address</b>Khemni Chak,<br/>Kankarbagh, Patna-800027</span></div><div><Phone/><span><b>Phone</b>+91 8757911159<br/>(Sales Team)</span></div><div><Mail/><span><b>Email</b>sales@bshightech.com</span></div><div><CalendarDays/><span><b>Office Hours</b>Monday to Saturday<br/>10:00 AM - 7:00 PM</span></div></div><div className="contact-map"><div><MapPin size={32}/><button>Open in Maps <ArrowRight size={16}/></button></div><span><b>Visit Our Site</b>See the location and<br/>explore the neighbourhood.<button>Open in Maps <ArrowRight size={16}/></button></span></div></article><form className="contact-form-card" onSubmit={(e)=>{e.preventDefault();setSent(true)}}>{sent?<div className="contact-success"><Check/><h3>Thank you for reaching out.</h3><p>Our team will get in touch shortly.</p><button type="button" onClick={()=>setSent(false)}>Send another enquiry</button></div>:<><span className="contact-eyebrow">ENQUIRE NOW</span><h3>Tell Us About Your Interest</h3><p className="form-subtitle">Fill out the form and our team will get in touch with you shortly.</p><div className="form-fields"><label>Full Name*<input required placeholder="Enter your name"/></label><label>Email*<input required type="email" placeholder="Enter your email"/></label><label>Phone*<input required placeholder="10-digit number"/></label><label>Interested In*<select defaultValue="" required><option value="" disabled>Select Option</option><option>1 BHK</option><option>2 BHK</option><option>3 BHK</option><option>Site Visit</option><option>General Enquiry</option></select></label><label className="message-field">Message<textarea required rows={3} placeholder="Type your message here..."/></label></div><div className="form-submit"><label className="consent"><input type="checkbox" required/>I agree to be contacted by B.S. HITECH team.</label><button type="submit">Send Enquiry <ArrowRight/></button></div><div className="privacy"><ShieldCheck/><span><b>Your information is safe with us.</b>We respect your privacy and will never share your details with third parties.</span></div></>}</form></div><div className="contact-trust"><span>Quick<br/><b>Response</b></span><span>Dedicated<br/><b>Support</b></span><span>Transparent<br/><b>Process</b></span><span>Your Dream<br/><b>Our Priority</b></span><span>Have a Quick Question?<small>Chat with our team on WhatsApp</small></span><a href="https://wa.me/918757911159" aria-label="Chat on WhatsApp">◔</a></div></div><div className="contact-bottom-script">A<br/>Brighter<br/>Tomorrow<br/>Together</div><div className="contact-brand"><b>B.S. HITECH</b><small>KANKARBAGH, PATNA</small><i/></div><ProjectBrandStrip /></section> }
 
 export function Footer(){const links=[['Project Overview','/overview'],['Amenities','/amenities'],['Floor Plans','/floor-plans'],['Payment Plans','/payment-plan'],['Testimonials','/testimonials'],['FAQ','/faq']];return <footer className="footer-premium"><div className="footer-cta"><div><span className="footer-eyebrow"><i/>READY TO TAKE THE NEXT STEP?</span><h2>Book a Site Visit Today</h2><p>Experience B.S. HITECH in person and see what makes it the right choice for your future.</p></div><div className="footer-benefits"><span><b>◫</b>Flexible<small>Scheduling</small></span><span><b>♧</b>Dedicated<small>Support</small></span><span><b>♢</b>Hassle-Free<small>Assistance</small></span><a href="/contact">Book a Site Visit <ArrowRight/></a><small>Our team will get in touch with you shortly.</small></div></div><div className="footer-main"><div className="footer-leaf footer-leaf-left">〰</div><div className="footer-brand-block"><div className="footer-brand-lockup"><img className="brand-logo" src={logoImage} alt="Bigrahpuram Developers logo"/><h3>BIGRAHPURAM <em>DEVELOPERS</em></h3></div><i/><small>BUILDING BETTER TOMORROW</small><div className="footer-description">Premium luxury apartments in the heart of Kankarbagh, Patna by Bigrahpuram Developers. RERA approved project with world-class amenities and thoughtful design.</div><div className="footer-socials"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><a href="https://wa.me/918757911159" aria-label="WhatsApp">◔</a></div><label>STAY CONNECTED WITH US</label></div><nav className="footer-links"><h4>Quick Links<i/></h4>{links.map(([label,href])=><a key={label} href={href}>› <span>{label}</span></a>)}</nav><div className="footer-contact"><h4>Contact Info<i/></h4><a href="https://www.google.com/maps/search/?api=1&query=Kankarbagh+Patna"><b>⌖</b>Kankarbagh, Patna - 800020</a><a href="tel:+918757911159"><b>◔</b>+91 8757911159</a><a href="mailto:sales@bshightech.com"><b>✉</b>sales@bshightech.com</a><span><b>◷</b>Mon-Sat: 10AM - 7PM</span></div><div className="footer-branding"><span>HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></span><strong>A Brighter<br/>Tomorrow<br/>Together</strong><em>More Than Homes<br/>Relationships</em></div><div className="footer-bottom"><span>© 2025 B.S. HITECH by Bigrahpuram Developers. All Rights Reserved. | RERA No: BH-RERA/Patna/123456</span><div><a href="/privacy-policy">Privacy Policy</a><b>|</b><a href="/terms">Terms &amp; Conditions</a><b>|</b><a href="/sitemap.xml">Sitemap</a></div><button onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top">⌃<small>Back to Top</small></button></div></div></footer>}
 
