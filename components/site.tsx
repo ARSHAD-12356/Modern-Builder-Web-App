@@ -146,13 +146,16 @@ export function Hero() {
     </a>
 
     {/* Book Site Visit — hidden on video slide (bottom-left alternation handles it) */}
-    <button
-      className={`hero-carousel-visit${isVideoSlide ? ' hero-carousel-visit--video-hidden' : ''}`}
-      type="button"
-      onClick={() => { setVisitClosing(false); setVisitOpen(true) }}
-    >
-      Book Site Visit <ArrowRight size={16} />
-    </button>
+    {!isVideoSlide && (
+      <button
+        key={`visit-${active}`}
+        className="hero-carousel-visit"
+        type="button"
+        onClick={() => { setVisitClosing(false); setVisitOpen(true) }}
+      >
+        Book Site Visit <ArrowRight size={16} />
+      </button>
+    )}
 
     {/* On video slide: bottom-left Book Site Visit alternates with Explore Project */}
     {isVideoSlide && (

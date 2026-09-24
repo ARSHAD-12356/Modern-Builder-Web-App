@@ -1,10 +1,28 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowRight, Building2, CarFront, ChevronLeft, ChevronRight, Dumbbell, Download, Droplets, Home, MapPin, Maximize2, ShieldCheck, Sparkles, Trees, Waves, X } from 'lucide-react'
 
 const projectImages = '/B.S%20HITECH%20Images'
 const plans = '/BS_Hitech_Required_Plans'
+
+const heroSlides = [
+  { src: `${projectImages}/xref_9321_p1.jpeg`, alt: 'B.S. HITECH Apartment exterior' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-09-23%20at%2016.30.52.jpeg', alt: 'B.S. HITECH architectural elevation view' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-09-23%20at%2016.30.56.jpeg', alt: 'B.S. HITECH society front perspective' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-09-23%20at%2016.30.512.jpeg', alt: 'B.S. HITECH modern residential tower' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-09-23%20at%2016.30.523.jpeg', alt: 'B.S. HITECH towers exterior' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-09-23%20at%2016.30.5234.jpeg', alt: 'B.S. HITECH green landscaping and entrance' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-09-23%20at%2021.38..jpeg', alt: 'B.S. HITECH premium bathroom interior' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-09-23%20at%2021.38.1.jpeg', alt: 'B.S. HITECH spacious living room' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-09-23%20at%2021.38.19.jpeg', alt: 'B.S. HITECH luxury bedroom interior' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-09-23%20at%2021.38.21.jpeg', alt: 'B.S. HITECH master bedroom and balcony' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-093%20at%2021.38.22.jpeg', alt: 'B.S. HITECH contemporary modular kitchen' },
+  { src: '/New%20Assets/WhatsApp%20Image%20202609-23%20at%2021.38.23.jpeg', alt: 'B.S. HITECH dining and lounge interior' },
+  { src: `${plans}/Parking-Plan_All-Towers.jpg`, alt: 'B.S. HITECH Parking Plan for all towers' },
+  { src: `${plans}/Site-Plan-Landscape.jpg`, alt: 'B.S. HITECH Master Site Plan Landscape' },
+  { src: '/New%20Assets/WhatsApp%20Image%202026-09-23%20at%2021.38.20.jpeg', alt: 'B.S. HITECH luxury flat interiors' },
+]
 
 const amenities = [
   ['Swimming Pool', Waves], ['Gym Facility', Dumbbell], ['Children Playing Area', Sparkles], ['Club House', Home],
@@ -37,13 +55,66 @@ function PlanImage({ src, alt, onClick }: { src: string; alt: string; onClick: (
 }
 
 export function BsHitechDetail() {
+  const [heroIndex, setHeroIndex] = useState(0)
   const [tower, setTower] = useState(0)
   const [galleryIndex, setGalleryIndex] = useState(0)
   const [lightbox, setLightbox] = useState<string | null>(null)
   const currentPlan = towerPlans[tower]
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroIndex((prev) => (prev + 1) % heroSlides.length)
+    }, 4500)
+    return () => clearInterval(timer)
+  }, [heroIndex])
+
+  const goPrevHero = (e?: React.MouseEvent) => {
+    e?.stopPropagation()
+    setHeroIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
+  }
+
+  const goNextHero = (e?: React.MouseEvent) => {
+    e?.stopPropagation()
+    setHeroIndex((prev) => (prev + 1) % heroSlides.length)
+  }
+
   return <main className="bs-detail">
-    <section className="bs-hero" id="top"><img src={`${projectImages}/xref_9321_p1.jpeg`} alt="B.S. HITECH Apartment building" /><div className="bs-hero-overlay" /><div className="bs-hero-copy"><Eyebrow>B.S. HITECH APARTMENT</Eyebrow><h1>B.S. HITECH<br />APARTMENT</h1><p><MapPin size={16} /> Khemni Chak, Kankarbagh, Patna - 800027</p><strong>2 &amp; 3 BHK Luxurious Flats</strong></div></section>
+    <section className="bs-hero" id="top">
+      <div className="bs-hero-slides">
+        {heroSlides.map((slide, idx) => (
+          <div
+            key={slide.src}
+            className={`bs-hero-slide ${idx === heroIndex ? 'is-active' : ''}`}
+            aria-hidden={idx !== heroIndex}
+          >
+            <img src={slide.src} alt={slide.alt} />
+          </div>
+        ))}
+      </div>
+      <div className="bs-hero-overlay" />
+      <div className="bs-hero-copy">
+        <Eyebrow>B.S. HITECH APARTMENT</Eyebrow>
+        <h1>B.S. HITECH<br />APARTMENT</h1>
+        <p><MapPin size={16} /> Khemni Chak, Kankarbagh, Patna - 800027</p>
+        <strong>2 &amp; 3 BHK Luxurious Flats</strong>
+      </div>
+      <button
+        type="button"
+        className="bs-hero-arrow bs-hero-arrow--prev"
+        onClick={goPrevHero}
+        aria-label="Previous slide"
+      >
+        <ChevronLeft size={24} />
+      </button>
+      <button
+        type="button"
+        className="bs-hero-arrow bs-hero-arrow--next"
+        onClick={goNextHero}
+        aria-label="Next slide"
+      >
+        <ChevronRight size={24} />
+      </button>
+    </section>
     <section className="bs-overview" id="overview"><div className="bs-overview-copy"><Eyebrow>PROJECT OVERVIEW</Eyebrow><h2>A Better<br />Way To Live</h2><p>B.S. HITECH APARTMENT is strategically located in one of the best residential locations of Patna Bihar with easy access to educational institutions, shopping malls, hospitals and important business and leisure hubs. The location is ideal for cutting down your commute time while enjoying a pleasantly relaxed lifestyle and natural surroundings.</p><strong><MapPin size={16} /> Khemni Chak, Kankarbagh, Patna - 800027</strong></div><img src={`${projectImages}/xref_9322_p1.jpeg`} alt="B.S. HITECH apartment architecture" /></section>
     <section className="bs-stats" aria-label="Project statistics">{stats.map(([value, label, Icon]) => <div key={label}><Icon size={23} /><b>{value}</b><span>{label}</span></div>)}</section>
     <section className="bs-amenities" id="amenities"><div className="bs-section-intro"><Eyebrow>AMENITIES</Eyebrow><h2>Services &amp; Facilities<br />That Will Blow Your Mind</h2><p>From wellness to recreation, security to convenience - every detail is designed for modern and comfortable lifestyle.</p></div><div className="bs-amenity-grid">{amenities.map(([label, Icon]) => <article key={label}><Icon size={21} /><span>{label}</span></article>)}</div></section>
