@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
+@import './home-amenities.css';
 /* Projects page: static editorial hero matching the supplied reference. */
 .projects-page{background:#fdfcf9;color:#173d36;overflow:hidden}
 .projects-page-hero{position:relative;height:min(85svh,760px);min-height:600px;overflow:hidden;background:#1c4039;isolation:isolate}

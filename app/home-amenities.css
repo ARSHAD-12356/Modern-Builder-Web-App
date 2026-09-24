@@ -1,0 +1,112 @@
+.home-amenities-marquee {
+  position: relative;
+  z-index: 4;
+  width: 100vw;
+  height: 112px;
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+  background: #073d35;
+  color: #173c35;
+  isolation: isolate;
+}
+
+.home-amenities-label {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  left: 6.5%;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #e5be65;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .28em;
+}
+
+.home-amenities-label i {
+  display: block;
+  width: 42px;
+  height: 1px;
+  background: #e5be65;
+}
+
+.home-amenities-viewport {
+  width: 100%;
+  height: 100%;
+  padding: 44px 0 12px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.home-amenities-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+  animation: home-amenities-scroll 52s linear infinite;
+}
+
+.home-amenity-group {
+  display: flex;
+  gap: 8px;
+  padding-right: 8px;
+  flex-shrink: 0;
+}
+
+.home-amenity-card {
+  width: 154px;
+  height: 56px;
+  flex: 0 0 154px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  border: 1px solid #e4ddcf;
+  border-radius: 6px;
+  background: #fbf8f0;
+  box-shadow: 0 3px 10px rgba(2, 30, 25, .12);
+  text-align: center;
+}
+
+.home-amenity-card svg {
+  flex: 0 0 auto;
+  color: #c99221;
+  stroke-width: 1.7;
+}
+
+.home-amenity-card span {
+  color: #173c35;
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+@keyframes home-amenities-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 900px) {
+  .home-amenities-label { left: 5%; }
+  .home-amenity-card { width: 138px; flex-basis: 138px; }
+}
+
+@media (max-width: 600px) {
+  .home-amenities-marquee { height: 102px; }
+  .home-amenities-label { top: 12px; font-size: 9px; }
+  .home-amenities-viewport { padding-top: 40px; }
+  .home-amenity-card { width: 128px; height: 52px; flex-basis: 128px; padding: 0 8px; }
+  .home-amenity-card span { font-size: 9px; }
+  .home-amenity-card svg { width: 15px; height: 15px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-amenities-track { animation-duration: 0.01ms; animation-iteration-count: 1; }
+}
