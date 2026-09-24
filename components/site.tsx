@@ -16,7 +16,7 @@ export function Header({ projectPage = false }: { projectPage?: boolean }) {
   const scrollTo = (id:string) => { const target = document.getElementById(id); if (target) target.scrollIntoView({behavior:'smooth', block:'start'}); else window.scrollTo({top:0, behavior:'smooth'}); setActive(id); setOpen(false) }
   const projectHref = (id:string) => id === 'top' ? '/' : `/#${id}`
   return <>
-    <header className="main-nav" style={{background:'transparent', backdropFilter:'none', WebkitBackdropFilter:'none', filter:'none', boxShadow:'none'}}><button className="brand" type="button" onClick={() => projectPage ? window.location.assign('/') : scrollTo('top')}><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><div className="hero-header-actions"><div className="hero-header-contact"><Phone size={25}/><span><b>+91 98765 43210</b><small>Mon - Sat: 9AM - 7PM</small></span><button type="button" onClick={() => projectPage ? window.location.assign('/#contact') : scrollTo('contact')}>Enquire Now <ArrowRight size={16}/></button></div><button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} onClick={() => setOpen(!open)}><span/><span/><span/></button></div></header>
+    <header className="main-nav" style={{background:'transparent', backdropFilter:'none', WebkitBackdropFilter:'none', filter:'none', boxShadow:'none'}}><button className="brand" type="button" onClick={() => projectPage ? window.location.assign('/') : scrollTo('top')}><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><div className="hero-header-actions"><div className="hero-header-contact"><Phone size={25}/><span><b>+91 98765 43210</b><small>Mon - Sat: 9AM - 7PM</small></span><button type="button" onClick={() => projectPage ? window.location.assign('/#contact') : scrollTo('contact')}>Book Site Visit <ArrowRight size={16}/></button></div><button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} onClick={() => setOpen(!open)}><span/><span/><span/></button></div></header>
     <div className={`cinematic-menu ${open ? 'is-open' : ''}`} aria-hidden={!open}><div className="cinematic-menu-inner"><span className="cinematic-menu-eyebrow">BIGRAHPURM DEVELOPERS</span><nav>{nav.map(([label, id], index) => <a href={projectPage ? projectHref(id) : `#${id}`} key={label} className={active === id ? 'active' : ''} style={{'--menu-index': index} as React.CSSProperties} tabIndex={open ? 0 : -1} onClick={(event) => { if (projectPage) { setOpen(false); return } event.preventDefault(); scrollTo(id) }}><span>0{index + 1}</span>{label}<ArrowRight size={19}/></a>)}</nav></div></div>
   </>
 }
@@ -583,7 +583,7 @@ export function FloorPlans({ full = false }: { full?: boolean }) {
                 <Download /> Download Floor Plan <ArrowRight />
               </a>
               <a href="/contact">
-                <Mail /> Enquire Now <ArrowRight />
+                <Mail /> Book Site Visit <ArrowRight />
               </a>
             </div>
           </div>

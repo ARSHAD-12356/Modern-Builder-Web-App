@@ -1,48 +1,63 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Building2, Grid2X2, Home, MapPin, Store } from 'lucide-react'
 import { Header } from '@/components/site'
 
-const projectSlides = [
-  { image: '/New Assets/Hero Building.png', title: 'Live Better. Live Brighter.', text: 'Premium residences crafted for modern living in Patna.' },
-  { image: '/New Assets/Hero Building2.png', title: 'Designed For A Brighter Life.', text: 'Thoughtful architecture, refined spaces, and everyday comfort.' },
-  { image: '/New Assets/Hero Building3.png', title: 'A Better Way To Come Home.', text: 'Elegant residences shaped around the way you want to live.' },
-  { image: '/New Assets/Hero Building4.png', title: 'Your View Of Modern Living.', text: 'Discover a premium address made for meaningful moments.' },
+const projectStats = [
+  { icon: Building2, value: '04', label: 'Towers' },
+  { icon: Home, value: '189', label: 'Total Flats' },
+  { icon: Store, value: '16', label: 'Shops' },
+  { icon: Grid2X2, value: '70', label: '2BHK Flats' },
+  { icon: Grid2X2, value: '73', label: '3BHK Flats' },
+  { icon: Grid2X2, value: '12', label: '1BHK Flats' },
 ]
 
 export function ProjectsPage() {
-  const [active, setActive] = useState(0)
-
-  useEffect(() => {
-    const timer = window.setInterval(() => setActive((current) => (current + 1) % projectSlides.length), 7000)
-    return () => window.clearInterval(timer)
-  }, [])
-
-  useEffect(() => {
-    const next = new Image()
-    next.src = projectSlides[(active + 1) % projectSlides.length].image
-  }, [active])
-
-  const slide = projectSlides[active]
-
-  return <main className="projects-showcase">
+  return <main className="projects-page">
     <Header projectPage />
-    <link rel="preload" as="image" href={projectSlides[0].image} />
-    <div className="projects-showcase-media" aria-hidden="true">
-      {projectSlides.map((item, index) => <div key={item.image} className={`projects-showcase-slide ${index === active ? 'is-active' : ''}`}><img src={item.image} alt="" loading={index === 0 ? 'eager' : 'lazy'} fetchPriority={index === 0 ? 'high' : 'auto'} /></div>)}
-    </div>
-    <div className="projects-showcase-shade" />
-    <div className="projects-showcase-copy" key={slide.image}>
-      <span className="projects-showcase-eyebrow">BIGRAHPURM DEVELOPERS</span>
-      <h1>{slide.title}</h1>
-      <p>{slide.text}</p>
-      <a href="/#contact">Explore Project <ArrowRight size={16} /></a>
-    </div>
-    <div className="projects-showcase-meta"><span>Premium residences in Patna</span><span>Scroll to explore <b>↓</b></span></div>
-    <div className="projects-showcase-controls" aria-label="Project slides">
-      <span>{String(active + 1).padStart(2, '0')} <i /> {String(projectSlides.length).padStart(2, '0')}</span>
-      <div className="projects-showcase-progress"><span key={active} /></div>
-    </div>
+    <section className="projects-page-hero">
+      <img className="projects-page-hero-image" src="/New Assets/Hero Building.png" alt="Premium residential building at sunset" />
+      <div className="projects-page-hero-shade" aria-hidden="true" />
+      <div className="projects-page-hero-copy">
+        <span className="projects-page-eyebrow">BIGRAHPURM DEVELOPERS</span>
+        <h1>Residential &amp;<br />Commercial Projects</h1>
+        <p>Thoughtful architecture, refined spaces,<br className="projects-page-desktop-break" /> and everyday comfort.</p>
+      </div>
+    </section>
+    <section className="projects-page-intro">
+      <div className="projects-page-section-heading">
+        <div className="projects-page-intro-heading">
+          <span className="projects-page-eyebrow">OUR PROJECTS <i aria-hidden="true" /></span>
+          <h2>Featured Projects</h2>
+        </div>
+        <p>Discover beautifully designed residential and commercial spaces<br className="projects-page-desktop-break" /> crafted for a better tomorrow.</p>
+        <div className="projects-page-card-controls" aria-label="Featured project navigation">
+          <button type="button" aria-label="Previous featured project"><ArrowLeft size={19} /></button>
+          <button type="button" aria-label="Next featured project"><ArrowRight size={19} /></button>
+        </div>
+      </div>
+      <article className="featured-project-card">
+        <div className="featured-project-image-wrap">
+          <img src="/B.S%20HITECH%20Images/BS%20HITECH%20building.png" alt="B.S. HITECH apartment building" />
+          <span className="featured-project-status"><i /> Ongoing Project</span>
+        </div>
+        <div className="featured-project-info">
+          <h3>B.S. HITECH APARTMENT</h3>
+          <p className="featured-project-location"><MapPin size={17} /> Khemni Chak, Kankarbagh, Patna - 800027</p>
+          <p className="featured-project-type">2 &amp; 3 BHK Luxurious Flats</p>
+          <div className="featured-project-stats">
+            {projectStats.map(({ icon: Icon, value, label }) => <div className="featured-project-stat" key={label}>
+              <Icon size={21} />
+              <strong>{value}</strong>
+              <span>{label}</span>
+            </div>)}
+          </div>
+          <div className="featured-project-footer">
+            <p>Strategically located in one of the best residential areas of Patna with easy access to schools, hospitals, shopping hubs and more. Designed for modern living with essential lifestyle amenities.</p>
+            <a href="/overview">View Project Details <ArrowRight size={17} /></a>
+          </div>
+        </div>
+      </article>
+    </section>
   </main>
 }
