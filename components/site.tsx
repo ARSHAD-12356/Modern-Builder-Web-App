@@ -70,7 +70,7 @@ export function Hero() {
       <a href="/projects">Explore Project <ArrowRight size={16} /></a>
     </div>
     <button className="hero-carousel-visit" type="button" key={`visit-${slide.image}`} onClick={() => { setVisitClosing(false); setVisitOpen(true) }}>Book a Site Visit <ArrowRight size={16} /></button>
-    <div className="hero-carousel-meta"><span>Premium residences in Patna</span><span className="hero-carousel-scroll">Scroll to explore <span>↓</span></span></div>
+    <div className="hero-carousel-meta"><span className="hero-carousel-scroll">Scroll to explore <span>↓</span></span></div>
     <div className="hero-carousel-controls" aria-label="Hero slides">
       <span className="hero-carousel-count">{String(active + 1).padStart(2, '0')} <i /> {String(heroSlides.length).padStart(2, '0')}</span>
       <div className="hero-carousel-progress"><span key={active} /></div>
