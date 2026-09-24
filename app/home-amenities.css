@@ -83,6 +83,147 @@
   line-height: 1.2;
 }
 
+/* ── Video slide: fill the slide container with the video ── */
+.hero-carousel-slide--video {
+  background: #0a1f1c;
+}
+
+.hero-carousel-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ── Fix: push hero copy block up so subheading is never hidden by the button ── */
+.hero-carousel-copy { bottom: 24% !important; }
+
+/* ── Explore Project button: square corners, always bottom-left ── */
+.hero-carousel-explore {
+  position: absolute;
+  z-index: 3;
+  left: 7.5%;
+  bottom: 17%;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid #e4aa2d;
+  border-radius: 0;
+  background: #e4aa2d;
+  color: #173a34;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 12px 28px rgba(3, 28, 24, 0.24);
+  transition: background-color 0.25s ease, color 0.25s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-carousel-copy-in 0.8s ease 0.48s forwards;
+}
+
+.hero-carousel-explore svg { transition: transform 0.2s; }
+.hero-carousel-explore:hover { background: #efbd47; color: #173a34; }
+.hero-carousel-explore:hover svg { transform: translateX(4px); }
+
+/*
+ * VIDEO SLIDE — bottom-left area alternates between Explore Project and Book Site Visit.
+ * Both buttons share the same keyframe but are offset by 2.5s so they never overlap.
+ *
+ * Timeline (5s cycle):
+ *  0.0s ─ 0.5s : Explore fades IN
+ *  0.5s ─ 2.3s : Explore visible  (~2s hold)
+ *  2.3s ─ 2.8s : Explore fades OUT
+ *  3.0s ─ 3.5s : Visit fades IN   (2.5s offset = 0.5+2.5)
+ *  3.5s ─ 5.3s : Visit visible    (~2s hold)
+ *  5.3s ─ 5.5s : Visit fades OUT  → loop
+ */
+@keyframes hero-btm-cycle {
+  0%   { opacity: 0; }
+  12%  { opacity: 1; }
+  46%  { opacity: 1; }
+  58%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Explore button — first half of every cycle */
+.hero-carousel-explore--video {
+  opacity: 0;
+  transform: none;
+  animation: hero-btm-cycle 5s ease-in-out 0.5s infinite !important;
+}
+
+/* Bottom-left Book Site Visit (only rendered on video slide) */
+.hero-carousel-visit--btm-left {
+  position: absolute;
+  z-index: 3;
+  left: 7.5%;
+  bottom: 17%;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid #e4aa2d;
+  border-radius: 0;
+  background: #e4aa2d;
+  color: #173a34;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 12px 28px rgba(3, 28, 24, 0.24);
+  cursor: pointer;
+  /* 3s delay = 0.5s (explore start) + 2.5s (half cycle) */
+  opacity: 0;
+  transform: none;
+  animation: hero-btm-cycle 5s ease-in-out 3s infinite;
+}
+
+.hero-carousel-visit--btm-left:hover { background: #efbd47; color: #173a34; }
+.hero-carousel-visit--btm-left svg { transition: transform 0.2s; }
+.hero-carousel-visit--btm-left:hover svg { transform: translateX(4px); }
+
+/* ── Book Site Visit: normal image-slide position ── */
+.hero-carousel-visit {
+  top: 62% !important;
+}
+
+/* On video slide, hide the center Book Site Visit button (bottom-left alternation handles CTAs) */
+.hero-carousel-visit--video-hidden {
+  display: none !important;
+}
+
+/* ── Left / Right arrow nav buttons ── */
+.hero-carousel-arrow {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+  transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
+}
+
+.hero-carousel-arrow:hover {
+  background: rgba(255, 255, 255, 0.26);
+  border-color: rgba(255, 255, 255, 0.7);
+  color: #fff;
+  transform: translateY(-50%) scale(1.07);
+}
+
+.hero-carousel-arrow--prev { left: 2.5%; }
+.hero-carousel-arrow--next { right: 2.5%; }
+
 @keyframes home-amenities-scroll {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }
@@ -96,6 +237,13 @@ body {
 @media (max-width: 900px) {
   .home-amenities-label { left: 5%; }
   .home-amenity-card { width: 138px; flex-basis: 138px; }
+  .hero-carousel-visit { top: 50% !important; }
+  .hero-carousel-copy { bottom: 28% !important; }
+  .hero-carousel-explore { left: 7%; bottom: 22%; }
+  .hero-carousel-visit--btm-left { left: 7%; bottom: 22%; }
+  .hero-carousel-arrow { width: 40px; height: 40px; }
+  .hero-carousel-arrow--prev { left: 1.5%; }
+  .hero-carousel-arrow--next { right: 1.5%; }
 }
 
 @media (max-width: 600px) {
@@ -105,8 +253,26 @@ body {
   .home-amenity-card { width: 128px; height: 52px; flex-basis: 128px; padding: 0 8px; }
   .home-amenity-card span { font-size: 9px; }
   .home-amenity-card svg { width: 15px; height: 15px; }
+  .hero-carousel-copy { bottom: 27% !important; }
+  .hero-carousel-explore { left: 7%; bottom: 21%; padding: 10px 14px; font-size: 12px; }
+  .hero-carousel-visit--btm-left { left: 7%; bottom: 21%; padding: 10px 14px; font-size: 12px; }
+  .hero-carousel-arrow { width: 36px; height: 36px; }
+  .hero-carousel-arrow--prev { left: 1%; }
+  .hero-carousel-arrow--next { right: 1%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .home-amenities-track { animation-duration: 0.01ms; animation-iteration-count: 1; }
+  /* Skip cycling — show both buttons statically stacked */
+  .hero-carousel-explore--video {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hero-carousel-visit--btm-left {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    bottom: 24% !important;
+  }
 }

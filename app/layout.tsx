@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/assets/BIGRAHPURM LOGO1.jpg.jpeg',
+        url: '/apple-icon.png',
       },
       {
         url: '/icon-light-32x32.png',

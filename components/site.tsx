@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BsHitechDetail } from './bs-hitech-detail'
 import { ArrowRight, Award, Baby, Bath, Building2, CalendarDays, CarFront, Check, ChevronDown, ChevronLeft, ChevronRight, Compass, Download, Dumbbell, Home, KeyRound, Leaf, LockKeyhole, Mail, MapPin, Maximize2, Menu, PanelTop, Phone, Play, Rotate3d, ShieldCheck, Sofa, Sprout, Star, Sun, Tag, TreePine, Trophy, TrendingUp, GraduationCap, Hospital, ShoppingCart, UserRound, Users, Utensils, Waves, Wine, X } from 'lucide-react'
 
 export const heroImage = '/assets/hero/bs-hitech-hero.png'
 export const officeImage = '/assets/about/bigrahpuram-office.png'
-export const logoImage = '/assets/BIGRAHPURM LOGO1.jpg.jpeg'
+export const logoImage = '/apple-icon.png'
 
 const nav = [['Home','top'],['About','about'],['Amenities','amenities'],['Floor Plans','floor-plans'],['Gallery','gallery'],['Location','location'],['Contact','contact']]
 
@@ -17,7 +17,7 @@ export function Header({ projectPage = false }: { projectPage?: boolean }) {
   const scrollTo = (id:string) => { const target = document.getElementById(id); if (target) target.scrollIntoView({behavior:'smooth', block:'start'}); else window.scrollTo({top:0, behavior:'smooth'}); setActive(id); setOpen(false) }
   const projectHref = (id:string) => id === 'top' ? '/' : `/#${id}`
   return <>
-    <header className="main-nav" style={{background:'transparent', backdropFilter:'none', WebkitBackdropFilter:'none', filter:'none', boxShadow:'none'}}><button className="brand" type="button" onClick={() => projectPage ? window.location.assign('/') : scrollTo('top')}><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><div className="hero-header-actions"><div className="hero-header-contact"><Phone size={25}/><span><b>+91 98765 43210</b><small>Mon - Sat: 9AM - 7PM</small></span></div><button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} onClick={() => setOpen(!open)}>Menu</button></div></header>
+    <header className="main-nav" style={{background:'transparent', backdropFilter:'none', WebkitBackdropFilter:'none', filter:'none', boxShadow:'none'}}><button className="brand" type="button" onClick={() => projectPage ? window.location.assign('/') : scrollTo('top')}><div className="brand-logo-anchor"><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><div className="rera-strip"><span>RERA NO : BRERAP182628060325290629E00</span></div></div><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><div className="hero-header-actions"><div className="hero-header-contact"><Phone size={25}/><span><b>+91 920464875</b><small>Mon - Sat: 10AM - 6PM</small></span></div><button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} onClick={() => setOpen(!open)}>Menu</button></div></header>
     <div className={`cinematic-menu ${open ? 'is-open' : ''}`} aria-hidden={!open}><div className="cinematic-menu-inner"><span className="cinematic-menu-eyebrow">BIGRAHPURM DEVELOPERS</span><nav>{nav.map(([label, id], index) => <a href={projectPage ? projectHref(id) : `#${id}`} key={label} className={active === id ? 'active' : ''} style={{'--menu-index': index} as React.CSSProperties} tabIndex={open ? 0 : -1} onClick={(event) => { if (projectPage) { setOpen(false); return } event.preventDefault(); scrollTo(id) }}><span>0{index + 1}</span>{label}<ArrowRight size={19}/></a>)}</nav></div></div>
   </>
 }
@@ -33,10 +33,18 @@ const heroSlides = [
   { image: '/New Assets/Hero Building4.png', title: 'Your View Of Modern Living.', text: 'Discover a premium address made for meaningful moments.' },
 ]
 
+const HERO_VIDEO_SRC = '/New Assets/WhatsApp Video 2026-09-23 at 16.30.51.mp4'
+const TOTAL_SLIDES = heroSlides.length + 1 // +1 for the video slide
+const VIDEO_SLIDE_INDEX = heroSlides.length
+
 export function Hero() {
   const [active, setActive] = useState(0)
   const [visitOpen, setVisitOpen] = useState(false)
   const [visitClosing, setVisitClosing] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const timerRef = useRef<ReturnType<typeof window.setInterval> | null>(null)
+
+  const isVideoSlide = active === VIDEO_SLIDE_INDEX
 
   const closeVisitModal = () => {
     setVisitClosing(true)
@@ -46,31 +54,135 @@ export function Hero() {
     }, 280)
   }
 
-  useEffect(() => {
-    const timer = window.setInterval(() => setActive((current) => (current + 1) % heroSlides.length), 7000)
-    return () => window.clearInterval(timer)
-  }, [])
+  const goTo = (index: number) => setActive((index + TOTAL_SLIDES) % TOTAL_SLIDES)
+  const goPrev = () => goTo(active - 1)
+  const goNext = () => goTo(active + 1)
 
+  // Auto-advance: pause on video slide, resume on image slides
   useEffect(() => {
-    const next = new Image()
-    next.src = heroSlides[(active + 1) % heroSlides.length].image
+    if (timerRef.current) window.clearInterval(timerRef.current)
+    if (isVideoSlide) return // hold on video slide until it ends
+    timerRef.current = window.setInterval(
+      () => setActive((current) => (current + 1) % TOTAL_SLIDES),
+      7000
+    )
+    return () => {
+      if (timerRef.current) window.clearInterval(timerRef.current)
+    }
+  }, [active, isVideoSlide])
+
+  // Prefetch next image slide
+  useEffect(() => {
+    const nextIndex = (active + 1) % TOTAL_SLIDES
+    if (nextIndex !== VIDEO_SLIDE_INDEX) {
+      const next = new Image()
+      next.src = heroSlides[nextIndex % heroSlides.length].image
+    }
   }, [active])
 
-  const slide = heroSlides[active]
+  // Video playback control
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    if (isVideoSlide) {
+      video.currentTime = 0
+      const playPromise = video.play()
+      if (playPromise !== undefined) {
+        playPromise.catch(() => { /* autoplay blocked – muted prevents this */ })
+      }
+    } else {
+      video.pause()
+      video.currentTime = 0
+    }
+  }, [isVideoSlide])
 
-  return <section id="top" className="hero-carousel">
+  // When video ends, restart carousel from slide 0
+  const handleVideoEnded = () => setActive(0)
+
+  const slide = heroSlides[Math.min(active, heroSlides.length - 1)]
+
+  return <section id="top" className={`hero-carousel${isVideoSlide ? ' hero-carousel--video-active' : ''}`}>
+    {/* Image slides */}
     <div className="hero-carousel-media" aria-hidden="true">
-      {heroSlides.map((item, index) => <div key={item.image} className={`hero-carousel-slide ${index === active ? 'is-active' : ''}`} style={{ backgroundImage: `url("${item.image}")` }} />)}
+      {heroSlides.map((item, index) => (
+        <div
+          key={item.image}
+          className={`hero-carousel-slide ${index === active ? 'is-active' : ''}`}
+          style={{ backgroundImage: `url("${item.image}")` }}
+        />
+      ))}
+      {/* Video slide layer */}
+      <div className={`hero-carousel-slide hero-carousel-slide--video ${isVideoSlide ? 'is-active' : ''}`}>
+        <video
+          ref={videoRef}
+          src={HERO_VIDEO_SRC}
+          muted
+          playsInline
+          preload="metadata"
+          className="hero-carousel-video"
+          aria-hidden="true"
+          onEnded={handleVideoEnded}
+        />
+      </div>
     </div>
+
     <div className="hero-carousel-shade" />
-    <div className="hero-carousel-copy" key={slide.image}>
-      <span className="hero-carousel-eyebrow">BIGRAHPURM DEVELOPERS</span>
-      <h1>{slide.title}</h1>
-      <p>{slide.text}</p>
-      <a href="/projects">Explore Project <ArrowRight size={16} /></a>
-    </div>
-    <button className="hero-carousel-visit" type="button" key={`visit-${slide.image}`} onClick={() => { setVisitClosing(false); setVisitOpen(true) }}>Book a Site Visit <ArrowRight size={16} /></button>
-      {visitOpen && <div className={`visit-modal-backdrop${visitClosing ? ' is-closing' : ''}`} role="presentation" onClick={closeVisitModal}><section className="visit-modal" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title" onClick={(event) => event.stopPropagation()}><button className="visit-modal-close" type="button" aria-label="Close enquiry form" onClick={closeVisitModal}><X /></button><span className="visit-modal-eyebrow">ENQUIRE NOW</span><h2 id="visit-modal-title">Tell Us About Your Interest</h2><p className="visit-modal-subtitle">Fill out the form and our team will get in touch with you shortly.</p><form onSubmit={(event) => { event.preventDefault(); closeVisitModal() }}><div className="visit-form-grid"><label>Full Name*<input name="name" required placeholder="Enter your name" /></label><label>Email*<input name="email" type="email" required placeholder="Enter your email" /></label><label>Phone*<input name="phone" type="tel" required placeholder="10-digit number" /></label><label>Interested In*<select name="interest" defaultValue="" required><option value="" disabled>Select Option</option><option>Book a Site Visit</option><option>Get Price Details</option><option>Download Brochure</option></select></label></div><label className="visit-message">Message<textarea name="message" placeholder="Type your message here..." /></label><div className="visit-form-actions"><label className="visit-consent"><input type="checkbox" required /> <span>I agree to be contacted by B.S. HITECH team.</span></label><button type="submit">Send Enquiry <ArrowRight size={20} /></button></div><div className="visit-privacy"><ShieldCheck size={25} /><span><b>Your information is safe with us.</b><small>We respect your privacy and will never share your details with third parties.</small></span></div></form></section></div>}
+
+    {/* Left hero copy — hidden on video slide */}
+    {!isVideoSlide && (
+      <div className="hero-carousel-copy" key={slide.image}>
+        <span className="hero-carousel-eyebrow">BIGRAHPURM DEVELOPERS</span>
+        <h1>{slide.title}</h1>
+        <p>{slide.text}</p>
+      </div>
+    )}
+
+    {/* Explore Project button — always visible, bottom-left */}
+    <a
+      href="/projects"
+      className={`hero-carousel-explore${isVideoSlide ? ' hero-carousel-explore--video' : ''}`}
+    >
+      Explore Project <ArrowRight size={16} />
+    </a>
+
+    {/* Book Site Visit — hidden on video slide (bottom-left alternation handles it) */}
+    <button
+      className={`hero-carousel-visit${isVideoSlide ? ' hero-carousel-visit--video-hidden' : ''}`}
+      type="button"
+      onClick={() => { setVisitClosing(false); setVisitOpen(true) }}
+    >
+      Book Site Visit <ArrowRight size={16} />
+    </button>
+
+    {/* On video slide: bottom-left Book Site Visit alternates with Explore Project */}
+    {isVideoSlide && (
+      <button
+        className="hero-carousel-visit--btm-left"
+        type="button"
+        onClick={() => { setVisitClosing(false); setVisitOpen(true) }}
+      >
+        Book Site Visit <ArrowRight size={16} />
+      </button>
+    )}
+    {/* Left / Right arrow navigation */}
+    <button
+      className="hero-carousel-arrow hero-carousel-arrow--prev"
+      type="button"
+      aria-label="Previous slide"
+      onClick={goPrev}
+    >
+      <ChevronLeft size={22} />
+    </button>
+    <button
+      className="hero-carousel-arrow hero-carousel-arrow--next"
+      type="button"
+      aria-label="Next slide"
+      onClick={goNext}
+    >
+      <ChevronRight size={22} />
+    </button>
+
+    {visitOpen && <div className={`visit-modal-backdrop${visitClosing ? ' is-closing' : ''}`} role="presentation" onClick={closeVisitModal}><section className="visit-modal" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title" onClick={(event) => event.stopPropagation()}><button className="visit-modal-close" type="button" aria-label="Close enquiry form" onClick={closeVisitModal}><X /></button><span className="visit-modal-eyebrow">ENQUIRE NOW</span><h2 id="visit-modal-title">Tell Us About Your Interest</h2><p className="visit-modal-subtitle">Fill out the form and our team will get in touch with you shortly.</p><form onSubmit={(event) => { event.preventDefault(); closeVisitModal() }}><div className="visit-form-grid"><label>Full Name*<input name="name" required placeholder="Enter your name" /></label><label>Email*<input name="email" type="email" required placeholder="Enter your email" /></label><label>Phone*<input name="phone" type="tel" required placeholder="10-digit number" /></label><label>Interested In*<select name="interest" defaultValue="" required><option value="" disabled>Select Option</option><option>Book a Site Visit</option><option>Get Price Details</option><option>Download Brochure</option></select></label></div><label className="visit-message">Message<textarea name="message" placeholder="Type your message here..." /></label><div className="visit-form-actions"><label className="visit-consent"><input type="checkbox" required /> <span>I agree to be contacted by B.S. HITECH team.</span></label><button type="submit">Send Enquiry <ArrowRight size={20} /></button></div><div className="visit-privacy"><ShieldCheck size={25} /><span><b>Your information is safe with us.</b><small>We respect your privacy and will never share your details with third parties.</small></span></div></form></section></div>}
   </section>
 }
 
