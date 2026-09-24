@@ -3,7 +3,7 @@
   z-index: 4;
   width: 100vw;
   height: 112px;
-  margin-left: calc(50% - 50vw);
+  margin: -112px 0 0 calc(50% - 50vw);
   overflow: hidden;
   background: #073d35;
   color: #173c35;
@@ -99,7 +99,7 @@ body {
 }
 
 @media (max-width: 600px) {
-  .home-amenities-marquee { height: 102px; }
+  .home-amenities-marquee { height: 102px; margin-top: -102px; }
   .home-amenities-label { top: 12px; font-size: 9px; }
   .home-amenities-viewport { padding-top: 40px; }
   .home-amenity-card { width: 128px; height: 52px; flex-basis: 128px; padding: 0 8px; }
