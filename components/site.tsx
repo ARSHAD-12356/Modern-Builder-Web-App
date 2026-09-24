@@ -9,13 +9,15 @@ export const logoImage = '/assets/BIGRAHPURM LOGO1.jpg.jpeg'
 
 const nav = [['Home','top'],['About','about'],['Amenities','amenities'],['Floor Plans','floor-plans'],['Gallery','gallery'],['Location','location'],['Contact','contact']]
 
-export function Header() {
+export function Header({ projectPage = false }: { projectPage?: boolean }) {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('top')
   useEffect(() => { const sections = nav.map(([, id]) => document.getElementById(id)).filter(Boolean) as HTMLElement[]; const observer = new IntersectionObserver((entries) => { const visible = entries.filter((entry) => entry.isIntersecting).sort((a,b) => b.intersectionRatio-a.intersectionRatio)[0]; if (visible) setActive(visible.target.id) }, {rootMargin:'-38px 0px -55% 0px', threshold:[0.1,0.4,0.7]}); sections.forEach((section) => observer.observe(section)); return () => observer.disconnect() }, [])
   const scrollTo = (id:string) => { const target = document.getElementById(id); if (target) target.scrollIntoView({behavior:'smooth', block:'start'}); else window.scrollTo({top:0, behavior:'smooth'}); setActive(id); setOpen(false) }
+  const projectHref = (id:string) => id === 'top' ? '/' : `/#${id}`
   return <>
-    <header className="main-nav"><button className="brand" type="button" onClick={() => scrollTo('top')}><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><button className="mobile-menu" aria-label="Toggle navigation" onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</button><nav className={open ? 'nav-links open' : 'nav-links'}>{nav.map(([label, id]) => <a href={`#${id}`} key={label} className={active === id ? 'active' : ''} onClick={(event) => { event.preventDefault(); scrollTo(id) }}>{label}</a>)}</nav><div className="hero-header-contact"><Phone size={25}/><span><b>+91 98765 43210</b><small>Mon - Sat: 9AM - 7PM</small></span><button type="button" onClick={() => scrollTo('contact')}>Enquire Now <ArrowRight size={16}/></button></div></header>
+    <header className="main-nav" style={{background:'transparent', backdropFilter:'none', WebkitBackdropFilter:'none', filter:'none', boxShadow:'none'}}><button className="brand" type="button" onClick={() => projectPage ? window.location.assign('/') : scrollTo('top')}><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><div className="hero-header-actions"><div className="hero-header-contact"><Phone size={25}/><span><b>+91 98765 43210</b><small>Mon - Sat: 9AM - 7PM</small></span><button type="button" onClick={() => projectPage ? window.location.assign('/#contact') : scrollTo('contact')}>Enquire Now <ArrowRight size={16}/></button></div><button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} onClick={() => setOpen(!open)}><span/><span/><span/></button></div></header>
+    <div className={`cinematic-menu ${open ? 'is-open' : ''}`} aria-hidden={!open}><div className="cinematic-menu-inner"><span className="cinematic-menu-eyebrow">BIGRAHPURM DEVELOPERS</span><nav>{nav.map(([label, id], index) => <a href={projectPage ? projectHref(id) : `#${id}`} key={label} className={active === id ? 'active' : ''} style={{'--menu-index': index} as React.CSSProperties} tabIndex={open ? 0 : -1} onClick={(event) => { if (projectPage) { setOpen(false); return } event.preventDefault(); scrollTo(id) }}><span>0{index + 1}</span>{label}<ArrowRight size={19}/></a>)}</nav></div></div>
   </>
 }
 
@@ -23,7 +25,47 @@ export function PageHero({eyebrow, title, text, image = heroImage}: {eyebrow:str
 export function SectionHeading({eyebrow,title,text,light=false}:{eyebrow:string;title:React.ReactNode;text?:string;light?:boolean}) { return <div className={light?'section-heading light':'section-heading'}><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{text && <p>{text}</p>}</div> }
 export function Reveal({children,className=''}:{children:React.ReactNode;className?:string}) { return <div className={`reveal ${className}`}>{children}</div> }
 
-export function Hero() { const [sent,setSent]=useState(false); return <section id="top" className="hero hero-reference"><div className="hero-image" style={{backgroundImage:"url('/New Assets/Hero Building.png')"}}/><div className="hero-wash"/><div className="hero-reference-content"><span className="hero-reference-eyebrow">LIVE A BRIGHTER TOMORROW <i/></span><h1>Premium 2 &amp; 3 BHK<br/><em>Luxury Apartments</em><br/>in Patna&apos;s Prime Location</h1><p className="hero-reference-subtitle">Modern homes. Thoughtful amenities. A better lifestyle<br className="desktop-break"/> for you and your family.</p><div className="hero-reference-features"><span><MapPin/><small>Prime<br/>Location</small></span><span><Building2/><small>Modern<br/>Amenities</small></span><span><ShieldCheck/><small>Safe &amp; Secure<br/>Community</small></span><span><Leaf/><small>A Better<br/>Tomorrow</small></span></div><div className="hero-reference-price"><span><b><span>₹</span></b><small>Starting Price<strong>₹45 Lakhs*</strong></small></span><i/><span><b><CalendarDays/></b><small>Possession<strong>Dec 2026</strong></small></span></div><div className="hero-reference-actions"><a className="hero-reference-primary" href="/contact"><CalendarDays/>Book Site Visit <ArrowRight/></a><a href="/contact"><Tag/>Get Price Details</a><a href="/floor-plans"><Download/>Download Brochure</a></div></div><form className="hero-enquiry" onSubmit={(event)=>{event.preventDefault();setSent(true)}}>{sent?<div className="hero-enquiry-success"><Check/><h2>Thank you.</h2><p>Our team will get in touch shortly.</p><button type="button" onClick={()=>setSent(false)}>Send another enquiry</button></div>:<><h2>Get Complete Details</h2><p>Fill in your details and our team will<br/>get in touch with you.</p><label><UserRound/><input required placeholder="Your Name"/></label><label><Phone/><input required type="tel" placeholder="Mobile Number"/></label><label><Home/><select defaultValue=""><option value="" disabled>Preferred Configuration</option><option>2 BHK</option><option>3 BHK</option></select><ChevronDown/></label><button type="submit">Submit Request <ArrowRight/></button><small><LockKeyhole/> Your information is safe with us.</small></>}</form><div className="hero-reference-bottom-left"><i/>Elegant Homes. Happier Lives.<i/></div><div className="hero-reference-scroll"><span>!</span>Scroll to Explore</div></section> }
+const heroSlides = [
+  { image: '/New Assets/Hero Building.png', title: 'Live Better. Live Brighter.', text: 'Premium residences crafted for modern living in Patna.' },
+  { image: '/New Assets/Hero Building2.png', title: 'Designed For A Brighter Life.', text: 'Thoughtful architecture, refined spaces, and everyday comfort.' },
+  { image: '/New Assets/Hero Building3.png', title: 'A Better Way To Come Home.', text: 'Elegant residences shaped around the way you want to live.' },
+  { image: '/New Assets/Hero Building4.png', title: 'Your View Of Modern Living.', text: 'Discover a premium address made for meaningful moments.' },
+]
+
+export function Hero() {
+  const [active, setActive] = useState(0)
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setActive((current) => (current + 1) % heroSlides.length), 7000)
+    return () => window.clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+    const next = new Image()
+    next.src = heroSlides[(active + 1) % heroSlides.length].image
+  }, [active])
+
+  const slide = heroSlides[active]
+
+  return <section id="top" className="hero-carousel">
+    <div className="hero-carousel-media" aria-hidden="true">
+      {heroSlides.map((item, index) => <div key={item.image} className={`hero-carousel-slide ${index === active ? 'is-active' : ''}`} style={{ backgroundImage: `url("${item.image}")` }} />)}
+    </div>
+    <div className="hero-carousel-shade" />
+    <div className="hero-carousel-copy" key={slide.image}>
+      <span className="hero-carousel-eyebrow">BIGRAHPURM DEVELOPERS</span>
+      <h1>{slide.title}</h1>
+      <p>{slide.text}</p>
+      <a href="/projects">Explore Project <ArrowRight size={16} /></a>
+    </div>
+    <div className="hero-carousel-meta"><span>Premium residences in Patna</span><span className="hero-carousel-scroll">Scroll to explore <span>↓</span></span></div>
+    <div className="hero-carousel-controls" aria-label="Hero slides">
+      <span className="hero-carousel-count">{String(active + 1).padStart(2, '0')} <i /> {String(heroSlides.length).padStart(2, '0')}</span>
+      <div className="hero-carousel-progress"><span key={active} /></div>
+      <div className="hero-carousel-dots">{heroSlides.map((item, index) => <button key={item.image} type="button" aria-label={`Show slide ${index + 1}`} className={index === active ? 'is-active' : ''} onClick={() => setActive(index)} />)}</div>
+    </div>
+  </section>
+}
 
 export function Stats() { return <section className="stats-band"><div className="stats-intro"><span className="eyebrow">A legacy of trust</span><h2>Built on values.<br/><em>Designed for life.</em></h2></div>{[['15+','Years Experience'],['4 Acres','Project Area'],['4','Towers'],['60%','Green Area'],['3 KM','From Patna Junction']].map(([n,l])=><div className="stat" key={l}><strong>{n}</strong><span>{l}</span></div>)}</section> }
 
@@ -888,6 +930,6 @@ export function Footer(){const links=[['Project Overview','/overview'],['Ameniti
 
 export function LocationSection(){const features=[[MapPin,'Prime','Location'],[Compass,'Excellent','Connectivity'],[Building2,'Surrounded by','Key Amenities'],[TrendingUp,'High Growth','Potential']];const benefits=[[GraduationCap,'Schools','Within Minutes'],[Hospital,'Hospitals','Nearby'],[ShoppingCart,'Markets','& Daily Needs'],[Compass,'Well-Connected','to Major Roads']];return <section className="location-editorial"><div className="location-side-label">HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></div><div className="location-script">A<br/>Better Location<br/>Brighter<br/>Tomorrows<i/></div><div className="location-inner"><div className="location-heading"><span><i/>OUR LOCATION<i/></span><h2>In the Heart of <em>Patna</em></h2><p>Well-connected. Well-developed. A location that keeps you close to everything<br/>that matters — today and tomorrow.</p></div><div className="location-features">{features.map(([Icon,a,b])=><div key={a as string}><span><Icon/></span><b>{a as string}<small>{b as string}</small></b></div>)}</div><div className="location-cards"><article className="location-card"><header><span><MapPin/></span><div><h3>Our Exact Location</h3><p>Find us on Google Maps</p></div><a href="https://www.google.com/maps/search/?api=1&query=Khemni+Chak+Kankarbagh+Patna">Open in Google Maps <ArrowRight/></a></header><div className="location-map-frame"><iframe title="B.S. HITECH location map" src="https://www.openstreetmap.org/export/embed.html?bbox=85.135%2C25.585%2C85.19%2C25.625&layer=mapnik&marker=25.605%2C85.162"/></div></article><article className="location-card"><header><span><Compass/></span><div><h3>Location Map</h3><p>Key landmarks and connectivity</p></div><a href="/images/location-connectivity-map.png" download="bshitech-location-map.png"><Download/> DOWNLOAD MAP</a></header><div className="connectivity-map"><img src="/images/location-connectivity-map.png" alt="Connectivity map showing Kankarbagh, Patna landmarks and nearby roads"/><div><b>Kankarbagh, Patna</b><small>Connected to schools, hospitals, markets and major roads</small></div></div></article></div><div className="location-benefits"><h3>You&apos;re<br/>Never Far<br/>From What Matters<i/></h3>{benefits.map(([Icon,a,b])=><div key={a as string}><span><Icon/></span><b>{a as string}<small>{b as string}</small></b></div>)}<a href="/contact">Plan Your Visit <ArrowRight/></a></div></div></section>}
 export function SiteFrame({children}:{children:React.ReactNode}){return <><Header/>{children}<Footer/></>}
-export function HomePage(){return <SiteFrame><Hero/><Stats/><About/><ProjectOverview/><WhyChoose/><AmenitiesShowcase/><FloorPlans/><PaymentPlan/><Testimonials/><FAQ/><Contact/><LocationSection/></SiteFrame>}
+export function HomePage(){return <SiteFrame><Hero/><About/><ProjectOverview/><WhyChoose/><AmenitiesShowcase/><FloorPlans/><PaymentPlan/><Testimonials/><FAQ/><Contact/><LocationSection/></SiteFrame>}
 export const pageData:Record<string,{eyebrow:string;title:React.ReactNode;text:string}>={overview:{eyebrow:'The project / Kankarbagh',title:<>A considered address<br/><em>for a considered life.</em></>,text:'Discover B.S. HITECH — premium residences shaped around space, light and everyday connection.'},amenities:{eyebrow:'Life, elevated',title:<>More room<br/><em>to live well.</em></>,text:'Explore the experiences and amenities designed around the rhythm of your everyday.'},'floor-plans':{eyebrow:'Find your fit',title:<>Space that feels<br/><em>like yours.</em></>,text:'Thoughtfully planned 1BHK, 2BHK and 3BHK residences.'},'payment-plan':{eyebrow:'A clear path home',title:<>Clarity from booking<br/><em>to possession.</em></>,text:'Flexible, construction-linked payment milestones designed for confidence.'},gallery:{eyebrow:'A glimpse of better living',title:<>See the<br/><em>difference.</em></>,text:'A visual story of thoughtful architecture and life at B.S. HITECH.'},testimonials:{eyebrow:'Words from our residents',title:<>A home is better<br/><em>when it feels yours.</em></>,text:'Hear from the people who chose B.S. HITECH.'},faq:{eyebrow:'Questions, answered',title:<>The details<br/><em>made simple.</em></>,text:'Everything you need to know before taking the next step.'},contact:{eyebrow:'Start a conversation',title:<>Your next chapter<br/><em>starts here.</em></>,text:'Visit us, speak to our team, and find the address that feels like home.'}}
 export function DetailPage({slug}:{slug:string}){const d=pageData[slug]||pageData.overview; return slug==='floor-plans'?<FloorPlans full/>:<SiteFrame><PageHero {...d}/>{slug==='overview'?<><OverviewSection/><About/></>:slug==='amenities'?<Amenities full/>:slug==='payment-plan'?<PaymentPlan full/>:slug==='gallery'?<Gallery full/>:slug==='testimonials'?<Testimonials full/>:slug==='faq'?<FAQ full/>:<Contact full/>}</SiteFrame>}
