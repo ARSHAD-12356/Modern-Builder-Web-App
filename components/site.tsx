@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { BsHitechDetail } from './bs-hitech-detail'
-import { ArrowRight, Award, Baby, Bath, Building2, CalendarDays, CarFront, Check, ChevronDown, ChevronLeft, ChevronRight, Compass, Download, Dumbbell, Home, KeyRound, Leaf, LockKeyhole, Mail, MapPin, Maximize2, Menu, PanelTop, Phone, Play, Rotate3d, ShieldCheck, Sofa, Sprout, Star, Sun, Tag, TreePine, Trophy, TrendingUp, GraduationCap, Hospital, ShoppingCart, UserRound, Users, Utensils, Waves, Wine, X } from 'lucide-react'
+import { ArrowRight, Award, Baby, Bath, Building2, CalendarDays, CarFront, Check, ChevronDown, ChevronLeft, ChevronRight, Coins, Compass, Download, Dumbbell, FileBadge, Home, KeyRound, Leaf, LockKeyhole, Mail, MapPin, Maximize2, Menu, PanelTop, Phone, Play, Rotate3d, ShieldCheck, Sofa, Sprout, Star, Sun, Tag, Trophy, TrendingUp, GraduationCap, Hospital, ShoppingCart, UserRound, Users, Utensils, Waves, Wine, X } from 'lucide-react'
 
 export const heroImage = '/assets/hero/bs-hitech-hero.png'
 export const officeImage = '/assets/about/bigrahpuram-office.png'
@@ -17,7 +17,7 @@ export function Header({ projectPage = false }: { projectPage?: boolean }) {
   const scrollTo = (id:string) => { const target = document.getElementById(id); if (target) target.scrollIntoView({behavior:'smooth', block:'start'}); else window.scrollTo({top:0, behavior:'smooth'}); setActive(id); setOpen(false) }
   const projectHref = (id:string) => id === 'top' ? '/' : `/#${id}`
   return <>
-    <header className="main-nav" style={{background:'transparent', backdropFilter:'none', WebkitBackdropFilter:'none', filter:'none', boxShadow:'none'}}><button className="brand" type="button" onClick={() => projectPage ? window.location.assign('/') : scrollTo('top')}><div className="brand-logo-anchor"><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><div className="rera-strip"><span>RERA NO : BRERAP182628060325290629E00</span></div></div><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><div className="hero-header-actions"><div className="hero-header-contact"><Phone size={25}/><span><b>+91 920464875</b><small>Mon - Sat: 10AM - 6PM</small></span></div><button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} onClick={() => setOpen(!open)}>Menu</button></div></header>
+    <header className="main-nav" style={{background:'transparent', backdropFilter:'none', WebkitBackdropFilter:'none', filter:'none', boxShadow:'none'}}><button className="brand" type="button" onClick={() => projectPage ? window.location.assign('/') : scrollTo('top')}><div className="brand-logo-anchor"><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><div className="rera-strip"><span>RERA NO : BRERAP182628060325290629E00</span></div></div><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><div className="hero-header-actions"><div className="hero-header-contact"><Phone size={25}/><span><b>+91 920464875</b><small>Mon - Sat: 10AM - 6PM</small></span></div><button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}><span/><span/><span/></button></div></header>
     <div className={`cinematic-menu ${open ? 'is-open' : ''}`} aria-hidden={!open}><div className="cinematic-menu-inner"><span className="cinematic-menu-eyebrow">BIGRAHPURM DEVELOPERS</span><nav>{nav.map(([label, id], index) => <a href={projectPage ? projectHref(id) : `#${id}`} key={label} className={active === id ? 'active' : ''} style={{'--menu-index': index} as React.CSSProperties} tabIndex={open ? 0 : -1} onClick={(event) => { if (projectPage) { setOpen(false); return } event.preventDefault(); scrollTo(id) }}><span>0{index + 1}</span>{label}<ArrowRight size={19}/></a>)}</nav></div></div>
   </>
 }
@@ -205,10 +205,12 @@ export function HomeAmenitiesMarquee() {
 export function Stats() { return <section className="stats-band"><div className="stats-intro"><span className="eyebrow">A legacy of trust</span><h2>Built on values.<br/><em>Designed for life.</em></h2></div>{[['15+','Years Experience'],['4 Acres','Project Area'],['4','Towers'],['60%','Green Area'],['3 KM','From Patna Junction']].map(([n,l])=><div className="stat" key={l}><strong>{n}</strong><span>{l}</span></div>)}</section> }
 
 const values=[['01','Quality Construction','Using premium materials and latest technologies',Home],['02','Timely Delivery','100% track record of project completion on time',CalendarDays],['03','Transparent Dealings','Clear documentation and RERA compliance',Check],['04','Customer-Centric Approach','Dedicated after-sales service',Sprout]]
-export function About() { return <section className="about-premium"><div className="about-orbit orbit-one"/><div className="about-dots"/><div className="about-premium-inner"><div className="about-editorial"><div className="about-story"><span className="about-eyebrow">OUR STORY <i/></span><h2>About<br/><em>Bigrahpurm Developers</em></h2><span className="about-tagline">BUILDING BETTER TOMORROW</span><p><strong>Bigrahpurm Developers Pvt. Ltd.</strong> is a trusted name in Patna&apos;s real estate sector with over 15 years of experience in delivering quality residential and commercial projects. Our commitment to excellence, transparency, and customer satisfaction has made us one of the most reliable developers in Bihar.</p><div className="value-grid">{values.map(([n,title,desc,Icon])=><div className="value-card" key={n}><span className="value-number">{n}</span><span className="value-icon"><Icon size={23}/></span><div><h3>{title}</h3><p>{desc}</p></div></div>)}</div><div className="about-highlight"><strong>B.S. HITECH</strong> is our flagship project in the prime location of Kankarbagh, designed to redefine luxury living in Patna with world-class amenities and thoughtful design.</div><div className="about-actions"><a className="about-primary" href="/overview">KNOW MORE ABOUT US <ArrowRight size={16}/></a><button className="journey-button"><span><Play size={16} fill="currentColor"/></span><b>Our Journey<small>WATCH VIDEO</small></b></button></div></div><div className="about-composition"><div className="about-image-frame"><img src={officeImage} alt="Bigrahpurm Developers office"/><span className="about-experience"><b>15+</b><small>Years of<br/>Excellence</small></span><div className="project-float"><img src={heroImage} alt="B.S. HITECH project"/></div></div><div className="about-side-label"><i/>PEOPLE<br/>SPACES<br/>BETTER<br/>LIVES</div></div></div></div><div className="about-stats">{[['15+','Years of Experience',Home],['50+','Happy Customers',Sprout],['Multiple','Projects Completed',Home],['Stronger','Bihar Tomorrow',Sprout]].map(([n,l,Icon])=><div key={l}><Icon size={31}/><span><b>{n}</b><small>{l}</small></span></div>)}</div></section> }
+export function About() { return <section className="about-premium"><div className="about-orbit orbit-one"/><div className="about-dots"/><div className="about-premium-inner"><div className="about-editorial"><div className="about-story"><span className="about-eyebrow">OUR STORY <i/></span><h2>About<br/><em>Bigrahpurm Developers</em></h2><span className="about-tagline">BUILDING BETTER TOMORROW</span><p><strong>Bigrahpurm Developers Pvt. Ltd.</strong> is a trusted name in Patna&apos;s real estate sector with over 15 years of experience in delivering quality residential and commercial projects. Our commitment to excellence, transparency, and customer satisfaction has made us one of the most reliable developers in Bihar.</p><div className="value-grid">{values.map(([n,title,desc,Icon])=><div className="value-card" key={n}><span className="value-number">{n}</span><span className="value-icon"><Icon size={23}/></span><div><h3>{title}</h3><p>{desc}</p></div></div>)}</div><div className="about-highlight"><strong>B.S. HITECH</strong> is our flagship project in the prime location of Kankarbagh, designed to redefine luxury living in Patna with world-class amenities and thoughtful design.</div><div className="about-actions"><a className="about-primary" href="/overview">KNOW MORE ABOUT US <ArrowRight size={16}/></a></div></div><div className="about-composition"><div className="about-image-frame"><img src={officeImage} alt="Bigrahpurm Developers office"/><span className="about-experience"><b>15+</b><small>Years of<br/>Excellence</small></span><div className="project-float"><img src={heroImage} alt="B.S. HITECH project"/></div></div><div className="about-side-label"><i/>PEOPLE<br/>SPACES<br/>BETTER<br/>LIVES</div></div></div></div><div className="about-stats">{[['15+','Years of Experience',Home],['50+','Happy Customers',Sprout],['Multiple','Projects Completed',Home],['Stronger','Bihar Tomorrow',Sprout]].map(([n,l,Icon])=><div key={l}><Icon size={31}/><span><b>{n}</b><small>{l}</small></span></div>)}</div></section> }
 
 const projectHighlights = [['Prime Location','3km from Patna Junction, near major landmarks',MapPin],['RERA Approved','BH-RERA Registration No: BR/Patna/123456',Check],['Vastu Compliant','Thoughtfully designed layouts',Sprout],['Premium Specifications','High-quality materials and finishes',Home],['Green Living','60% open and green area',Sprout],['Security','24/7 surveillance and gated community',ShieldCheck]]
+const PROJECT_VIDEO_SRC = '/New Assets/WhatsApp Video 2026-09-23 at 16.30.51.mp4'
 export function ProjectOverview() {
+  const [videoOpen, setVideoOpen] = useState(false)
   return (
     <section id="overview" className="project-overview">
       <div className="project-overview-inner">
@@ -270,10 +272,10 @@ export function ProjectOverview() {
               With prices starting at just ₹5000/sqft and flexible payment plans, B.S. HITECH offers the perfect blend of luxury, location and lifestyle.
             </div>
             <div className="project-actions">
-              <a href="/floor-plans">
-                EXPLORE FLOOR PLANS <ArrowRight size={15} />
+              <a href="/overview">
+                GET DETAILS <ArrowRight size={15} />
               </a>
-              <button type="button">
+              <button type="button" onClick={() => setVideoOpen(true)}>
                 <span>
                   <Play size={16} fill="currentColor" />
                 </span>
@@ -287,6 +289,39 @@ export function ProjectOverview() {
         </div>
       </div>
       <ProjectBrandStrip />
+      {videoOpen && (
+        <div
+          className="project-video-modal-backdrop"
+          role="presentation"
+          onClick={() => setVideoOpen(false)}
+        >
+          <div
+            className="project-video-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Project video"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="project-video-modal-close"
+              type="button"
+              aria-label="Close video"
+              onClick={() => setVideoOpen(false)}
+            >
+              <X size={22} />
+            </button>
+            <div className="project-video-modal-content">
+              <video
+                src={PROJECT_VIDEO_SRC}
+                controls
+                autoPlay
+                playsInline
+                className="project-video-modal-video"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
@@ -345,216 +380,101 @@ export function ProjectBrandStrip() {
 
 const whyCardsData = [
   {
-    num: '01',
-    title: 'Trusted\nDeveloper',
-    desc: '15+ years of experience with a proven track record of quality construction and timely delivery.',
-    badgeType: 'gold',
-    Icon: Award,
-    image: '/images/why-choose/trusted-developer.jpg'
+    title: 'RERA\nApproved',
+    desc: 'Fully compliant with RERA regulations ensuring transparency and buyer protection.',
+    Icon: FileBadge,
   },
   {
-    num: '02',
     title: 'Prime\nLocation',
     desc: 'Strategic location in Kankarbagh with excellent connectivity to all parts of Patna.',
-    badgeType: 'green',
     Icon: MapPin,
-    image: '/images/why-choose/prime-location.jpg'
   },
   {
-    num: '03',
-    title: 'Green\nLiving',
-    desc: '60% open green area with landscaped gardens and ample breathing space.',
-    badgeType: 'gold',
-    Icon: TreePine,
-    image: '/images/why-choose/green-living.jpg'
-  },
-  {
-    num: '04',
-    title: 'RERA\nApproved',
-    desc: 'Full compliance with RERA regulations ensuring transparency and buyer protection.',
-    badgeType: 'green',
-    Icon: ShieldCheck,
-    image: '/images/why-choose/rera-approved.jpg'
-  },
-  {
-    num: '05',
     title: 'Premium\nSpecifications',
     desc: 'High-quality construction materials and premium finishes throughout the project.',
-    badgeType: 'gold',
     Icon: Home,
-    image: '/images/why-choose/premium-specs.jpg'
   },
   {
-    num: '06',
+    title: 'Green\nLiving',
+    desc: '60% open green area with landscaped gardens and ample breathing space.',
+    Icon: Leaf,
+  },
+  {
     title: 'Value for\nMoney',
     desc: 'Competitive pricing starting at ₹5500/sqft with flexible payment options.',
-    badgeType: 'green',
-    Icon: Sprout,
-    image: '/images/why-choose/value-money.jpg'
-  }
+    Icon: Coins,
+  },
 ]
+
+const whyLeafArt = (
+  <svg viewBox="0 0 160 160" fill="none" aria-hidden="true">
+    <path d="M18 142 C42 92 88 46 142 18 C128 68 78 118 18 142 Z" stroke="#D6A84F" strokeWidth="1.1" opacity="0.42"/>
+    <path d="M18 142 Q 80 80 142 18" stroke="#D6A84F" strokeWidth="0.9" opacity="0.32"/>
+    <path d="M48 108 Q 78 86 104 62" stroke="#D6A84F" strokeWidth="0.8" opacity="0.3"/>
+    <path d="M36 122 Q 62 104 78 88" stroke="#D6A84F" strokeWidth="0.8" opacity="0.28"/>
+    <path d="M86 74 Q 108 56 124 40" stroke="#D6A84F" strokeWidth="0.8" opacity="0.28"/>
+  </svg>
+)
 
 export function WhyChoose() {
   return (
-    <section id="why-choose" className="why-choose-luxury">
-      {/* Decorative foliage accents at top */}
-      <div className="why-top-foliage" aria-hidden="true">
-        <svg viewBox="0 0 450 120" fill="none" className="why-foliage-svg">
-          <path d="M0 0 C60 40 140 20 220 5 C300 -10 380 30 450 0 L450 0 L0 0 Z" fill="#1b4d42" opacity="0.08"/>
-          <path d="M120 0 C150 35 180 50 240 30 C200 65 150 45 120 0 Z" fill="#1b4d42" opacity="0.25"/>
-          <path d="M210 0 C235 42 270 52 320 25 C280 60 230 48 210 0 Z" fill="#1b4d42" opacity="0.2"/>
-        </svg>
-      </div>
+    <>
+      <section id="why-choose" className="why-choose-luxury">
+        <div className="why-botanical why-botanical-tl" aria-hidden="true">{whyLeafArt}</div>
+        <div className="why-botanical why-botanical-br" aria-hidden="true">{whyLeafArt}</div>
 
-      {/* Top right vertical branding */}
-      <div className="why-top-tagline">
-        <i className="why-tagline-line" />
-        <span>LIVE<br/>GROW<br/>BELONG</span>
-      </div>
-
-      <div className="why-luxury-container">
-        {/* Main 2-column editorial structure */}
-        <div className="why-main-layout">
-          {/* Left column: Editorial intro + building architectural curve */}
-          <div className="why-editorial-col">
+        <div className="why-luxury-container">
+          <header className="why-heading-block">
             <div className="why-eyebrow-luxury">
               <i />
               <span>A SMARTER TOMORROW</span>
               <i />
             </div>
-
             <h2 className="why-hero-title">
-              <span className="why-title-small">Why Choose</span>
+              <span className="why-title-small">Why</span>
               <span className="why-title-brand-gold">BIGRAHPURM</span>
               <span className="why-title-brand-green">DEVELOPERS</span>
             </h2>
+          </header>
 
-            <p className="why-hero-desc">
-              More than a home, it&apos;s a better way of living. Discover the advantages that make Bigrahpurm Developers the perfect choice for your future.
+          <div className="why-cards-grid">
+            {whyCardsData.map((item, index) => {
+              const IconComponent = item.Icon
+              return (
+                <article
+                  className="why-ref-card"
+                  key={item.title}
+                  style={{ animationDelay: `${0.12 + index * 0.08}s` }}
+                >
+                  <div className="why-card-badge">
+                    <IconComponent size={22} strokeWidth={1.6} />
+                  </div>
+                  <h3 className="why-card-title">
+                    {item.title.split('\n').map((line) => (
+                      <span key={line} className="block">{line}</span>
+                    ))}
+                  </h3>
+                  <i className="why-card-rule" />
+                  <p className="why-card-desc">{item.desc}</p>
+                </article>
+              )
+            })}
+          </div>
+
+          <div className="why-trust">
+            <i className="why-trust-line" />
+            <Users size={18} strokeWidth={1.7} className="why-trust-icon" />
+            <p>
+              <span>Trusted by</span>
+              <strong>BIGRAHPURM DEVELOPERS</strong>
             </p>
-
-            {/* Architectural building visual composition */}
-            <div className="why-arch-composition">
-              <div className="why-arch-backdrop" />
-              <img
-                src="/images/why-choose/building-entrance.jpg"
-                alt="Bigrahpurm Developers luxury residential building"
-                className="why-arch-img"
-              />
-            </div>
-          </div>
-
-          {/* Right column: 3 columns x 2 rows = 6 feature cards */}
-          <div className="why-cards-col">
-            <div className="why-cards-grid">
-              {whyCardsData.map((item) => {
-                const IconComponent = item.Icon
-                const isGold = item.badgeType === 'gold'
-                return (
-                  <article className="why-ref-card" key={item.num}>
-                    {/* Left text content panel */}
-                    <div className="why-card-content">
-                      <div className="why-card-header">
-                        <div className={`why-card-badge ${isGold ? 'badge-gold' : 'badge-green'}`}>
-                          <IconComponent size={20} strokeWidth={2.2} />
-                        </div>
-                        <span className="why-card-num">{item.num}</span>
-                      </div>
-
-                      <h3 className="why-card-title">
-                        {item.title.split('\n').map((line, idx) => (
-                          <span key={idx} className="block">{line}</span>
-                        ))}
-                      </h3>
-                      <i className="why-card-rule" />
-
-                      <p className="why-card-desc">{item.desc}</p>
-
-                      <div className="why-card-footer">
-                        <span className="why-card-learn">LEARN MORE</span>
-                        <button className="why-card-arrow" aria-label={`Learn more about ${item.title.replace('\n', ' ')}`}>
-                          <ArrowRight size={13} strokeWidth={2.2} />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Right side organic curved image */}
-                    <div className="why-card-image-wrap">
-                      <img src={item.image} alt="" className="why-card-img" />
-                      <svg className="why-card-s-curve" viewBox="0 0 44 140" preserveAspectRatio="none" aria-hidden="true">
-                        <path d="M 0 0 C 30 35, 2 85, 28 140 L 0 140 Z" fill="#FFFFFF" />
-                      </svg>
-                    </div>
-                  </article>
-                )
-              })}
-            </div>
+            <i className="why-trust-line" />
           </div>
         </div>
+      </section>
 
-        {/* Bottom statistics bar spanning under cards */}
-        <div className="why-stats-bar-wrapper">
-          <div className="why-stats-bar">
-            <div className="why-stat-unit">
-              <span className="why-stat-badge-icon">
-                <Award size={34} strokeWidth={1.8} />
-              </span>
-              <div className="why-stat-copy">
-                <b className="why-stat-large">15+</b>
-                <span className="why-stat-label">Years of Trust</span>
-              </div>
-            </div>
-
-            <i className="why-stat-sep" />
-
-            <div className="why-stat-unit">
-              <span className="why-stat-badge-icon">
-                <Users size={32} strokeWidth={1.8} />
-              </span>
-              <div className="why-stat-copy">
-                <strong className="why-stat-head">Happy</strong>
-                <span className="why-stat-label">Families</span>
-              </div>
-            </div>
-
-            <i className="why-stat-sep" />
-
-            <div className="why-stat-unit">
-              <span className="why-stat-badge-icon">
-                <Leaf size={32} strokeWidth={1.8} />
-              </span>
-              <div className="why-stat-copy">
-                <strong className="why-stat-head">Stronger</strong>
-                <span className="why-stat-label">Communities</span>
-              </div>
-            </div>
-
-            <i className="why-stat-sep" />
-
-            <div className="why-stat-unit">
-              <span className="why-stat-badge-icon">
-                <Sun size={32} strokeWidth={1.8} />
-              </span>
-              <div className="why-stat-copy">
-                <strong className="why-stat-head">Brighter</strong>
-                <span className="why-stat-label">Bihar</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom right delicate gold leaf line art */}
-          <div className="why-bottom-leaf-art" aria-hidden="true">
-            <svg viewBox="0 0 120 120" fill="none" className="why-leaf-line-svg">
-              <path d="M10 110 C30 70, 70 30, 110 10 C100 50, 60 90, 10 110 Z" stroke="#D6A84F" strokeWidth="1.2" opacity="0.65"/>
-              <path d="M10 110 Q 55 55 110 10" stroke="#D6A84F" strokeWidth="1" opacity="0.5"/>
-              <path d="M45 75 Q 65 65 80 50" stroke="#D6A84F" strokeWidth="0.8" opacity="0.45"/>
-              <path d="M30 90 Q 50 82 60 70" stroke="#D6A84F" strokeWidth="0.8" opacity="0.45"/>
-              <path d="M65 55 Q 85 45 95 32" stroke="#D6A84F" strokeWidth="0.8" opacity="0.45"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </section>
+      <ProjectBrandStrip />
+    </>
   )
 }
 
@@ -1056,15 +976,335 @@ function StarRow(){return <div className="testimonial-stars"><Star size={14} fil
 function AutoRotate({onRotate}:{onRotate:()=>void}){useEffect(()=>{const timer=window.setInterval(onRotate,2200);return()=>window.clearInterval(timer)},[onRotate]);return null}
 function HeartIcon(){return <span className="heart-icon">♡</span>}
 const faqData=[{q:'Is BIGRAHPURM DEVELOPERS RERA approved?',a:'Yes, BIGRAHPURM DEVELOPERS is fully RERA approved with registration number BH-RERA/Patna/123456. All necessary approvals and clearances are in place.',c:'Project'},{q:'Is the location good for my family?',a:'BIGRAHPURM DEVELOPERS is located at Khemni Chak, Kankarbagh, Patna-800027, approximately 3 km from Patna Junction with convenient access to schools, hospitals and daily essentials.',c:'Location'},{q:'Is the area safe?',a:'The community is designed as a secure, gated development with 24/7 surveillance and trained security personnel.',c:'Location'},{q:'Is the price negotiable?',a:'Our team will guide you through the latest pricing, offers and available payment options for your preferred apartment.',c:'Pricing'},{q:'Why costlier than others nearby?',a:'The pricing reflects premium specifications, thoughtful planning, generous green areas and world-class amenities.',c:'Pricing'},{q:'Do you have flexible payment plans?',a:'Yes. Standard, Early Bird and Bank Linked plans are available with construction-linked milestones.',c:'Payments'},{q:'What facilities will I get?',a:'Residents can enjoy a swimming pool, gym, club house, children’s play area, sports facilities, parking, landscaped gardens and 24/7 security.',c:'Amenities'},{q:'What are the maintenance charges?',a:'Maintenance charges are shared transparently before booking and depend on the apartment configuration and selected services.',c:'Amenities'},{q:'Is resale easy?',a:'The prime location, thoughtful planning and strong project specifications support long-term livability and resale value.',c:'Project'},{q:'Will my family be happy here?',a:'With open green areas, family-friendly amenities and connected everyday spaces, BIGRAHPURM DEVELOPERS is planned around happier living.',c:'Amenities'},{q:'Will you help with renting/resale?',a:'Our relationship team will support homeowners with guidance for renting or resale after possession.',c:'Project'},{q:'What is the expected possession date?',a:'The expected possession schedule is shared clearly with buyers as part of the booking and agreement process.',c:'Possession'},{q:'Do you offer home loan assistance?',a:'Yes. We work with trusted banking partners and help buyers understand suitable home loan options.',c:'Payments'},{q:'Can I customize my apartment?',a:'Customization options may be discussed with the project team subject to design, construction and approval guidelines.',c:'Project'},{q:'What documents are required for booking?',a:'The booking process generally requires identity, address and payment documentation. Our team will provide the complete checklist.',c:'Legal'}]
-const faqCategories=[['All',15,Home],['Project',4,Building2],['Location',2,MapPin],['Pricing',2,Tag],['Amenities',3,Users],['Payments',2,PanelTop],['Legal',1,ShieldCheck],['Possession',1,KeyRound]] as const
-export function FAQ({full=false}) { const [active,setActive]=useState(0); const [category,setCategory]=useState('All'); const visible=category==='All'?faqData:faqData.filter(item=>item.c===category); const open=visible.findIndex((item)=>faqData.indexOf(item)===active); return <section id="faq" className="faq-editorial"><div className="faq-building"><img src={heroImage} alt="BIGRAHPURM DEVELOPERS modern apartment building"/><div className="faq-building-label"><b>BIGRAHPURM DEVELOPERS</b><small>KANKARBAGH, PATNA</small><span>LIVE | GROW | BELONG</span></div></div><div className="faq-inner"><div className="faq-heading"><span><i/>ANSWERS FOR A BRIGHTER TOMORROW<i/></span><h2>Frequently Asked <em>Questions</em></h2><p>Get all the information you need about BIGRAHPURM DEVELOPERS —<br/> clear answers, complete transparency.</p></div><div className="faq-trust">{[['Trusted','Information',ShieldCheck],['Transparent','Process',PanelTop],['Dedicated','Support',Phone],['A Better','Tomorrow',Home]].map(([a,b,Icon])=><div key={a as string}><span><Icon/></span><b>{a as string}<small>{b as string}</small></b></div>)}</div><div className="faq-layout"><aside className="faq-categories"><nav>{faqCategories.map(([label,count,Icon])=><button key={label} className={category===label?'active':''} onClick={()=>{setCategory(label);setActive(0)}}><Icon/><span>{label}</span><b>{count}</b></button>)}</nav><div className="faq-quote">“<p>Informed<br/>buyers make<br/>happier<br/>homeowners.</p><i/></div></aside><div className="faq-accordion">{visible.map((item,i)=>{const index=faqData.indexOf(item); const isOpen=active===index; return <div className={`faq-row ${isOpen?'open':''}`} key={item.q}><button onClick={()=>setActive(isOpen?-1:index)}><span>{String(index+1).padStart(2,'0')}</span><b>{item.q}</b><ChevronDown/></button><div className="faq-answer"><p>{item.a}</p></div></div>})}</div><div className="faq-right"><article className="faq-contact"><Leaf size={38}/><h3>Still Have<br/>Questions?</h3><p>Our team is happy to help you with any other queries.</p><a href="/contact">Contact Us <ArrowRight/></a><i/><div><Phone/><span>+91 98765 43210<small>Mon - Sat: 9AM - 7PM</small></span></div><div><Mail/><span>info@bshitech.com<small>We reply within 24 hrs</small></span></div><div><MapPin/><span>Kankarbagh, Patna<small>Visit our site office</small></span></div></article><article className="faq-tour"><h3>Let&apos;s Find<br/>Your Answers<br/>Together.</h3><i/><div><img src="/images/floorplans/interior-living.png" alt="Luxury apartment interior"/><button aria-label="Play virtual tour"><Play fill="currentColor"/></button></div><b>Take a<br/>Virtual Tour</b><small>EXPLORE YOUR<br/>FUTURE HOME</small><a href="/gallery"><ArrowRight/></a></article></div></div></div><ProjectBrandStrip /></section> }
+const faqCategories = [
+  { name: 'All', icon: Home, label: 'All FAQs' },
+  { name: 'Project', icon: Building2, label: 'Project FAQs' },
+  { name: 'Location', icon: MapPin, label: 'Location FAQs' },
+  { name: 'Pricing', icon: Tag, label: 'Pricing FAQs' },
+  { name: 'Amenities', icon: Users, label: 'Amenities FAQs' },
+  { name: 'Payments', icon: PanelTop, label: 'Payments FAQs' },
+  { name: 'Legal', icon: ShieldCheck, label: 'Legal FAQs' },
+  { name: 'Possession', icon: KeyRound, label: 'Possession FAQs' },
+] as const
 
-export function Contact({full=false}) { const [sent,setSent]=useState(false); return <section id="contact" className="contact-editorial"><div className="contact-bg"><img src={heroImage} alt="B.S. HITECH luxury residential building"/></div><div className="contact-side-label">HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></div><div className="contact-inner"><div className="contact-heading"><span><i/>LET&apos;S CONNECT<i/></span><h2>Contact <em>Us</em></h2><p>We&apos;d love to hear from you! Whether you have questions, want a site visit,<br/>or are ready to book your dream home — our team is here to help.</p></div><div className="contact-grid"><article className="contact-info-card"><span className="contact-eyebrow">GET IN TOUCH</span><h3>We&apos;re Here<br/>For You</h3><button className="talk-button" aria-label="Call our sales team"><Phone/><small>LET&apos;S<br/>TALK</small></button><p>Have questions about B.S. HITECH? Our team is ready to assist you with all your queries regarding the project, pricing, availability and more.</p><hr/><div className="contact-info-grid"><div><MapPin/><span><b>Site Address</b>Khemni Chak,<br/>Kankarbagh, Patna-800027</span></div><div><Phone/><span><b>Phone</b>+91 8757911159<br/>(Sales Team)</span></div><div><Mail/><span><b>Email</b>sales@bshightech.com</span></div><div><CalendarDays/><span><b>Office Hours</b>Monday to Saturday<br/>10:00 AM - 7:00 PM</span></div></div><div className="contact-map"><div><MapPin size={32}/><button>Open in Maps <ArrowRight size={16}/></button></div><span><b>Visit Our Site</b>See the location and<br/>explore the neighbourhood.<button>Open in Maps <ArrowRight size={16}/></button></span></div></article><form className="contact-form-card" onSubmit={(e)=>{e.preventDefault();setSent(true)}}>{sent?<div className="contact-success"><Check/><h3>Thank you for reaching out.</h3><p>Our team will get in touch shortly.</p><button type="button" onClick={()=>setSent(false)}>Send another enquiry</button></div>:<><span className="contact-eyebrow">ENQUIRE NOW</span><h3>Tell Us About Your Interest</h3><p className="form-subtitle">Fill out the form and our team will get in touch with you shortly.</p><div className="form-fields"><label>Full Name*<input required placeholder="Enter your name"/></label><label>Email*<input required type="email" placeholder="Enter your email"/></label><label>Phone*<input required placeholder="10-digit number"/></label><label>Interested In*<select defaultValue="" required><option value="" disabled>Select Option</option><option>1 BHK</option><option>2 BHK</option><option>3 BHK</option><option>Site Visit</option><option>General Enquiry</option></select></label><label className="message-field">Message<textarea required rows={3} placeholder="Type your message here..."/></label></div><div className="form-submit"><label className="consent"><input type="checkbox" required/>I agree to be contacted by B.S. HITECH team.</label><button type="submit">Send Enquiry <ArrowRight/></button></div><div className="privacy"><ShieldCheck/><span><b>Your information is safe with us.</b>We respect your privacy and will never share your details with third parties.</span></div></>}</form></div><div className="contact-trust"><span>Quick<br/><b>Response</b></span><span>Dedicated<br/><b>Support</b></span><span>Transparent<br/><b>Process</b></span><span>Your Dream<br/><b>Our Priority</b></span><span>Have a Quick Question?<small>Chat with our team on WhatsApp</small></span><a href="https://wa.me/918757911159" aria-label="Chat on WhatsApp">◔</a></div></div><div className="contact-bottom-script">A<br/>Brighter<br/>Tomorrow<br/>Together</div><div className="contact-brand"><b>B.S. HITECH</b><small>KANKARBAGH, PATNA</small><i/></div><ProjectBrandStrip /></section> }
+export function FAQ({ full = false }: { full?: boolean }) {
+  const [modalCategory, setModalCategory] = useState<string | null>(null)
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(0)
 
-export function Footer(){const links=[['Project Overview','/overview'],['Amenities','/amenities'],['Floor Plans','/floor-plans'],['Payment Plans','/payment-plan'],['Testimonials','/testimonials'],['FAQ','/faq']];return <footer className="footer-premium"><div className="footer-cta"><div><span className="footer-eyebrow"><i/>READY TO TAKE THE NEXT STEP?</span><h2>Book a Site Visit Today</h2><p>Experience B.S. HITECH in person and see what makes it the right choice for your future.</p></div><div className="footer-benefits"><span><b>◫</b>Flexible<small>Scheduling</small></span><span><b>♧</b>Dedicated<small>Support</small></span><span><b>♢</b>Hassle-Free<small>Assistance</small></span><a href="/contact">Book a Site Visit <ArrowRight/></a><small>Our team will get in touch with you shortly.</small></div></div><div className="footer-main"><div className="footer-leaf footer-leaf-left">〰</div><div className="footer-brand-block"><div className="footer-brand-lockup"><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers logo"/><h3>BIGRAHPURM <em>DEVELOPERS</em></h3></div><i/><small>BUILDING BETTER TOMORROW</small><div className="footer-description">Premium luxury apartments in the heart of Kankarbagh, Patna by Bigrahpurm Developers. RERA approved project with world-class amenities and thoughtful design.</div><div className="footer-socials"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><a href="https://wa.me/918757911159" aria-label="WhatsApp">◔</a></div><label>STAY CONNECTED WITH US</label></div><nav className="footer-links"><h4>Quick Links<i/></h4>{links.map(([label,href])=><a key={label} href={href}>› <span>{label}</span></a>)}</nav><div className="footer-contact"><h4>Contact Info<i/></h4><a href="https://www.google.com/maps/search/?api=1&query=Kankarbagh+Patna"><b>⌖</b>Kankarbagh, Patna - 800020</a><a href="tel:+918757911159"><b>◔</b>+91 8757911159</a><a href="mailto:sales@bshightech.com"><b>✉</b>sales@bshightech.com</a><span><b>◷</b>Mon-Sat: 10AM - 7PM</span></div><div className="footer-branding"><span>HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></span><strong>A Brighter<br/>Tomorrow<br/>Together</strong><em>More Than Homes<br/>Relationships</em></div><div className="footer-bottom"><span>© 2025 B.S. HITECH by Bigrahpurm Developers. All Rights Reserved. | RERA No: BH-RERA/Patna/123456</span><div><a href="/privacy-policy">Privacy Policy</a><b>|</b><a href="/terms">Terms &amp; Conditions</a><b>|</b><a href="/sitemap.xml">Sitemap</a></div><button onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top">⌃<small>Back to Top</small></button></div></div></footer>}
+  useEffect(() => {
+    if (!modalCategory) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setModalCategory(null)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = originalOverflow
+    }
+  }, [modalCategory])
 
-export function LocationSection(){const features=[[MapPin,'Prime','Location'],[Compass,'Excellent','Connectivity'],[Building2,'Surrounded by','Key Amenities'],[TrendingUp,'High Growth','Potential']];const benefits=[[GraduationCap,'Schools','Within Minutes'],[Hospital,'Hospitals','Nearby'],[ShoppingCart,'Markets','& Daily Needs'],[Compass,'Well-Connected','to Major Roads']];return <section className="location-editorial"><div className="location-side-label">HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></div><div className="location-script">A<br/>Better Location<br/>Brighter<br/>Tomorrows<i/></div><div className="location-inner"><div className="location-heading"><span><i/>OUR LOCATION<i/></span><h2>In the Heart of <em>Patna</em></h2><p>Well-connected. Well-developed. A location that keeps you close to everything<br/>that matters — today and tomorrow.</p></div><div className="location-features">{features.map(([Icon,a,b])=><div key={a as string}><span><Icon/></span><b>{a as string}<small>{b as string}</small></b></div>)}</div><div className="location-cards"><article className="location-card"><header><span><MapPin/></span><div><h3>Our Exact Location</h3><p>Find us on Google Maps</p></div><a href="https://www.google.com/maps/search/?api=1&query=Khemni+Chak+Kankarbagh+Patna">Open in Google Maps <ArrowRight/></a></header><div className="location-map-frame"><iframe title="B.S. HITECH location map" src="https://www.openstreetmap.org/export/embed.html?bbox=85.135%2C25.585%2C85.19%2C25.625&layer=mapnik&marker=25.605%2C85.162"/></div></article><article className="location-card"><header><span><Compass/></span><div><h3>Location Map</h3><p>Key landmarks and connectivity</p></div><a href="/images/location-connectivity-map.png" download="bshitech-location-map.png"><Download/> DOWNLOAD MAP</a></header><div className="connectivity-map"><img src="/images/location-connectivity-map.png" alt="Connectivity map showing Kankarbagh, Patna landmarks and nearby roads"/><div><b>Kankarbagh, Patna</b><small>Connected to schools, hospitals, markets and major roads</small></div></div></article></div><div className="location-benefits"><h3>You&apos;re<br/>Never Far<br/>From What Matters<i/></h3>{benefits.map(([Icon,a,b])=><div key={a as string}><span><Icon/></span><b>{a as string}<small>{b as string}</small></b></div>)}<a href="/contact">Plan Your Visit <ArrowRight/></a></div></div></section>}
+  const visibleQuestions = modalCategory === 'All'
+    ? faqData.slice(0, 5)
+    : faqData.filter((item) => item.c === modalCategory)
+
+  return (
+    <>
+      <section id="faq" className="faq-editorial">
+        <div className="faq-building">
+          <img src="/New Assets/Hero Building2.png" alt="BIGRAHPURM DEVELOPERS modern apartment building" />
+          <div className="faq-building-label">
+            <b>BIGRAHPURM DEVELOPERS</b>
+            <small>KANKARBAGH, PATNA</small>
+            <span>LIVE | GROW | BELONG</span>
+          </div>
+        </div>
+
+        <div className="faq-inner">
+          <div className="faq-heading">
+            <span><i />ANSWERS FOR A BRIGHTER TOMORROW<i /></span>
+            <h2>Frequently Asked <em>Questions</em></h2>
+            <p>
+              Get all the information you need about BIGRAHPURM DEVELOPERS —<br />
+              clear answers, complete transparency.
+            </p>
+          </div>
+
+          <div className="faq-trust">
+            {[
+              ['Trusted', 'Information', ShieldCheck],
+              ['Transparent', 'Process', PanelTop],
+              ['Dedicated', 'Support', Phone],
+              ['A Better', 'Tomorrow', Home],
+            ].map(([a, b, Icon]) => (
+              <div key={a as string}>
+                <span><Icon /></span>
+                <b>{a as string}<small>{b as string}</small></b>
+              </div>
+            ))}
+          </div>
+
+          <div className="faq-category-nav-wrapper">
+            <nav className="faq-category-nav" aria-label="FAQ categories">
+              {faqCategories.map(({ name, icon: Icon }) => (
+                <button
+                  key={name}
+                  type="button"
+                  className={`faq-cat-pill ${modalCategory === name ? 'active' : ''}`}
+                  onClick={() => {
+                    setModalCategory(name)
+                    setExpandedIndex(0)
+                  }}
+                >
+                  <Icon size={15} />
+                  <span>{name}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          <div className="faq-main-cta-card">
+            <div className="faq-main-cta-text">
+              <h4>Find Quick Answers by Category</h4>
+              <p>Click any category above to view detailed answers, or explore our complete FAQ directory.</p>
+            </div>
+            <button
+              type="button"
+              className="faq-main-cta-btn"
+              onClick={() => {
+                setModalCategory('All')
+                setExpandedIndex(0)
+              }}
+            >
+              <span>Explore All FAQs</span>
+              <ArrowRight size={15} />
+            </button>
+          </div>
+        </div>
+        <ProjectBrandStrip />
+      </section>
+
+      {/* Premium Modal Popup */}
+      {modalCategory && (
+        <div
+          className="faq-modal-overlay"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setModalCategory(null)
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="faq-modal-heading"
+        >
+          <div className="faq-modal-container">
+            <div className="faq-modal-head">
+              <div className="faq-modal-eyebrow">
+                <i />
+                <span>FREQUENTLY ASKED QUESTIONS</span>
+                <i />
+              </div>
+              <div className="faq-modal-title-row">
+                <div>
+                  <h3 id="faq-modal-heading" className="faq-modal-title">
+                    {modalCategory === 'All' ? 'All Questions & Answers' : `${modalCategory} FAQs`}
+                  </h3>
+                  <span className="faq-modal-count-badge">
+                    {visibleQuestions.length} {visibleQuestions.length === 1 ? 'Question' : 'Questions'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="faq-modal-close-btn"
+                  onClick={() => setModalCategory(null)}
+                  aria-label="Close FAQ modal"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Category tabs inside modal */}
+              <div className="faq-modal-categories-bar">
+                {faqCategories.map(({ name, icon: Icon }) => (
+                  <button
+                    key={name}
+                    type="button"
+                    className={`faq-modal-cat-pill ${modalCategory === name ? 'active' : ''}`}
+                    onClick={() => {
+                      setModalCategory(name)
+                      setExpandedIndex(0)
+                    }}
+                  >
+                    <Icon size={13} />
+                    <span>{name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="faq-modal-body">
+              <div className="faq-modal-accordion">
+                {visibleQuestions.map((item, i) => {
+                  const isOpen = expandedIndex === i
+                  return (
+                    <div
+                      key={item.q}
+                      className={`faq-modal-row ${isOpen ? 'open' : ''}`}
+                    >
+                      <button
+                        type="button"
+                        className="faq-modal-q-btn"
+                        onClick={() => setExpandedIndex(isOpen ? null : i)}
+                        aria-expanded={isOpen}
+                      >
+                        <span className="faq-modal-q-num">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <span className="faq-modal-q-text">{item.q}</span>
+                        <span className="faq-modal-icon-badge">
+                          <ChevronDown size={17} />
+                        </span>
+                      </button>
+                      <div className="faq-modal-answer-wrap">
+                        <div className="faq-modal-answer-content">
+                          <p>{item.a}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div className="faq-modal-foot">
+              <span>Have additional queries not answered here?</span>
+              <a href="/contact" onClick={() => setModalCategory(null)}>
+                Connect with Sales Team <ArrowRight size={14} />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+const contactBuildingImages = [
+  '/New Assets/Hero Building.png',
+  '/New Assets/Hero Building2.png',
+  '/New Assets/Hero Building3.png',
+  '/New Assets/Hero Building4.png',
+  '/B.S HITECH Images/BS HITECH building.png',
+  '/whychoosebuilding.png',
+  '/assets/overview/project-building.png',
+  '/assets/hero/bs-hitech-hero.png',
+]
+
+export function Contact({full=false}) {
+  const [sent, setSent] = useState(false);
+  const [activeBg, setActiveBg] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveBg((prev) => (prev + 1) % contactBuildingImages.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section id="contact" className="contact-editorial">
+      <div className="contact-bg">
+        {contactBuildingImages.map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            alt={`B.S. HITECH building ${i + 1}`}
+            className={`contact-bg-slide ${i === activeBg ? 'active' : ''}`}
+          />
+        ))}
+      </div>
+      <div className="contact-side-label">HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></div>
+      <div className="contact-inner">
+        <div className="contact-heading">
+          <span><i/>LET&apos;S CONNECT<i/></span>
+          <h2>Contact <em>Us</em></h2>
+          <p>We&apos;d love to hear from you! Whether you have questions, want a site visit,<br/>or are ready to book your dream home — our team is here to help.</p>
+        </div>
+        <div className="contact-grid">
+          <form className="contact-form-card" onSubmit={(e)=>{e.preventDefault();setSent(true)}}>
+            {sent ? (
+              <div className="contact-success">
+                <Check/>
+                <h3>Thank you for reaching out.</h3>
+                <p>Our team will get in touch shortly.</p>
+                <button type="button" onClick={()=>setSent(false)}>Send another enquiry</button>
+              </div>
+            ) : (
+              <>
+                <span className="contact-eyebrow">ENQUIRE NOW</span>
+                <h3>Tell Us About Your Interest</h3>
+                <p className="form-subtitle">Fill out the form and our team will get in touch with you shortly.</p>
+                <div className="form-fields">
+                  <label>Full Name*<input required placeholder="Enter your name"/></label>
+                  <label>Email*<input required type="email" placeholder="Enter your email"/></label>
+                  <label>Phone*<input required placeholder="10-digit number"/></label>
+                  <label>Interested In*
+                    <select defaultValue="" required>
+                      <option value="" disabled>Select Option</option>
+                      <option>1 BHK</option>
+                      <option>2 BHK</option>
+                      <option>3 BHK</option>
+                      <option>Site Visit</option>
+                      <option>General Enquiry</option>
+                    </select>
+                  </label>
+                  <label className="message-field">Message<textarea required rows={3} placeholder="Type your message here..."/></label>
+                </div>
+                <div className="form-submit">
+                  <label className="consent"><input type="checkbox" required/>I agree to be contacted by B.S. HITECH team.</label>
+                  <button type="submit">Send Enquiry <ArrowRight/></button>
+                </div>
+                <div className="privacy">
+                  <ShieldCheck/>
+                  <span><b>Your information is safe with us.</b>We respect your privacy and will never share your details with third parties.</span>
+                </div>
+              </>
+            )}
+          </form>
+        </div>
+      </div>
+      <div className="contact-bottom-script">A<br/>Brighter<br/>Tomorrow<br/>Together</div>
+      <div className="contact-brand"><b>B.S. HITECH</b><small>KANKARBAGH, PATNA</small><i/></div>
+      <ProjectBrandStrip />
+    </section>
+  );
+}
+
+export function Footer(){const links=[['Project Overview','/overview'],['Amenities','/amenities'],['Floor Plans','/floor-plans'],['Payment Plans','/payment-plan'],['Testimonials','/testimonials'],['FAQ','/faq']];return <footer className="footer-premium"><div className="footer-main"><div className="footer-leaf footer-leaf-left">〰</div><div className="footer-brand-block"><div className="footer-brand-lockup"><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers logo"/><h3>BIGRAHPURM <em>DEVELOPERS</em></h3></div><i/><small>BUILDING BETTER TOMORROW</small><div className="footer-description">Premium luxury apartments in the heart of Kankarbagh, Patna by Bigrahpurm Developers. RERA approved project with world-class amenities and thoughtful design.</div><div className="footer-socials"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><a href="https://wa.me/918757911159" aria-label="WhatsApp">◔</a></div><label>STAY CONNECTED WITH US</label></div><nav className="footer-links"><h4>Quick Links<i/></h4>{links.map(([label,href])=><a key={label} href={href}>› <span>{label}</span></a>)}</nav><div className="footer-contact"><h4>Contact Info<i/></h4><a href="https://www.google.com/maps/search/?api=1&query=Kankarbagh+Patna"><b>⌖</b>Kankarbagh, Patna - 800020</a><a href="tel:+918757911159"><b>◔</b>+91 8757911159</a><a href="mailto:sales@bshightech.com"><b>✉</b>sales@bshightech.com</a><span><b>◷</b>Mon-Sat: 10AM - 7PM</span></div><div className="footer-branding"><span>HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></span><strong>A Brighter<br/>Tomorrow<br/>Together</strong><em>More Than Homes<br/>Relationships</em></div><div className="footer-bottom"><span>© 2025 B.S. HITECH by Bigrahpurm Developers. All Rights Reserved. | RERA No: BH-RERA/Patna/123456</span><div><a href="/privacy-policy">Privacy Policy</a><b>|</b><a href="/terms">Terms &amp; Conditions</a><b>|</b><a href="/sitemap.xml">Sitemap</a></div><button onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top">⌃<small>Back to Top</small></button></div></div></footer>}
+
+export function LocationSection(){
+  return (
+    <section id="location" className="location-editorial">
+      <div className="location-inner">
+        <div className="location-heading">
+          <h2><i/>Our <em>Location</em><i/></h2>
+        </div>
+        <div className="location-map-landscape">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3598.7286055406494!2d85.14055327517679!3d25.580694477466146!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f2a78756fdd04b%3A0xcef206f62c614b7c!2sSorangpur%20Rd%2C%20East%20Ram%20Krishna%20Nagar%2C%20Ramkrishan%20Nagar%2C%20Patna%2C%20Bihar%20800027!5e0!3m2!1sen!2sin!4v1790280833955!5m2!1sen!2sin"
+            width="100%"
+            height="400"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="strict-origin-when-cross-origin"
+            title="B.S. HITECH Location Map"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
 export function SiteFrame({children}:{children:React.ReactNode}){return <><Header/>{children}<Footer/></>}
-export function HomePage(){return <SiteFrame><Hero/><HomeAmenitiesMarquee/><About/><ProjectOverview/><WhyChoose/><PaymentPlan/><Testimonials/><FAQ/><Contact/><LocationSection/></SiteFrame>}
+export function HomePage(){return <SiteFrame><Hero/><HomeAmenitiesMarquee/><About/><ProjectOverview/><WhyChoose/><Testimonials/><FAQ/><Contact/><LocationSection/></SiteFrame>}
 export const pageData:Record<string,{eyebrow:string;title:React.ReactNode;text:string}>={overview:{eyebrow:'The project / Kankarbagh',title:<>A considered address<br/><em>for a considered life.</em></>,text:'Discover B.S. HITECH — premium residences shaped around space, light and everyday connection.'},amenities:{eyebrow:'Life, elevated',title:<>More room<br/><em>to live well.</em></>,text:'Explore the experiences and amenities designed around the rhythm of your everyday.'},'floor-plans':{eyebrow:'Find your fit',title:<>Space that feels<br/><em>like yours.</em></>,text:'Thoughtfully planned 1BHK, 2BHK and 3BHK residences.'},'payment-plan':{eyebrow:'A clear path home',title:<>Clarity from booking<br/><em>to possession.</em></>,text:'Flexible, construction-linked payment milestones designed for confidence.'},gallery:{eyebrow:'A glimpse of better living',title:<>See the<br/><em>difference.</em></>,text:'A visual story of thoughtful architecture and life at B.S. HITECH.'},testimonials:{eyebrow:'Words from our residents',title:<>A home is better<br/><em>when it feels yours.</em></>,text:'Hear from the people who chose B.S. HITECH.'},faq:{eyebrow:'Questions, answered',title:<>The details<br/><em>made simple.</em></>,text:'Everything you need to know before taking the next step.'},contact:{eyebrow:'Start a conversation',title:<>Your next chapter<br/><em>starts here.</em></>,text:'Visit us, speak to our team, and find the address that feels like home.'}}
 export function DetailPage({slug}:{slug:string}){const d=pageData[slug]||pageData.overview; return slug==='overview'?<><Header projectPage/><BsHitechDetail/></>:slug==='floor-plans'?<FloorPlans full/>:<SiteFrame><PageHero {...d}/>{slug==='amenities'?<Amenities full/>:slug==='payment-plan'?<PaymentPlan full/>:slug==='gallery'?<Gallery full/>:slug==='testimonials'?<Testimonials full/>:slug==='faq'?<FAQ full/>:<Contact full/>}</SiteFrame>}
