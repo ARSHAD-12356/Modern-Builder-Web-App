@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { BsHitechDetail } from './bs-hitech-detail'
+import { AiChatbot } from './ai-chatbot'
 import { ArrowRight, Award, Baby, Bath, Building2, CalendarDays, CarFront, Check, ChevronDown, ChevronLeft, ChevronRight, Coins, Compass, Download, Dumbbell, FileBadge, Home, KeyRound, Leaf, LockKeyhole, Mail, MapPin, Maximize2, Menu, PanelTop, Phone, Play, Rotate3d, ShieldCheck, Sofa, Sprout, Star, Sun, Tag, Trophy, TrendingUp, GraduationCap, Hospital, ShoppingCart, UserRound, Users, Utensils, Waves, Wine, X } from 'lucide-react'
 
 export const heroImage = '/assets/hero/bs-hitech-hero.png'
@@ -189,7 +190,10 @@ export function Hero() {
         Book Site Visit <ArrowRight size={16} />
       </button>
     )}
-    {/* Left / Right arrow navigation */}
+
+    {/* AI Chatbot — right side of hero CTA row */}
+    <AiChatbot />
+
     <button
       className="hero-carousel-arrow hero-carousel-arrow--prev"
       type="button"
