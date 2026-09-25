@@ -1,4 +1,4 @@
-﻿/* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════
    AI CHATBOT — B.S. HITECH APARTMENT
    Matches: deep forest green (#073d35 / #0b382f) + gold (#d5a12e)
             + cream (#fbf8f2). Premium real-estate aesthetic.
@@ -43,18 +43,23 @@
   transform: translateY(20px);
   animation: ai-trigger-in 0.8s ease 0.55s forwards,
              ai-pulse      2.8s ease-in-out 1.5s infinite;
-  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  /* Keep opacity/transform transitions ONLY — never transition the animated properties */
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .ai-chat-trigger:hover {
   border-color: var(--ai-gold-lt);
+  /* Explicitly visible so cancelling ai-pulse never hides the button */
+  opacity: 1;
   transform: scale(1.1);
   box-shadow: 0 8px 28px rgba(4, 40, 32, 0.55), 0 0 18px rgba(213, 161, 46, 0.35);
-  animation: none; /* stop pulse on hover */
+  /* Only cancel the pulse ring — keep trigger-in fill intact via opacity above */
+  animation: ai-trigger-in 0.8s ease 0.55s forwards;
 }
 
 .ai-chat-trigger--open {
   border-color: var(--ai-gold-lt);
+  opacity: 1;
   box-shadow: 0 8px 28px rgba(4, 40, 32, 0.55), 0 0 18px rgba(213, 161, 46, 0.35);
   animation: ai-trigger-in 0.8s ease 0.55s forwards; /* no pulse while open */
 }
