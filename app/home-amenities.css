@@ -101,6 +101,39 @@
 /* ── Fix: push hero copy block up so subheading is never hidden by the button ── */
 .hero-carousel-copy { bottom: 24% !important; }
 
+/* ── WhatsApp CTA — extreme left, same bottom row as Explore Project ── */
+.hero-carousel-whatsapp {
+  position: absolute;
+  z-index: 3;
+  left: 1%;
+  bottom: 17%;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(37, 211, 102, 0.38);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-carousel-copy-in 0.8s ease 0.38s forwards;
+  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+  border: none;
+  outline: none;
+}
+
+.hero-carousel-whatsapp:hover {
+  background: #20ba5a;
+  transform: scale(1.09);
+  box-shadow: 0 10px 28px rgba(37, 211, 102, 0.52);
+  color: #ffffff;
+}
+
+.hero-carousel-whatsapp svg { display: block; }
+
 /* ── Explore Project button: square corners, always bottom-left ── */
 .hero-carousel-explore {
   position: absolute;
@@ -239,6 +272,7 @@ body {
   .home-amenity-card { width: 138px; flex-basis: 138px; }
   .hero-carousel-visit { top: 50% !important; }
   .hero-carousel-copy { bottom: 28% !important; }
+  .hero-carousel-whatsapp { left: 1%; bottom: 22%; }
   .hero-carousel-explore { left: 7%; bottom: 22%; }
   .hero-carousel-visit--btm-left { left: 7%; bottom: 22%; }
   .hero-carousel-arrow { width: 40px; height: 40px; }
@@ -254,6 +288,7 @@ body {
   .home-amenity-card span { font-size: 9px; }
   .home-amenity-card svg { width: 15px; height: 15px; }
   .hero-carousel-copy { bottom: 27% !important; }
+  .hero-carousel-whatsapp { left: 1%; bottom: 21%; width: 38px; height: 38px; }
   .hero-carousel-explore { left: 7%; bottom: 21%; padding: 10px 14px; font-size: 12px; }
   .hero-carousel-visit--btm-left { left: 7%; bottom: 21%; padding: 10px 14px; font-size: 12px; }
   .hero-carousel-arrow { width: 36px; height: 36px; }
