@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import { GlobalFloatingActions } from '@/components/global-floating-actions'
 
 export const metadata: Metadata = {
   title: 'B.S. HITECH | Luxury Living in Patna',
@@ -43,6 +44,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         {children}
+        <GlobalFloatingActions />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
