@@ -150,12 +150,15 @@ export function AnimationProvider() {
 
           // Stagger immediate children
           if (staggerChildren) {
-            const children = el.querySelectorAll<HTMLElement>(staggerChildren)
+            // Prefix bare child combinators (e.g. "> div") with ":scope"
+            // so they work correctly on element.querySelectorAll()
+            const scopedSelector = staggerChildren.startsWith('>')
+              ? `:scope ${staggerChildren}`
+              : staggerChildren
+            const children = el.querySelectorAll<HTMLElement>(scopedSelector)
             children.forEach((child, i) => {
               // Cap at 6 to avoid very long delays
               child.setAttribute('data-delay', String(Math.min(i + 1, 6)))
-              // Also mark children to be observed individually for early reveal
-              // (optional — comment out if you want section-level only)
             })
           }
         })
