@@ -60,31 +60,9 @@ html { scroll-behavior: smooth; }
   animation: _fadeIn 1s var(--ease-out) 0.1s both;
 }
 
-/* Hero copy — sequenced stagger */
-.hero-carousel-eyebrow {
-  animation: _slideUp 0.55s var(--ease-out) 0.45s both;
-}
-
-.hero-carousel-copy h1 {
-  animation: _slideUp 0.65s var(--ease-out) 0.6s both;
-}
-
-.hero-carousel-copy p {
-  animation: _slideUp 0.55s var(--ease-out) 0.75s both;
-}
-
+/* Hero explore button entrance (globals.css handles copy animations via hero-carousel-copy-in) */
 .hero-carousel-explore {
   animation: _slideUp 0.5s var(--ease-out) 0.9s both;
-}
-
-/* Re-animate text on every slide change */
-.hero-carousel-copy {
-  animation: _slideUp 0.55s var(--ease-out) both;
-}
-
-/* Slide crossfade — opacity only = compositor-only, zero layout cost */
-.hero-carousel-slide {
-  transition: opacity 0.75s var(--ease-out) !important;
 }
 
 /* ─── 5. SCROLL-REVEAL BASE CLASSES ─────────────────────────────────────────── */
