@@ -185,6 +185,21 @@
 .about-side-label{display:none!important}
 .hero-carousel-visit{position:absolute;z-index:3;left:50%;top:68%;display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border:1px solid #e4aa2d;border-radius:28px;background:#e4aa2d;color:#173a34;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 12px 28px rgba(3,28,24,.24);transform:translate(-50%,18px);opacity:0;animation:hero-carousel-visit-cycle 7s ease-in-out both}.hero-carousel-visit svg{transition:transform .25s ease}.hero-carousel-visit:hover{background:#efbd47;color:#173a34}.hero-carousel-visit:hover svg{transform:translateX(4px)}
 @keyframes hero-carousel-visit-cycle{0%,8%{opacity:0;transform:translate(-50%,18px)}18%,72%{opacity:1;transform:translate(-50%,0)}88%,100%{opacity:0;transform:translate(-50%,-12px)}}
+@media (max-width: 600px) {
+  .hero-carousel-visit {
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 10px 16px;
+    box-sizing: border-box;
+    white-space: nowrap;
+  }
+
+  .hero-carousel-visit svg {
+    flex: 0 0 auto;
+  }
+}
 .visit-modal-backdrop{position:fixed;z-index:90;inset:0;display:flex;justify-content:flex-end;align-items:flex-start;padding:96px 22px 22px;background:rgba(4,28,25,.32);animation:visit-modal-fade .25s ease both}.visit-modal{position:relative;width:min(560px,calc(100vw - 44px));max-height:calc(100vh - 118px);overflow:auto;padding:30px;background:#f7f5ec;color:#123b35;border:1px solid rgba(12,55,47,.16);border-radius:20px;box-shadow:0 24px 70px rgba(3,28,24,.28);animation:visit-modal-in .35s cubic-bezier(.2,.8,.2,1) both}.visit-modal-close{position:absolute;top:17px;right:17px;width:34px;height:34px;display:grid;place-items:center;border:1px solid #cfd3c9;border-radius:50%;background:#fff;color:#123b35}.visit-modal-close:hover{background:#e4aa2d;border-color:#e4aa2d}.visit-modal-eyebrow{display:block;color:#e2be62;font-size:11px;font-weight:700;letter-spacing:.28em}.visit-modal h2{margin:12px 42px 6px 0;color:#123b35;font:500 clamp(30px,3vw,43px)/1.02 Georgia,'Times New Roman',serif}.visit-modal-subtitle{margin:0 0 17px;color:#68756e;font-size:15px;line-height:1.4}.visit-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px}.visit-modal label{display:flex;flex-direction:column;gap:7px;color:#173c35;font-size:14px;font-weight:700}.visit-modal input,.visit-modal select,.visit-modal textarea{width:100%;box-sizing:border-box;border:1px solid #d7d8d2;border-radius:7px;background:#fffdfb;color:#173c35;padding:12px 14px;font-size:14px;font-weight:400;outline:none}.visit-modal input:focus,.visit-modal select:focus,.visit-modal textarea:focus{border-color:#d5a12e;box-shadow:0 0 0 3px rgba(213,161,46,.15)}.visit-modal textarea{min-height:72px;resize:vertical}.visit-message{margin-top:12px}.visit-form-actions{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:12px}.visit-consent{flex-direction:row!important;align-items:center;gap:8px!important;color:#68756e!important;font-size:12px!important;font-weight:400!important}.visit-consent input{width:15px;height:15px;flex:0 0 auto;accent-color:#173c35}.visit-form-actions>button{display:inline-flex;align-items:center;justify-content:center;gap:20px;flex:0 0 auto;padding:13px 18px;border:0;border-radius:28px;background:#dda01d;color:#fff;font-size:16px;font-weight:700}.visit-form-actions>button:hover{background:#c98d12}.visit-privacy{display:flex;align-items:center;gap:14px;margin-top:13px;padding:11px 14px;border-radius:12px;background:#fffefa;color:#16473d}.visit-privacy svg{flex:0 0 auto;color:#075747}.visit-privacy span{display:flex;flex-direction:column;gap:4px}.visit-privacy b{font-size:12px}.visit-privacy small{font-size:12px;font-weight:400;line-height:1.35}@keyframes visit-modal-fade{from{opacity:0}to{opacity:1}}@keyframes visit-modal-in{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
 @media(max-width:600px){.visit-modal-backdrop{padding:78px 10px 10px}.visit-modal{width:100%;padding:24px 18px;border-radius:15px}.visit-modal h2{font-size:31px}.visit-form-grid{grid-template-columns:1fr;gap:11px}.visit-form-actions{align-items:stretch;flex-direction:column}.visit-form-actions>button{width:100%}.visit-privacy small{font-size:11px}}
 .visit-modal{overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:calc(100vh - 28px)}.visit-modal-backdrop.is-closing{animation:visit-modal-fade-out .28s ease both}.visit-modal-backdrop.is-closing .visit-modal{animation:visit-modal-out .28s ease both}@keyframes visit-modal-fade-out{to{opacity:0}}@keyframes visit-modal-out{to{opacity:0;transform:translateX(22px)}}
@@ -4714,6 +4729,203 @@ html {
     border-top: 1px solid rgba(214, 168, 79, 0.2) !important;
     font-size: 10px !important;
     letter-spacing: 0.2em !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .faq-editorial {
+    --faq-mobile-image-height: clamp(160px, 38vw, 255px);
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .faq-editorial .faq-building {
+    top: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: var(--faq-mobile-image-height) !important;
+    clip-path: polygon(0 0, 100% 0, 100% 46%, 0 100%) !important;
+    clip-path: shape(from 0% 0%, line to 100% 0%, line to 100% 46%, curve to 0% 100% with 82% 82% / 32% 100%, close) !important;
+  }
+
+  .faq-editorial .faq-building img {
+    object-fit: cover !important;
+    object-position: center 48% !important;
+  }
+
+  .faq-editorial .faq-inner {
+    position: relative !important;
+    z-index: 2 !important;
+    width: 100% !important;
+    max-width: 640px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+    padding: calc(var(--faq-mobile-image-height) + clamp(22px, 4.5vw, 34px)) clamp(14px, 4vw, 22px) 22px !important;
+  }
+
+  .faq-editorial .faq-heading {
+    margin: 0 auto 14px !important;
+    padding: 0 !important;
+    text-align: center !important;
+  }
+
+  .faq-editorial .faq-heading > span {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: clamp(5px, 1.5vw, 9px) !important;
+    font-size: clamp(8px, 2.45vw, 10px) !important;
+    letter-spacing: 0.16em !important;
+    white-space: nowrap !important;
+  }
+
+  .faq-editorial .faq-heading > span i {
+    width: clamp(16px, 5vw, 28px) !important;
+    flex: 0 0 auto !important;
+  }
+
+  .faq-editorial .faq-heading h2 {
+    max-width: 420px !important;
+    margin: 6px auto !important;
+    font-size: clamp(30px, 8.6vw, 42px) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -0.02em !important;
+    text-wrap: balance !important;
+  }
+
+  .faq-editorial .faq-heading p {
+    max-width: 540px !important;
+    margin: 0 auto !important;
+    font-size: clamp(12px, 3.6vw, 14px) !important;
+    line-height: 1.42 !important;
+  }
+
+  .faq-editorial .faq-trust {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    gap: 6px !important;
+    margin: 16px auto 20px !important;
+    padding: 0 !important;
+  }
+
+  .faq-editorial .faq-trust > div {
+    min-width: 0 !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    text-align: center !important;
+  }
+
+  .faq-editorial .faq-trust span {
+    width: clamp(32px, 9vw, 40px) !important;
+    height: clamp(32px, 9vw, 40px) !important;
+    flex: 0 0 auto !important;
+  }
+
+  .faq-editorial .faq-trust span svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .faq-editorial .faq-trust b {
+    min-width: 0 !important;
+    align-items: center !important;
+    font-size: clamp(9px, 2.8vw, 12px) !important;
+    line-height: 1.15 !important;
+  }
+
+  .faq-editorial .faq-trust small {
+    font-size: clamp(9px, 2.7vw, 11px) !important;
+  }
+
+  .faq-category-nav-wrapper {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 12px auto 18px !important;
+    overflow: hidden !important;
+  }
+
+  .faq-category-nav {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    border-radius: 18px !important;
+    overflow: visible !important;
+  }
+
+  .faq-editorial .faq-cat-pill {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    padding: 9px clamp(8px, 2.8vw, 14px) !important;
+    border: 1px solid rgba(201, 162, 74, 0.28) !important;
+    border-radius: 12px !important;
+    font-size: clamp(11px, 3.1vw, 13px) !important;
+    letter-spacing: 0 !important;
+  }
+
+  .faq-editorial .faq-cat-pill svg {
+    flex: 0 0 auto !important;
+  }
+
+  .faq-editorial .faq-cat-pill span {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .faq-editorial .faq-main-cta-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 560px !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    margin: 16px auto 0 !important;
+    padding: 18px clamp(14px, 4vw, 22px) !important;
+    gap: 12px !important;
+    text-align: center !important;
+  }
+
+  .faq-editorial .faq-main-cta-text {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .faq-editorial .faq-main-cta-text h4 {
+    font-size: clamp(17px, 5vw, 21px) !important;
+    line-height: 1.2 !important;
+  }
+
+  .faq-editorial .faq-main-cta-text p {
+    font-size: clamp(12px, 3.5vw, 13px) !important;
+    line-height: 1.45 !important;
+  }
+
+  .faq-editorial .faq-main-cta-btn {
+    width: min(100%, 280px) !important;
+    min-height: 48px !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    padding: 11px 16px !important;
+    white-space: normal !important;
+  }
+
+  .faq-editorial .project-brand-strip {
+    margin: 14px 0 0 !important;
   }
 }
 
