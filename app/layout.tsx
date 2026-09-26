@@ -29,11 +29,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+  themeColor: '#063c32',
+  colorScheme: 'light',
 }
 
 export default function RootLayout({
@@ -42,8 +39,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="en" style={{ backgroundColor: '#063c32' }}>
+      <body className="antialiased" style={{ backgroundColor: '#063c32' }}>
         {children}
         <GlobalFloatingActions />
         <AnimationProvider />

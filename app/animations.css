@@ -51,29 +51,17 @@ html {
   pointer-events: auto !important;
 }
 
-/* ─── 4. HERO PAGE-LOAD SEQUENCE (HERO CAROUSEL — KEPT COMPLETELY UNTOUCHED) ─── */
-@keyframes _fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes _slideUp {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Hero media: simple fade — no scale, no transform = no GPU compositing cost */
-.hero-carousel-media {
-  animation: _fadeIn 0.8s var(--ease-out) 0s both;
-}
-
+/* ─── 4. HERO FIRST-PAINT VISIBILITY (NO OPACITY:0 BLINK / INSTANT DISPLAY) ─── */
+.hero-carousel-media,
 .hero-carousel-shade {
-  animation: _fadeIn 1s var(--ease-out) 0.1s both;
+  opacity: 1 !important;
+  animation: none !important;
 }
 
-/* Hero explore button entrance (globals.css handles copy animations via hero-carousel-copy-in) */
 .hero-carousel-explore {
-  animation: _slideUp 0.5s var(--ease-out) 0.9s both;
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
 }
 
 /* ─── 5. SCROLL-REVEAL DISABLED (all sections display immediately) ──────────── */
