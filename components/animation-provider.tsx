@@ -2,307 +2,323 @@
 
 import { useEffect } from 'react'
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   B.S. HITECH — Premium Animation Engine
-   Handles:
-     1. Navbar scroll effect
-     2. Scroll-reveal (Intersection Observer)
-     3. Image-first sequential reveal
-     4. Cursor sparkle effect (desktop only)
-   No external libraries — pure vanilla JS/CSS classes
-───────────────────────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   B.S. HITECH — Optimised Animation Engine v2
+   
+   Architecture:
+   ─ ONE IntersectionObserver for all scroll-reveals (zero scroll listeners)
+   ─ ONE scroll listener for navbar only (passive, rAF-throttled)
+   ─ data-reveal attribute system (not class injection) — easier to reason about
+   ─ Cursor sparkle on a canvas (desktop only, fine pointer, no reduced-motion)
+   ─ Fully cleaned up on unmount
+   
+   Performance rules followed:
+   ─ Only opacity + translate3d animated (compositor-only, no layout/paint)
+   ─ scale only on enter, then removed — no ongoing scale animations
+   ─ No will-change on bulk elements (only canvas gets it via CSS)
+   ─ No continuous RAF loops except the sparkle canvas (desktop only)
+   ─ IntersectionObserver unobserves each element after reveal (fire-once)
+   ─ Passive event listeners throughout
+═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Target map ────────────────────────────────────────────────────────────────
+   Each entry: [CSS selector, reveal-type, stagger-child-selector | null]
+   reveal-type maps to data-reveal attribute values:
+     ''      → up (default, translateY)
+     'left'  → slide from left
+     'right' → slide from right
+     'scale' → up + subtle scale
+     'img'   → image specific (subtle scale + up)
+     'fade'  → opacity only
+──────────────────────────────────────────────────────────────────────────────── */
+
+type RevealType = '' | 'left' | 'right' | 'scale' | 'img' | 'fade'
+
+interface RevealTarget {
+  selector: string
+  type: RevealType
+  /** If set, children matching this sub-selector get stagger delays */
+  staggerChildren?: string
+}
+
+const REVEAL_TARGETS: RevealTarget[] = [
+  // ── About ──────────────────────────────────────────────────────────────────
+  { selector: '#about .about-story',          type: 'left' },
+  { selector: '#about .about-composition',    type: 'img' },
+  { selector: '#about .about-stats',          type: '',
+    staggerChildren: '> div' },
+  { selector: '#about .value-grid',           type: 'scale',
+    staggerChildren: '.value-card' },
+
+  // ── Project Overview ────────────────────────────────────────────────────────
+  { selector: '#overview .project-heading-row', type: '' },
+  { selector: '#overview .project-visual',      type: 'img' },
+  { selector: '#overview .project-copy',        type: 'right' },
+
+  // ── Amenities marquee ───────────────────────────────────────────────────────
+  { selector: '.home-amenities-marquee',       type: 'fade' },
+
+  // ── Stats band ──────────────────────────────────────────────────────────────
+  { selector: '.stats-band',                  type: '' },
+
+  // ── Why Choose ──────────────────────────────────────────────────────────────
+  { selector: '#why-choose .why-heading-block', type: '' },
+  { selector: '#why-choose .why-cards-grid',    type: 'scale',
+    staggerChildren: '.why-ref-card' },
+  { selector: '#why-choose .why-trust',         type: 'fade' },
+
+  // ── Project Brand Strip ─────────────────────────────────────────────────────
+  { selector: '.project-brand-strip',          type: 'fade' },
+
+  // ── Amenities Showcase ──────────────────────────────────────────────────────
+  { selector: '#amenities .amenities-heading', type: '' },
+  { selector: '#amenities .amenities-layout',  type: '',
+    staggerChildren: '.amenity-card' },
+  { selector: '#amenities .amenities-building', type: 'img' },
+  { selector: '#amenities .amenities-strip',   type: 'fade' },
+
+  // ── Testimonials ────────────────────────────────────────────────────────────
+  { selector: '.testimonials-editorial .testimonials-heading', type: '' },
+  { selector: '.testimonials-editorial .testimonials-building', type: 'img' },
+  { selector: '.testimonials-editorial .testimonial-stage',     type: 'scale' },
+  { selector: '.testimonials-editorial .testimonial-trust',     type: 'fade' },
+
+  // ── FAQ ─────────────────────────────────────────────────────────────────────
+  { selector: '.faq-editorial .faq-building',         type: 'img' },
+  { selector: '.faq-editorial .faq-heading',          type: '' },
+  { selector: '.faq-editorial .faq-trust',            type: 'scale',
+    staggerChildren: '> div' },
+  { selector: '.faq-editorial .faq-category-nav-wrapper', type: '' },
+  { selector: '.faq-editorial .faq-main-cta-card',    type: 'scale' },
+
+  // ── Contact ─────────────────────────────────────────────────────────────────
+  { selector: '#contact .contact-heading',    type: '' },
+  { selector: '#contact .contact-grid',       type: 'scale',
+    staggerChildren: '> *' },
+  { selector: '#contact .contact-image-col', type: 'img' },
+
+  // ── Location ────────────────────────────────────────────────────────────────
+  { selector: '.location-editorial .location-heading',     type: '' },
+  { selector: '.location-editorial .location-map-landscape', type: 'img' },
+
+  // ── Floor Plans (when on dedicated page) ────────────────────────────────────
+  { selector: '.floorplans-premium .floor-heading', type: '' },
+  { selector: '.floorplans-premium .floor-visual',  type: 'img' },
+  { selector: '.floorplans-premium .floor-copy',    type: 'right' },
+
+  // ── Payment Plan ────────────────────────────────────────────────────────────
+  { selector: '.payment-premium .payment-heading',      type: '' },
+  { selector: '.payment-premium .payment-building-col', type: 'img' },
+  { selector: '.payment-premium .payment-main-row',     type: 'right' },
+
+  // ── Footer ──────────────────────────────────────────────────────────────────
+  { selector: 'footer.footer-premium',       type: '' },
+]
 
 export function AnimationProvider() {
+  /* ── 1. SCROLL-REVEAL + NAVBAR ─────────────────────────────────────────────── */
   useEffect(() => {
-    // Guard for reduced-motion preference
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    /* ── 1. NAVBAR SCROLL EFFECT ──────────────────────────────────────────── */
-    const nav = document.querySelector('.main-nav')
-    let ticking = false
+    /* ── Navbar scroll effect (one passive listener, rAF-throttled) ── */
+    const nav = document.querySelector<HTMLElement>('.main-nav')
+    let rafPending = false
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (nav) {
-            if (window.scrollY > 60) {
-              nav.classList.add('scrolled')
-            } else {
-              nav.classList.remove('scrolled')
-            }
-          }
-          ticking = false
-        })
-        ticking = true
-      }
+    const onScroll = () => {
+      if (rafPending) return
+      rafPending = true
+      requestAnimationFrame(() => {
+        if (nav) {
+          nav.classList.toggle('scrolled', window.scrollY > 60)
+        }
+        rafPending = false
+      })
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('scroll', onScroll, { passive: true })
 
-    /* ── 2. SCROLL-REVEAL — INTERSECTION OBSERVER ─────────────────────────── */
+    /* ── Scroll-reveal (IntersectionObserver only, no scroll handler) ── */
     if (!prefersReduced) {
-      // Elements to reveal (data-driven via class names on sections)
-      const revealSelectors = [
-        // Standard reveal elements already on the page
-        '.anim-reveal',
-        '.anim-reveal-left',
-        '.anim-reveal-right',
-        '.anim-reveal-scale',
-        '.anim-fade',
-        '.img-anim',
-        '.section-wrapper-anim',
-        '.footer-premium',
-        '.stats-band',
-      ]
-
-      // Additionally, auto-inject reveal onto major sections
-      // We add the class to direct children / key elements without touching markup
-      const sectionsToReveal: Array<[string, string]> = [
-        // [sectionSelector, animClass]
-        ['#about .about-story',             'anim-reveal-left'],
-        ['#about .about-composition',       'anim-reveal-right'],
-        ['#about .about-stats > div',       'anim-reveal'],
-        ['#overview .project-heading-row',  'anim-reveal'],
-        ['#overview .project-visual',       'img-anim'],
-        ['#overview .project-copy',         'anim-reveal-right'],
-        ['#why-choose .why-intro',          'anim-reveal'],
-        ['#why-choose .why-card',           'anim-reveal-scale'],
-        ['#why-choose .why-metrics > div',  'anim-fade'],
-        ['.testimonials-editorial .testimonials-heading', 'anim-reveal'],
-        ['.testimonials-editorial .testimonial-stage',    'anim-reveal'],
-        ['.testimonials-editorial .testimonial-trust',    'anim-fade'],
-        ['.faq-editorial .faq-heading',     'anim-reveal'],
-        ['.faq-editorial .faq-trust > div', 'anim-reveal'],
-        ['.faq-editorial .faq-categories',  'anim-reveal-left'],
-        ['.faq-editorial .faq-accordion',   'anim-reveal-right'],
-        ['.faq-editorial .faq-right',       'anim-reveal-right'],
-        ['.contact-editorial .contact-heading', 'anim-reveal'],
-        ['.contact-editorial .contact-grid > *', 'anim-reveal-scale'],
-        ['.location-editorial .location-heading', 'anim-reveal'],
-        ['.location-editorial .location-map-wrap', 'img-anim'],
-        ['#location .location-heading',     'anim-reveal'],
-        ['#location .location-map',         'img-anim'],
-        ['#location .location-copy',        'anim-reveal-right'],
-        ['.home-amenities-marquee',         'anim-fade'],
-        ['#contact .contact-heading',       'anim-reveal'],
-        ['#contact .contact-grid',          'anim-reveal'],
-        ['.payment-premium .payment-heading', 'anim-reveal'],
-        ['.floorplans-premium .floor-heading', 'anim-reveal'],
-        ['.floorplans-premium .floor-main',   'anim-reveal'],
-        ['.amenities-showcase .amenities-heading', 'anim-reveal'],
-        ['.amenities-showcase .amenities-layout',  'anim-reveal'],
-        ['footer.footer-premium',           'footer-premium'],
-        ['.stats-band',                     'stats-band'],
-        ['.about-stats',                    'anim-reveal'],
-      ]
-
-      // Inject class only if not already present
-      sectionsToReveal.forEach(([selector, cls]) => {
-        const els = document.querySelectorAll(selector)
+      /* Mark each target with data-reveal and optional stagger children */
+      REVEAL_TARGETS.forEach(({ selector, type, staggerChildren }) => {
+        const els = document.querySelectorAll<HTMLElement>(selector)
         els.forEach((el) => {
-          if (!el.classList.contains(cls)) {
-            el.classList.add(cls)
+          // Skip if already marked (in case component re-mounts)
+          if (el.hasAttribute('data-reveal')) return
+
+          el.setAttribute('data-reveal', type)
+
+          // Stagger immediate children
+          if (staggerChildren) {
+            const children = el.querySelectorAll<HTMLElement>(staggerChildren)
+            children.forEach((child, i) => {
+              // Cap at 6 to avoid very long delays
+              child.setAttribute('data-delay', String(Math.min(i + 1, 6)))
+              // Also mark children to be observed individually for early reveal
+              // (optional — comment out if you want section-level only)
+            })
           }
         })
       })
 
-      // Stagger child cards
-      const cardStaggerSelectors = [
-        '#why-choose .why-card',
-        '#about .value-card',
-        '.highlight-grid .highlight-card',
-        '.amenities-showcase .amenity-card',
-        '.testimonials-editorial .testimonial-side',
-      ]
+      /* Single observer for every [data-reveal] element */
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible')
+              observer.unobserve(entry.target)
+            }
+          })
+        },
+        {
+          root: null,
+          // Trigger when 10% of element enters viewport
+          threshold: 0.10,
+          // Start slightly before element is fully in view
+          rootMargin: '0px 0px -5% 0px',
+        }
+      )
 
-      cardStaggerSelectors.forEach((selector) => {
-        const cards = document.querySelectorAll(selector)
-        cards.forEach((card, i) => {
-          const delayClass = `anim-d${Math.min(i + 1, 8)}`
-          card.classList.add(delayClass)
-        })
-      })
+      // Observe all marked elements
+      document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el))
 
-      // Observer config
-      const observerOptions: IntersectionObserverInit = {
-        root: null,
-        rootMargin: '0px 0px -8% 0px',
-        threshold: 0.08,
-      }
-
-      const revealCallback: IntersectionObserverCallback = (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target) // fire once only
-          }
-        })
-      }
-
-      const observer = new IntersectionObserver(revealCallback, observerOptions)
-
-      // Observe all elements with our reveal classes
-      const allRevealEls = document.querySelectorAll(revealSelectors.join(', '))
-      allRevealEls.forEach((el) => observer.observe(el))
-
-      // Cleanup
       return () => {
         observer.disconnect()
-        window.removeEventListener('scroll', handleScroll)
+        window.removeEventListener('scroll', onScroll)
       }
     }
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('scroll', onScroll)
     }
   }, [])
 
-  /* ── 3. CURSOR SPARKLE ──────────────────────────────────────────────────── */
+  /* ── 2. CURSOR SPARKLE (desktop + fine pointer + no reduced-motion) ────────── */
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const hasPointer = window.matchMedia('(pointer: fine)').matches
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches
 
-    // Only on desktop (fine pointer), not touch, not reduced motion
-    if (prefersReduced || !hasPointer) return
+    if (prefersReduced || !hasFinePointer) return
 
+    /* Canvas setup */
     const canvas = document.createElement('canvas')
     canvas.id = 'cursor-sparkle-canvas'
     canvas.setAttribute('aria-hidden', 'true')
     document.body.appendChild(canvas)
-    const ctx = canvas.getContext('2d')!
 
-    let raf: number
-    let mouseX = -200
-    let mouseY = -200
-
-    // Particle pool
-    interface Particle {
-      x: number
-      y: number
-      vx: number
-      vy: number
-      life: number
-      maxLife: number
-      size: number
-      hue: number
-      alpha: number
-    }
-
-    const particles: Particle[] = []
-    const MAX_PARTICLES = 38
+    const ctx = canvas.getContext('2d', { alpha: true })!
 
     const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = window.innerWidth * dpr
+      canvas.height = window.innerHeight * dpr
+      canvas.style.width = window.innerWidth + 'px'
+      canvas.style.height = window.innerHeight + 'px'
+      ctx.scale(dpr, dpr)
     }
-
     resize()
     window.addEventListener('resize', resize, { passive: true })
 
-    let lastX = mouseX
-    let lastY = mouseY
-    let spawnThrottle = 0
+    /* Particle pool — fixed-size array, no Array.shift() (costly) */
+    const MAX = 24
+    const pool = new Array(MAX).fill(null).map(() => ({
+      x: 0, y: 0, vx: 0, vy: 0,
+      life: 0, maxLife: 0, size: 0, hue: 0, alive: false,
+    }))
+    let poolIdx = 0
+
+    let mouseX = -500, mouseY = -500
+    let lastX = -500, lastY = -500
+    let moved = 0
+    let rafId = 0
+    let frameTick = 0
 
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX
       mouseY = e.clientY
     }
-
     window.addEventListener('mousemove', onMouseMove, { passive: true })
 
-    const GOLD_HUES = [42, 46, 50, 38, 55] // gold/amber range
-    const WHITE_CHANCE = 0.25 // 25% sparkles are white-ish
+    // Gold/amber hues
+    const HUES = [42, 45, 48, 52, 38]
 
-    const spawnParticle = () => {
-      if (particles.length >= MAX_PARTICLES) {
-        // Overwrite the oldest
-        particles.shift()
-      }
-      const spread = 10
+    const spawn = () => {
+      const p = pool[poolIdx % MAX]
+      poolIdx++
       const angle = Math.random() * Math.PI * 2
-      const speed = 0.4 + Math.random() * 1.1
-      const hue = Math.random() < WHITE_CHANCE ? 50 : GOLD_HUES[Math.floor(Math.random() * GOLD_HUES.length)]
-      const saturation = Math.random() < WHITE_CHANCE ? 10 : 88
-      particles.push({
-        x: mouseX + (Math.random() - 0.5) * spread,
-        y: mouseY + (Math.random() - 0.5) * spread,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 0.4, // slight upward drift
-        life: 0,
-        maxLife: 28 + Math.floor(Math.random() * 18),
-        size: 1.1 + Math.random() * 2.2,
-        hue,
-        alpha: saturation,
-      })
+      const speed = 0.3 + Math.random() * 0.9
+      p.x = mouseX + (Math.random() - 0.5) * 8
+      p.y = mouseY + (Math.random() - 0.5) * 8
+      p.vx = Math.cos(angle) * speed
+      p.vy = Math.sin(angle) * speed - 0.35
+      p.life = 0
+      p.maxLife = 22 + Math.floor(Math.random() * 16)
+      p.size = 1 + Math.random() * 2
+      p.hue = HUES[Math.floor(Math.random() * HUES.length)]
+      p.alive = true
     }
 
     const loop = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      rafId = requestAnimationFrame(loop)
+      frameTick++
 
-      // Spawn when mouse moved
+      // Only spawn every 2 frames to halve GPU work
       const dx = mouseX - lastX
       const dy = mouseY - lastY
-      const moved = Math.hypot(dx, dy)
-      spawnThrottle++
-
-      if (moved > 2 && spawnThrottle >= 2) {
-        spawnParticle()
-        if (moved > 8) spawnParticle() // extra on fast move
-        spawnThrottle = 0
-      }
-
+      moved = dx * dx + dy * dy // squared distance (no sqrt needed)
       lastX = mouseX
       lastY = mouseY
 
-      // Update + draw
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i]
-        p.life++
-        p.x += p.vx
-        p.y += p.vy
-        p.vy += 0.03 // slight gravity
-        p.vx *= 0.97
-
-        const progress = p.life / p.maxLife
-        const alpha = (1 - progress) * 0.8
-        const size = p.size * (1 - progress * 0.5)
-
-        if (p.life >= p.maxLife) {
-          particles.splice(i, 1)
-          continue
-        }
-
-        ctx.save()
-        ctx.globalAlpha = alpha
-        // Gold/white sparkle dot
-        const sat = p.alpha // reused as saturation
-        ctx.fillStyle = `hsl(${p.hue}, ${sat}%, ${sat > 30 ? 72 : 96}%)`
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, size, 0, Math.PI * 2)
-        ctx.fill()
-
-        // Tiny crosshair shine on larger particles
-        if (size > 1.8) {
-          ctx.strokeStyle = `hsla(${p.hue}, ${sat}%, 96%, ${alpha * 0.55})`
-          ctx.lineWidth = 0.6
-          ctx.beginPath()
-          ctx.moveTo(p.x - size * 1.8, p.y)
-          ctx.lineTo(p.x + size * 1.8, p.y)
-          ctx.moveTo(p.x, p.y - size * 1.8)
-          ctx.lineTo(p.x, p.y + size * 1.8)
-          ctx.stroke()
-        }
-
-        ctx.restore()
+      // Spawn if cursor moved enough
+      if (moved > 9 && frameTick % 2 === 0) {
+        spawn()
+        if (moved > 100) spawn() // fast move → extra sparkle
       }
 
-      raf = requestAnimationFrame(loop)
+      // Draw
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      for (let i = 0; i < MAX; i++) {
+        const p = pool[i]
+        if (!p.alive) continue
+
+        p.life++
+        if (p.life >= p.maxLife) { p.alive = false; continue }
+
+        p.x += p.vx
+        p.y += p.vy
+        p.vy += 0.025   // gentle gravity
+        p.vx *= 0.96
+
+        const progress = p.life / p.maxLife
+        const alpha = (1 - progress) * 0.75
+        const sz = p.size * (1 - progress * 0.45)
+
+        ctx.globalAlpha = alpha
+        ctx.fillStyle = `hsl(${p.hue}, 82%, 68%)`
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, sz, 0, 6.2832)
+        ctx.fill()
+
+        // Tiny cross-shine on larger particles only
+        if (sz > 1.6) {
+          ctx.globalAlpha = alpha * 0.4
+          ctx.strokeStyle = `hsl(${p.hue}, 60%, 92%)`
+          ctx.lineWidth = 0.5
+          const arm = sz * 1.6
+          ctx.beginPath()
+          ctx.moveTo(p.x - arm, p.y); ctx.lineTo(p.x + arm, p.y)
+          ctx.moveTo(p.x, p.y - arm); ctx.lineTo(p.x, p.y + arm)
+          ctx.stroke()
+        }
+      }
+      ctx.globalAlpha = 1
     }
 
-    raf = requestAnimationFrame(loop)
+    rafId = requestAnimationFrame(loop)
 
     return () => {
-      cancelAnimationFrame(raf)
+      cancelAnimationFrame(rafId)
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('resize', resize)
       canvas.remove()

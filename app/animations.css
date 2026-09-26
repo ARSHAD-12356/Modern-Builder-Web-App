@@ -1,375 +1,242 @@
 /* =============================================================================
-   B.S. HITECH — Premium Animation System
-   DO NOT alter any existing colors/layout/typography — animations only.
+   B.S. HITECH — Optimised Animation System (v2)
+   Performance-first: opacity + translateY only, minimal will-change,
+   single IntersectionObserver, no scroll listeners for reveals.
    ============================================================================= */
 
-/* ─── 1. SMOOTH SCROLL ─────────────────────────────────────────────────────── */
-html {
-  scroll-behavior: smooth;
-}
-
-/* ─── 2. PAGE-LOAD: BASE ANIMATION TOKENS ──────────────────────────────────── */
+/* ─── 1. TOKENS ─────────────────────────────────────────────────────────────── */
 :root {
-  --anim-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --anim-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --anim-duration-fast: 0.45s;
-  --anim-duration-base: 0.65s;
-  --anim-duration-slow: 0.85s;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-std: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ─── 3. SCROLL-REVEAL UTILITY CLASSES ─────────────────────────────────────── */
+/* ─── 2. SMOOTH SCROLL (native) ─────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
 
-/* Default: invisible before JS kicks in */
-.anim-reveal {
-  opacity: 0;
-  transform: translateY(36px);
-  transition:
-    opacity var(--anim-duration-base) var(--anim-ease),
-    transform var(--anim-duration-base) var(--anim-ease);
-  will-change: opacity, transform;
-}
-
-.anim-reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* Directional variants */
-.anim-reveal-left {
-  opacity: 0;
-  transform: translateX(-44px);
-  transition:
-    opacity var(--anim-duration-base) var(--anim-ease),
-    transform var(--anim-duration-base) var(--anim-ease);
-  will-change: opacity, transform;
-}
-
-.anim-reveal-left.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-.anim-reveal-right {
-  opacity: 0;
-  transform: translateX(44px);
-  transition:
-    opacity var(--anim-duration-base) var(--anim-ease),
-    transform var(--anim-duration-base) var(--anim-ease);
-  will-change: opacity, transform;
-}
-
-.anim-reveal-right.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-.anim-reveal-scale {
-  opacity: 0;
-  transform: scale(0.94) translateY(20px);
-  transition:
-    opacity var(--anim-duration-base) var(--anim-ease),
-    transform var(--anim-duration-base) var(--anim-ease);
-  will-change: opacity, transform;
-}
-
-.anim-reveal-scale.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* Fade-only (for elements where movement would feel wrong) */
-.anim-fade {
-  opacity: 0;
-  transition: opacity var(--anim-duration-base) var(--anim-ease);
-  will-change: opacity;
-}
-
-.anim-fade.is-visible {
-  opacity: 1;
-}
-
-/* Stagger delays */
-.anim-d1  { transition-delay: 0.06s !important; }
-.anim-d2  { transition-delay: 0.14s !important; }
-.anim-d3  { transition-delay: 0.22s !important; }
-.anim-d4  { transition-delay: 0.30s !important; }
-.anim-d5  { transition-delay: 0.38s !important; }
-.anim-d6  { transition-delay: 0.46s !important; }
-.anim-d7  { transition-delay: 0.54s !important; }
-.anim-d8  { transition-delay: 0.62s !important; }
-
-/* ─── 4. PAGE-LOAD ANIMATIONS ──────────────────────────────────────────────── */
-
-/* Header entrance */
-@keyframes headerSlideIn {
-  from { opacity: 0; transform: translateY(-18px); }
-  to   { opacity: 1; transform: none; }
+/* ─── 3. NAVBAR ENTRANCE + SCROLL EFFECT ────────────────────────────────────── */
+@keyframes _navIn {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .main-nav {
-  animation: headerSlideIn 0.65s var(--anim-ease) both;
-  animation-delay: 0.05s;
+  animation: _navIn 0.5s var(--ease-out) 0.05s both;
+  /* base transition for scrolled-state colour change */
+  transition: background 0.35s var(--ease-std),
+              box-shadow 0.35s var(--ease-std),
+              backdrop-filter 0.35s var(--ease-std);
 }
 
-.cinematic-menu {
-  animation: none !important; /* don't animate the mobile overlay with page load */
+/* toggled by JS on scroll > 60 px */
+.main-nav.scrolled {
+  background: rgba(8, 40, 33, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.2) !important;
 }
 
-/* ─── 5. HERO SECTION PAGE-LOAD SEQUENCE ───────────────────────────────────── */
-@keyframes heroMediaReveal {
-  from { opacity: 0; transform: scale(1.04); }
-  to   { opacity: 1; transform: scale(1); }
+/* don't re-animate the mobile overlay */
+.cinematic-menu { animation: none !important; }
+
+/* ─── 4. HERO PAGE-LOAD SEQUENCE ────────────────────────────────────────────── */
+/* NOTE: NO scale() on the hero background — that was causing the scroll lag.
+   Use opacity fade only for the media layer. */
+@keyframes _fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-@keyframes heroCopyIn {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: none; }
+@keyframes _slideUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes heroEyebrowIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: none; }
-}
-
-.hero-carousel {
-  overflow: hidden;
-}
-
+/* Hero media: simple fade — no scale, no transform = no GPU compositing cost */
 .hero-carousel-media {
-  animation: heroMediaReveal 1.1s var(--anim-ease) both;
+  animation: _fadeIn 0.8s var(--ease-out) 0s both;
 }
 
 .hero-carousel-shade {
-  animation: heroMediaReveal 1.3s var(--anim-ease) both;
+  animation: _fadeIn 1s var(--ease-out) 0.1s both;
 }
 
+/* Hero copy — sequenced stagger */
 .hero-carousel-eyebrow {
-  animation: heroEyebrowIn 0.7s var(--anim-ease) both;
-  animation-delay: 0.55s;
+  animation: _slideUp 0.55s var(--ease-out) 0.45s both;
 }
 
 .hero-carousel-copy h1 {
-  animation: heroCopyIn 0.8s var(--anim-ease) both;
-  animation-delay: 0.72s;
+  animation: _slideUp 0.65s var(--ease-out) 0.6s both;
 }
 
 .hero-carousel-copy p {
-  animation: heroCopyIn 0.7s var(--anim-ease) both;
-  animation-delay: 0.9s;
+  animation: _slideUp 0.55s var(--ease-out) 0.75s both;
 }
 
 .hero-carousel-explore {
-  animation: heroCopyIn 0.65s var(--anim-ease) both;
-  animation-delay: 1.05s;
+  animation: _slideUp 0.5s var(--ease-out) 0.9s both;
 }
 
-.hero-carousel-visit--btm-left {
-  animation: heroCopyIn 0.65s var(--anim-ease) both;
-  animation-delay: 1.15s;
-}
-
-.hero-carousel-whatsapp-hero {
-  animation: heroCopyIn 0.6s var(--anim-ease) both;
-  animation-delay: 1.25s;
-}
-
-/* Hero slide crossfade — keep it premium */
-.hero-carousel-slide {
-  transition: opacity 0.85s var(--anim-ease) !important;
-}
-
-/* ─── 6. HERO COPY SLIDE-CHANGE ANIMATION ──────────────────────────────────── */
-@keyframes heroSlideTextIn {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: none; }
-}
-
+/* Re-animate text on every slide change */
 .hero-carousel-copy {
-  animation: heroSlideTextIn 0.65s var(--anim-ease) both;
+  animation: _slideUp 0.55s var(--ease-out) both;
 }
 
-/* ─── 7. FLOATING ACTIONS (WhatsApp + AI Bot) ──────────────────────────────── */
-@keyframes floatingActionIn {
-  from { opacity: 0; transform: translateY(24px) scale(0.88); }
-  to   { opacity: 1; transform: none; }
+/* Slide crossfade — opacity only = compositor-only, zero layout cost */
+.hero-carousel-slide {
+  transition: opacity 0.75s var(--ease-out) !important;
 }
 
-@keyframes floatPulse {
+/* ─── 5. SCROLL-REVEAL BASE CLASSES ─────────────────────────────────────────── */
+/* Initial hidden state — use translate3d to promote to GPU layer */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.65s var(--ease-out),
+    transform 0.65s var(--ease-out);
+}
+
+[data-reveal="left"] {
+  transform: translate3d(-32px, 0, 0);
+}
+
+[data-reveal="right"] {
+  transform: translate3d(32px, 0, 0);
+}
+
+[data-reveal="scale"] {
+  transform: translate3d(0, 20px, 0) scale(0.97);
+}
+
+[data-reveal="fade"] {
+  transform: none;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+/* Revealed state */
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Image-specific: very subtle scale + translate */
+[data-reveal="img"] {
+  transform: translate3d(0, 20px, 0) scale(0.98);
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
+}
+
+[data-reveal="img"].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Stagger delays — applied via JS */
+[data-delay="1"] { transition-delay: 0.08s; }
+[data-delay="2"] { transition-delay: 0.16s; }
+[data-delay="3"] { transition-delay: 0.24s; }
+[data-delay="4"] { transition-delay: 0.32s; }
+[data-delay="5"] { transition-delay: 0.40s; }
+[data-delay="6"] { transition-delay: 0.48s; }
+
+/* ─── 6. FLOATING ACTIONS ────────────────────────────────────────────────────── */
+@keyframes _floatIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes _pulse {
   0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-5px); }
+  50%       { transform: translateY(-4px); }
 }
 
 .global-floating-whatsapp,
 .global-floating-whatsapp.hero-carousel-whatsapp {
   animation:
-    floatingActionIn 0.75s var(--anim-ease) 1.2s both,
-    floatPulse 3.2s ease-in-out 2.2s infinite;
-  transition: transform 0.25s var(--anim-ease), box-shadow 0.25s var(--anim-ease), opacity 0.25s !important;
+    _floatIn 0.6s var(--ease-out) 1.1s both,
+    _pulse 3s ease-in-out 2s infinite;
+  transition: transform 0.22s var(--ease-std),
+              box-shadow 0.22s var(--ease-std) !important;
 }
 
-.global-floating-whatsapp:hover,
-.global-floating-whatsapp.hero-carousel-whatsapp:hover {
-  transform: scale(1.12) !important;
-  animation-play-state: paused !important;
+.global-floating-whatsapp:hover {
+  transform: scale(1.1) !important;
+  animation-play-state: paused, paused !important;
 }
 
-/* AI Chatbot trigger button */
 .ai-chat-trigger {
   animation:
-    floatingActionIn 0.75s var(--anim-ease) 1.35s both,
-    floatPulse 3.5s ease-in-out 2.5s infinite;
-  transition: transform 0.25s var(--anim-ease), box-shadow 0.25s var(--anim-ease) !important;
+    _floatIn 0.6s var(--ease-out) 1.25s both,
+    _pulse 3.4s ease-in-out 2.2s infinite;
+  transition: transform 0.22s var(--ease-std),
+              box-shadow 0.22s var(--ease-std) !important;
 }
 
 .ai-chat-trigger:hover {
-  transform: scale(1.1) !important;
-  animation-play-state: paused !important;
+  transform: scale(1.08) !important;
+  animation-play-state: paused, paused !important;
 }
 
-/* ─── 8. GLOBAL BUTTON MICRO-INTERACTIONS ──────────────────────────────────── */
-/* Applies only to already-styled buttons — does not add new styles */
+/* ─── 7. BUTTON MICRO-INTERACTIONS ──────────────────────────────────────────── */
 .about-primary,
 .floor-actions a,
 .floor-larger,
 .payment-side-cta,
 .project-actions > a,
-.visit-form-actions > button,
 .testimonial-trust a,
 .faq-contact > a {
   transition-property: transform, box-shadow, background, color, border-color !important;
-  transition-duration: 0.28s !important;
-  transition-timing-function: var(--anim-ease) !important;
+  transition-duration: 0.25s !important;
+  transition-timing-function: var(--ease-std) !important;
 }
 
-.about-primary:hover { transform: translateY(-3px) !important; }
-.floor-larger:hover   { transform: translateY(-2px) !important; }
+.about-primary:hover       { transform: translateY(-2px) !important; }
+.floor-larger:hover         { transform: translateY(-2px) !important; }
+.project-actions > a:hover  { transform: translateY(-2px) !important; }
 
-/* Arrow icon hop on button hover */
+/* Arrow icon slide on hover */
+a svg,
+button svg {
+  transition: transform 0.2s var(--ease-std);
+}
+
 .about-primary:hover svg,
 .floor-actions a:hover svg,
 .project-actions > a:hover svg,
-.testimonial-trust a:hover svg,
-.faq-contact > a:hover svg {
-  transform: translateX(4px);
-  transition: transform 0.22s var(--anim-ease);
+.testimonial-trust a:hover svg {
+  transform: translateX(3px);
 }
 
-/* General link arrow transition */
-a svg, button svg {
-  transition: transform 0.22s var(--anim-ease);
-}
-
-/* ─── 9. CARD HOVER — enhance existing cards ────────────────────────────────── */
+/* ─── 8. CARD HOVER ─────────────────────────────────────────────────────────── */
 .value-card,
 .amenity-card,
 .highlight-card,
-.why-card,
+.why-ref-card,
 .testimonial-featured,
 .testimonial-side,
 .faq-row {
   transition-property: transform, box-shadow, border-color !important;
-  transition-duration: 0.32s !important;
-  transition-timing-function: var(--anim-ease) !important;
+  transition-duration: 0.28s !important;
+  transition-timing-function: var(--ease-std) !important;
 }
 
-/* ─── 10. NAVBAR SCROLL EFFECT ─────────────────────────────────────────────── */
-/* Class toggled by JS */
-.main-nav.scrolled {
-  background: rgba(8, 40, 33, 0.88) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18) !important;
-  transition: background 0.4s var(--anim-ease), box-shadow 0.4s var(--anim-ease) !important;
-}
-
-.main-nav {
-  transition: background 0.4s var(--anim-ease), box-shadow 0.4s var(--anim-ease);
-}
-
-/* ─── 11. CURSOR SPARKLE ───────────────────────────────────────────────────── */
-#cursor-sparkle-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 99999;
-  opacity: 1;
-}
-
-/* ─── 12. SECTION WRAPPER REVEAL TARGETS ───────────────────────────────────── */
-/* These classes are added via JS to every major section's direct children */
-.section-wrapper-anim {
-  opacity: 0;
-  transform: translateY(32px);
-  transition:
-    opacity 0.7s var(--anim-ease),
-    transform 0.7s var(--anim-ease);
-  will-change: opacity, transform;
-}
-
-.section-wrapper-anim.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* Image-first reveal target */
-.img-anim {
-  opacity: 0;
-  transform: scale(0.95) translateY(20px);
-  transition:
-    opacity 0.75s var(--anim-ease),
-    transform 0.75s var(--anim-ease);
-  will-change: opacity, transform;
-}
-
-.img-anim.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* ─── 13. HOME AMENITIES MARQUEE (already animates, just ensure smooth) ─────── */
+/* ─── 9. MARQUEE ─────────────────────────────────────────────────────────────── */
 .home-amenities-track {
   animation-timing-function: linear !important;
 }
 
-/* ─── 14. FOOTER ENTRANCE ──────────────────────────────────────────────────── */
-.footer-premium {
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 0.75s var(--anim-ease),
-    transform 0.75s var(--anim-ease);
-  will-change: opacity, transform;
+/* ─── 10. CURSOR SPARKLE CANVAS ─────────────────────────────────────────────── */
+#cursor-sparkle-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
 }
 
-.footer-premium.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* ─── 15. STATS BAND ────────────────────────────────────────────────────────── */
-.stats-band {
-  opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 0.65s var(--anim-ease),
-    transform 0.65s var(--anim-ease);
-  will-change: opacity, transform;
-}
-
-.stats-band.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* ─── 16. TESTIMONIAL CARDS ─────────────────────────────────────────────────── */
-.testimonial-featured {
-  transition-property: transform, box-shadow, border-color !important;
-  transition-duration: 0.38s !important;
-}
-
-/* ─── 17. PREFERS-REDUCED-MOTION ────────────────────────────────────────────── */
+/* ─── 11. PREFERS-REDUCED-MOTION ────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -380,31 +247,35 @@ a svg, button svg {
     scroll-behavior: auto !important;
   }
 
-  .anim-reveal,
-  .anim-reveal-left,
-  .anim-reveal-right,
-  .anim-reveal-scale,
-  .anim-fade,
-  .img-anim,
-  .section-wrapper-anim,
-  .footer-premium,
-  .stats-band {
+  /* Show all elements immediately */
+  [data-reveal],
+  [data-reveal="left"],
+  [data-reveal="right"],
+  [data-reveal="scale"],
+  [data-reveal="fade"],
+  [data-reveal="img"] {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
   }
 
-  #cursor-sparkle-canvas { display: none; }
+  #cursor-sparkle-canvas { display: none !important; }
 }
 
-/* ─── 18. MOBILE ADJUSTMENTS ────────────────────────────────────────────────── */
+/* ─── 12. MOBILE ─────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .anim-reveal,
-  .anim-reveal-left,
-  .anim-reveal-right,
-  .section-wrapper-anim {
-    transform: translateY(20px);
+  /* Reduce translate distances on mobile for smoother feel */
+  [data-reveal]        { transform: translate3d(0, 16px, 0); }
+  [data-reveal="left"] { transform: translate3d(-18px, 0, 0); }
+  [data-reveal="right"]{ transform: translate3d(18px, 0, 0); }
+  [data-reveal="scale"]{ transform: translate3d(0, 14px, 0) scale(0.98); }
+  [data-reveal="img"]  { transform: translate3d(0, 14px, 0) scale(0.99); }
+
+  /* Shorter durations on mobile */
+  [data-reveal] {
+    transition-duration: 0.5s !important;
   }
 
-  #cursor-sparkle-canvas { display: none; }
+  /* No sparkle on mobile/touch */
+  #cursor-sparkle-canvas { display: none !important; }
 }
