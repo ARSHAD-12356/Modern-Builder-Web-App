@@ -288,7 +288,7 @@ body {
 @media (max-width: 900px) {
   .home-amenities-label { left: 5%; }
   .home-amenity-card { width: 138px; flex-basis: 138px; }
-  .hero-carousel-visit { top: 50% !important; }
+  .hero-carousel-visit { top: 42.5% !important; }
   .hero-carousel-copy { bottom: 28% !important; }
   .global-floating-whatsapp,
   .hero-carousel-whatsapp { left: 18px; bottom: 22px; width: 48px; height: 48px; }
