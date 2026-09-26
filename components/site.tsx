@@ -85,7 +85,7 @@ export function Hero() {
     const fullName = String(formData.get('name') || '').trim()
     const email = String(formData.get('email') || '').trim()
     const phone = String(formData.get('phone') || '').trim()
-    const interestedIn = String(formData.get('interest') || 'Book a Site Visit').trim()
+    const interestedIn = String(formData.get('interest') || 'Site Visit').trim()
     const message = String(formData.get('message') || '').trim()
 
     try {
@@ -349,13 +349,15 @@ export function Hero() {
                   </label>
                   <label>
                     Interested In*
-                    <select name="interest" defaultValue="Book a Site Visit" required>
+                    <select name="interest" defaultValue="" required>
                       <option value="" disabled>
                         Select Option
                       </option>
-                      <option value="Book a Site Visit">Book a Site Visit</option>
-                      <option value="Get Price Details">Get Price Details</option>
-                      <option value="Download Brochure">Download Brochure</option>
+                      <option value="1 BHK">1 BHK</option>
+                      <option value="2 BHK">2 BHK</option>
+                      <option value="3 BHK">3 BHK</option>
+                      <option value="Site Visit">Site Visit</option>
+                      <option value="General Enquiry">General Enquiry</option>
                     </select>
                   </label>
                 </div>
