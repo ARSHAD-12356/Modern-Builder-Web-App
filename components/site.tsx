@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { submitEnquiry } from '@/lib/enquiry'
 import { BsHitechDetail } from './bs-hitech-detail'
 import { ArrowRight, Award, Baby, Bath, Building2, CalendarDays, CarFront, Check, ChevronDown, ChevronLeft, ChevronRight, Coins, Compass, Download, Dumbbell, FileBadge, Home, KeyRound, Leaf, LockKeyhole, Mail, MapPin, Maximize2, Menu, PanelTop, Phone, Play, Rotate3d, ShieldCheck, Sofa, Sprout, Star, Sun, Tag, Trophy, TrendingUp, GraduationCap, Hospital, ShoppingCart, UserRound, Users, Utensils, Waves, Wine, X } from 'lucide-react'
 
@@ -23,11 +24,18 @@ export function Header({ projectPage = false }: { projectPage?: boolean }) {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('top')
   useEffect(() => { const sections = nav.map(([, id]) => document.getElementById(id)).filter(Boolean) as HTMLElement[]; const observer = new IntersectionObserver((entries) => { const visible = entries.filter((entry) => entry.isIntersecting).sort((a,b) => b.intersectionRatio-a.intersectionRatio)[0]; if (visible) setActive(visible.target.id) }, {rootMargin:'-38px 0px -55% 0px', threshold:[0.1,0.4,0.7]}); sections.forEach((section) => observer.observe(section)); return () => observer.disconnect() }, [])
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && open) setOpen(false)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [open])
   const scrollTo = (id:string) => { setOpen(false); const target = document.getElementById(id); if (target) { target.scrollIntoView({behavior:'smooth', block:'start'}) } else { window.scrollTo({top:0, behavior:'smooth'}) } setActive(id) }
   const projectHref = (id:string) => id === 'top' ? '/' : `/#${id}`
   return <>
-    <header className="main-nav" style={{background:'transparent', backdropFilter:'none', WebkitBackdropFilter:'none', filter:'none', boxShadow:'none'}}><button className="brand" type="button" onClick={() => projectPage ? window.location.assign('/') : scrollTo('top')}><div className="brand-logo-anchor"><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><div className="rera-strip"><span>RERA NO : BRERAP182628060325290629E00</span></div></div><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><div className="hero-header-actions"><div className="hero-header-contact"><Phone size={25}/><span><b>+91 920464875</b><small>Mon - Sat: 10AM - 6PM</small></span></div><button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}><span/><span/><span/></button></div></header>
-    <div className={`cinematic-menu ${open ? 'is-open' : ''}`} aria-hidden={!open}><div className="cinematic-menu-inner"><span className="cinematic-menu-eyebrow">BIGRAHPURM DEVELOPERS</span><nav>{nav.map(([label, id], index) => <a href={projectPage ? projectHref(id) : `#${id}`} key={label} className={active === id ? 'active' : ''} style={{'--menu-index': index} as React.CSSProperties} tabIndex={open ? 0 : -1} onClick={(event) => { if (projectPage) { setOpen(false); return } event.preventDefault(); scrollTo(id) }}>{label}<ArrowRight size={19}/></a>)}</nav></div></div>
+    <header className={`main-nav ${open ? 'menu-open' : ''}`} style={{background:'transparent', backdropFilter:'none', WebkitBackdropFilter:'none', filter:'none', boxShadow:'none'}}><button className="brand" type="button" onClick={() => projectPage ? window.location.assign('/') : scrollTo('top')}><div className="brand-logo-anchor"><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><div className="rera-strip"><span>RERA NO : BRERAP182628060325290629E00</span></div></div><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><div className="hero-header-actions"><div className="hero-header-contact"><Phone size={25}/><span><b>+91 920464875</b><small>Mon - Sat: 10AM - 6PM</small></span></div><button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={22} strokeWidth={2.6}/> : <><span/><span/><span/></>}</button></div></header>
+    <div className={`cinematic-menu ${open ? 'is-open' : ''}`} aria-hidden={!open} onClick={(event) => { if (event.target === event.currentTarget) setOpen(false) }}><div className="cinematic-menu-inner"><span className="cinematic-menu-eyebrow">BIGRAHPURM DEVELOPERS</span><nav>{nav.map(([label, id], index) => <a href={projectPage ? projectHref(id) : `#${id}`} key={label} className={active === id ? 'active' : ''} style={{'--menu-index': index} as React.CSSProperties} tabIndex={open ? 0 : -1} onClick={(event) => { if (projectPage) { setOpen(false); return } event.preventDefault(); scrollTo(id) }}>{label}<ArrowRight size={19}/></a>)}</nav></div></div>
   </>
 }
 
@@ -50,8 +58,12 @@ export function Hero() {
   const [active, setActive] = useState(0)
   const [visitOpen, setVisitOpen] = useState(false)
   const [visitClosing, setVisitClosing] = useState(false)
+  const [visitSubmitting, setVisitSubmitting] = useState(false)
+  const [visitSuccess, setVisitSuccess] = useState(false)
+  const [visitError, setVisitError] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const timerRef = useRef<ReturnType<typeof window.setInterval> | null>(null)
+  const visitFormRef = useRef<HTMLFormElement>(null)
 
   const isVideoSlide = active === VIDEO_SLIDE_INDEX
 
@@ -60,7 +72,38 @@ export function Hero() {
     window.setTimeout(() => {
       setVisitOpen(false)
       setVisitClosing(false)
+      setVisitSuccess(false)
+      setVisitError(null)
     }, 280)
+  }
+
+  const handleVisitSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setVisitError(null)
+    setVisitSubmitting(true)
+    const formData = new FormData(event.currentTarget)
+    const fullName = String(formData.get('name') || '').trim()
+    const email = String(formData.get('email') || '').trim()
+    const phone = String(formData.get('phone') || '').trim()
+    const interestedIn = String(formData.get('interest') || 'Book a Site Visit').trim()
+    const message = String(formData.get('message') || '').trim()
+
+    try {
+      await submitEnquiry({
+        fullName,
+        email,
+        phone,
+        interestedIn,
+        message,
+        formType: 'Book Site Visit',
+      })
+      visitFormRef.current?.reset()
+      setVisitSuccess(true)
+    } catch (err: any) {
+      setVisitError(err?.message || 'Something went wrong. Please try again.')
+    } finally {
+      setVisitSubmitting(false)
+    }
   }
 
   const goTo = (index: number) => setActive((index + TOTAL_SLIDES) % TOTAL_SLIDES)
@@ -196,7 +239,164 @@ export function Hero() {
       <ChevronRight size={22} />
     </button>
 
-    {visitOpen && <div className={`visit-modal-backdrop${visitClosing ? ' is-closing' : ''}`} role="presentation" onClick={closeVisitModal}><section className="visit-modal" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title" onClick={(event) => event.stopPropagation()}><button className="visit-modal-close" type="button" aria-label="Close enquiry form" onClick={closeVisitModal}><X /></button><span className="visit-modal-eyebrow">ENQUIRE NOW</span><h2 id="visit-modal-title">Tell Us About Your Interest</h2><p className="visit-modal-subtitle">Fill out the form and our team will get in touch with you shortly.</p><form onSubmit={(event) => { event.preventDefault(); closeVisitModal() }}><div className="visit-form-grid"><label>Full Name*<input name="name" required placeholder="Enter your name" /></label><label>Email*<input name="email" type="email" required placeholder="Enter your email" /></label><label>Phone*<input name="phone" type="tel" required placeholder="10-digit number" /></label><label>Interested In*<select name="interest" defaultValue="" required><option value="" disabled>Select Option</option><option>Book a Site Visit</option><option>Get Price Details</option><option>Download Brochure</option></select></label></div><label className="visit-message">Message<textarea name="message" placeholder="Type your message here..." /></label><div className="visit-form-actions"><label className="visit-consent"><input type="checkbox" required /> <span>I agree to be contacted by B.S. HITECH team.</span></label><button type="submit">Send Enquiry <ArrowRight size={20} /></button></div><div className="visit-privacy"><ShieldCheck size={25} /><span><b>Your information is safe with us.</b><small>We respect your privacy and will never share your details with third parties.</small></span></div></form></section></div>}
+    {visitOpen && (
+      <div
+        className={`visit-modal-backdrop${visitClosing ? ' is-closing' : ''}`}
+        role="presentation"
+        onClick={closeVisitModal}
+      >
+        <section
+          className="visit-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="visit-modal-title"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <button
+            className="visit-modal-close"
+            type="button"
+            aria-label="Close enquiry form"
+            onClick={closeVisitModal}
+          >
+            <X />
+          </button>
+          {visitSuccess ? (
+            <div className="contact-success" style={{ textAlign: 'center', padding: '36px 14px' }}>
+              <div
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '50%',
+                  background: '#e4aa2d',
+                  color: '#ffffff',
+                  display: 'grid',
+                  placeItems: 'center',
+                  margin: '0 auto 16px',
+                  boxShadow: '0 6px 18px rgba(228,170,45,.3)',
+                }}
+              >
+                <Check size={32} strokeWidth={2.8} color="#ffffff" style={{ color: '#ffffff', stroke: '#ffffff' }} />
+              </div>
+              <h3 style={{ font: '600 28px/1.15 Georgia,serif', color: '#123b35', margin: '0 0 10px' }}>
+                Thank you for reaching out!
+              </h3>
+              <p
+                style={{
+                  color: '#68756e',
+                  fontSize: '15px',
+                  lineHeight: '1.5',
+                  margin: '0 auto 24px',
+                  maxWidth: '420px',
+                }}
+              >
+                Your site visit request has been received. Our team will get in touch with you shortly.
+              </p>
+              <button
+                type="button"
+                onClick={closeVisitModal}
+                style={{
+                  background: '#dda01d',
+                  color: '#fff',
+                  border: 0,
+                  borderRadius: '28px',
+                  padding: '12px 30px',
+                  fontSize: '15px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                Close
+              </button>
+            </div>
+          ) : (
+            <>
+              <span className="visit-modal-eyebrow">ENQUIRE NOW</span>
+              <h2 id="visit-modal-title">Tell Us About Your Interest</h2>
+              <p className="visit-modal-subtitle">
+                Fill out the form and our team will get in touch with you shortly.
+              </p>
+              {visitError && (
+                <div
+                  style={{
+                    background: '#fee2e2',
+                    color: '#b91c1c',
+                    border: '1px solid #fca5a5',
+                    padding: '10px 14px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    marginBottom: '14px',
+                  }}
+                >
+                  {visitError}
+                </div>
+              )}
+              <form onSubmit={handleVisitSubmit} ref={visitFormRef}>
+                <div className="visit-form-grid">
+                  <label>
+                    Full Name*
+                    <input name="name" required placeholder="Enter your name" />
+                  </label>
+                  <label>
+                    Email*
+                    <input name="email" type="email" required placeholder="Enter your email" />
+                  </label>
+                  <label>
+                    Phone*
+                    <input name="phone" type="tel" required placeholder="10-digit number" />
+                  </label>
+                  <label>
+                    Interested In*
+                    <select name="interest" defaultValue="Book a Site Visit" required>
+                      <option value="" disabled>
+                        Select Option
+                      </option>
+                      <option value="Book a Site Visit">Book a Site Visit</option>
+                      <option value="Get Price Details">Get Price Details</option>
+                      <option value="Download Brochure">Download Brochure</option>
+                    </select>
+                  </label>
+                </div>
+                <label className="visit-message">
+                  Message
+                  <textarea name="message" placeholder="Type your message here..." />
+                </label>
+                <div className="visit-form-actions">
+                  <label className="visit-consent">
+                    <input type="checkbox" required />{' '}
+                    <span>I agree to be contacted by B.S. HITECH team.</span>
+                  </label>
+                  <button
+                    type="submit"
+                    disabled={visitSubmitting}
+                    style={visitSubmitting ? { opacity: 0.7, cursor: 'not-allowed' } : undefined}
+                  >
+                    {visitSubmitting ? (
+                      'Sending...'
+                    ) : (
+                      <>
+                        Send Enquiry <ArrowRight size={20} />
+                      </>
+                    )}
+                  </button>
+                </div>
+                <div className="visit-privacy">
+                  <ShieldCheck size={25} />
+                  <span>
+                    <b>Your information is safe with us.</b>
+                    <small>
+                      We respect your privacy and will never share your details with third parties.
+                    </small>
+                  </span>
+                </div>
+              </form>
+            </>
+          )}
+        </section>
+      </div>
+    )}
   </section>
 }
 
@@ -1212,7 +1412,10 @@ const contactBuildingImages = [
 
 export function Contact({full=false}) {
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [activeBg, setActiveBg] = useState(0);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -1220,6 +1423,36 @@ export function Contact({full=false}) {
     }, 4000);
     return () => clearInterval(timer);
   }, []);
+
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    setSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const fullName = String(formData.get('fullName') || '').trim();
+    const email = String(formData.get('email') || '').trim();
+    const phone = String(formData.get('phone') || '').trim();
+    const interestedIn = String(formData.get('interestedIn') || '').trim();
+    const message = String(formData.get('message') || '').trim();
+
+    try {
+      await submitEnquiry({
+        fullName,
+        email,
+        phone,
+        interestedIn,
+        message,
+        formType: 'Enquire Now',
+      });
+      formRef.current?.reset();
+      setError(null);
+      setSent(true);
+    } catch (err: any) {
+      setError(err?.message || 'Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <section id="contact" className="contact-editorial">
@@ -1241,25 +1474,66 @@ export function Contact({full=false}) {
           <p>We&apos;d love to hear from you! Whether you have questions, want a site visit,<br/>or are ready to book your dream home — our team is here to help.</p>
         </div>
         <div className="contact-grid">
-          <form className="contact-form-card" onSubmit={(e)=>{e.preventDefault();setSent(true)}}>
+          <form className="contact-form-card" onSubmit={handleContactSubmit} ref={formRef}>
             {sent ? (
-              <div className="contact-success">
-                <Check/>
-                <h3>Thank you for reaching out.</h3>
-                <p>Our team will get in touch shortly.</p>
-                <button type="button" onClick={()=>setSent(false)}>Send another enquiry</button>
+              <div className="contact-success" style={{ textAlign: 'center', padding: '40px 14px' }}>
+                <div
+                  style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '50%',
+                    background: '#e4aa2d',
+                    color: '#ffffff',
+                    display: 'grid',
+                    placeItems: 'center',
+                    margin: '0 auto 16px',
+                    boxShadow: '0 6px 18px rgba(228,170,45,.3)',
+                  }}
+                >
+                  <Check size={32} strokeWidth={2.8} color="#ffffff" style={{ color: '#ffffff', stroke: '#ffffff' }} />
+                </div>
+                <h3 style={{ font: '600 28px/1.15 Georgia,serif', color: '#123b32', margin: '0 0 10px' }}>
+                  Thank you for reaching out!
+                </h3>
+                <p style={{ color: '#68756e', fontSize: '15px', lineHeight: '1.5', margin: '0 auto 24px', maxWidth: '420px' }}>
+                  Our team will get in touch with you shortly.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSent(false)}
+                  style={{
+                    background: '#dda01d',
+                    color: '#fff',
+                    border: 0,
+                    borderRadius: '28px',
+                    padding: '12px 30px',
+                    fontSize: '15px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  Send another enquiry
+                </button>
               </div>
             ) : (
               <>
                 <span className="contact-eyebrow">ENQUIRE NOW</span>
                 <h3>Tell Us About Your Interest</h3>
                 <p className="form-subtitle">Fill out the form and our team will get in touch with you shortly.</p>
+                {error && (
+                  <div style={{background:'#fee2e2', color:'#b91c1c', border:'1px solid #fca5a5', padding:'10px 14px', borderRadius:'8px', fontSize:'13px', marginBottom:'14px'}}>
+                    {error}
+                  </div>
+                )}
                 <div className="form-fields">
-                  <label>Full Name*<input required placeholder="Enter your name"/></label>
-                  <label>Email*<input required type="email" placeholder="Enter your email"/></label>
-                  <label>Phone*<input required placeholder="10-digit number"/></label>
+                  <label>Full Name*<input name="fullName" required placeholder="Enter your name"/></label>
+                  <label>Email*<input name="email" required type="email" placeholder="Enter your email"/></label>
+                  <label>Phone*<input name="phone" required placeholder="10-digit number"/></label>
                   <label>Interested In*
-                    <select defaultValue="" required>
+                    <select name="interestedIn" defaultValue="" required>
                       <option value="" disabled>Select Option</option>
                       <option>1 BHK</option>
                       <option>2 BHK</option>
@@ -1268,11 +1542,13 @@ export function Contact({full=false}) {
                       <option>General Enquiry</option>
                     </select>
                   </label>
-                  <label className="message-field">Message<textarea required rows={3} placeholder="Type your message here..."/></label>
+                  <label className="message-field">Message<textarea name="message" required rows={3} placeholder="Type your message here..."/></label>
                 </div>
                 <div className="form-submit">
                   <label className="consent"><input type="checkbox" required/>I agree to be contacted by B.S. HITECH team.</label>
-                  <button type="submit">Send Enquiry <ArrowRight/></button>
+                  <button type="submit" disabled={submitting} style={submitting ? {opacity:0.7, cursor:'not-allowed'} : undefined}>
+                    {submitting ? 'Sending...' : <>Send Enquiry <ArrowRight/></>}
+                  </button>
                 </div>
                 <div className="privacy">
                   <ShieldCheck/>
