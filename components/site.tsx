@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { submitEnquiry } from '@/lib/enquiry'
 import { BsHitechDetail } from './bs-hitech-detail'
-import { ArrowRight, Award, Baby, Bath, Building2, CalendarDays, CarFront, Check, ChevronDown, ChevronLeft, ChevronRight, Coins, Compass, Download, Dumbbell, FileBadge, Home, KeyRound, Leaf, LockKeyhole, Mail, MapPin, Maximize2, Menu, PanelTop, Phone, Play, Rotate3d, ShieldCheck, Sofa, Sprout, Star, Sun, Tag, Trophy, TrendingUp, GraduationCap, Hospital, ShoppingCart, UserRound, Users, Utensils, Waves, Wine, X } from 'lucide-react'
+import { ArrowRight, Award, Baby, Bath, Building2, CalendarDays, CarFront, Check, ChevronDown, ChevronLeft, ChevronRight, Coins, Compass, Download, Dumbbell, Eye, FileBadge, FileText, Home, KeyRound, Leaf, LockKeyhole, Mail, MapPin, Maximize2, Menu, PanelTop, Phone, Play, Rotate3d, Shield, ShieldCheck, Sofa, Sprout, Star, Sun, Tag, Trophy, TrendingUp, GraduationCap, Hospital, ShoppingCart, UserRound, Users, Utensils, Waves, Wine, X } from 'lucide-react'
 
 export const heroImage = '/assets/hero/bs-hitech-hero.png'
 export const officeImage = '/assets/about/bigrahpuram-office.png'
@@ -16,6 +16,7 @@ const nav = [
   ['Why BIGRAHPURM', 'why-choose'],
   ['Testimonials', 'testimonials'],
   ['FAQ', 'faq'],
+  ['Legal & Mandatory Disclosures', '/legal-disclosures'],
   ['Location', 'location'],
   ['Contact Us', 'contact'],
 ]
@@ -23,7 +24,7 @@ const nav = [
 export function Header({ projectPage = false }: { projectPage?: boolean }) {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('top')
-  useEffect(() => { const sections = nav.map(([, id]) => document.getElementById(id)).filter(Boolean) as HTMLElement[]; const observer = new IntersectionObserver((entries) => { const visible = entries.filter((entry) => entry.isIntersecting).sort((a,b) => b.intersectionRatio-a.intersectionRatio)[0]; if (visible) setActive(visible.target.id) }, {rootMargin:'-38px 0px -55% 0px', threshold:[0.1,0.4,0.7]}); sections.forEach((section) => observer.observe(section)); return () => observer.disconnect() }, [])
+  useEffect(() => { const sections = nav.map(([, id]) => id.startsWith('/') ? null : document.getElementById(id)).filter(Boolean) as HTMLElement[]; const observer = new IntersectionObserver((entries) => { const visible = entries.filter((entry) => entry.isIntersecting).sort((a,b) => b.intersectionRatio-a.intersectionRatio)[0]; if (visible) setActive(visible.target.id) }, {rootMargin:'-38px 0px -55% 0px', threshold:[0.1,0.4,0.7]}); sections.forEach((section) => observer.observe(section)); return () => observer.disconnect() }, [])
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && open) setOpen(false)
@@ -32,10 +33,10 @@ export function Header({ projectPage = false }: { projectPage?: boolean }) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [open])
   const scrollTo = (id:string) => { setOpen(false); const target = document.getElementById(id); if (target) { target.scrollIntoView({behavior:'smooth', block:'start'}) } else { window.scrollTo({top:0, behavior:'smooth'}) } setActive(id) }
-  const projectHref = (id:string) => id === 'top' ? '/' : `/#${id}`
+  const projectHref = (id:string) => id === 'top' ? '/' : id.startsWith('/') ? id : `/#${id}`
   return <>
     <header className={`main-nav ${open ? 'menu-open' : ''}`} style={{background:'transparent', backdropFilter:'none', WebkitBackdropFilter:'none', filter:'none', boxShadow:'none'}}><button className="brand" type="button" onClick={() => projectPage ? window.location.assign('/') : scrollTo('top')}><div className="brand-logo-anchor"><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers Pvt. Ltd."/><div className="rera-strip"><span>RERA NO : BRERAP182628060325290629E00</span></div></div><span><strong>BIGRAHPURM <b>DEVELOPERS</b></strong><small>PVT. LTD.</small></span></button><div className="hero-header-actions"><div className="hero-header-contact"><Phone size={25}/><span><b>+91 920464875</b><small>Mon - Sat: 10AM - 6PM</small></span></div><button className={`menu-toggle ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={22} strokeWidth={2.6}/> : <><span/><span/><span/></>}</button></div></header>
-    <div className={`cinematic-menu ${open ? 'is-open' : ''}`} aria-hidden={!open} style={{ pointerEvents: open ? 'auto' : 'none' }} onClick={(event) => { if (event.target === event.currentTarget) setOpen(false) }}><div className="cinematic-menu-inner" style={{ pointerEvents: open ? 'auto' : 'none' }}><span className="cinematic-menu-eyebrow">BIGRAHPURM DEVELOPERS</span><nav>{nav.map(([label, id], index) => <a href={projectPage ? projectHref(id) : `#${id}`} key={label} className={active === id ? 'active' : ''} style={{'--menu-index': index} as React.CSSProperties} tabIndex={open ? 0 : -1} onClick={(event) => { if (projectPage) { setOpen(false); return } event.preventDefault(); scrollTo(id) }}>{label}<ArrowRight size={19}/></a>)}</nav></div></div>
+    <div className={`cinematic-menu ${open ? 'is-open' : ''}`} aria-hidden={!open} style={{ pointerEvents: open ? 'auto' : 'none' }} onClick={(event) => { if (event.target === event.currentTarget) setOpen(false) }}><div className="cinematic-menu-inner" style={{ pointerEvents: open ? 'auto' : 'none' }}><span className="cinematic-menu-eyebrow">BIGRAHPURM DEVELOPERS</span><nav>{nav.map(([label, id], index) => { const isRoute = id.startsWith('/'); const href = isRoute ? id : projectPage ? projectHref(id) : `#${id}`; return <a href={href} key={label} className={active === id ? 'active' : ''} style={{'--menu-index': index} as React.CSSProperties} tabIndex={open ? 0 : -1} onClick={(event) => { if (isRoute) { setOpen(false); return } if (projectPage) { setOpen(false); return } event.preventDefault(); scrollTo(id) }}>{label}<ArrowRight size={19}/></a> })}</nav></div></div>
   </>
 }
 
@@ -1569,6 +1570,193 @@ export function Contact({full=false}) {
 }
 
 export function Footer(){const links=[['Project Overview','/overview'],['Amenities','/amenities'],['Floor Plans','/floor-plans'],['Payment Plans','/payment-plan'],['Testimonials','/testimonials'],['FAQ','/faq']];return <footer className="footer-premium"><div className="footer-main"><div className="footer-leaf footer-leaf-left">〰</div><div className="footer-brand-block"><div className="footer-brand-lockup"><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers logo"/><h3>BIGRAHPURM <em>DEVELOPERS</em></h3></div><i/><small>BUILDING BETTER TOMORROW</small><div className="footer-description">Premium luxury apartments in the heart of Kankarbagh, Patna by Bigrahpurm Developers. RERA approved project with world-class amenities and thoughtful design.</div><div className="footer-socials"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><a href="https://wa.me/918757911159" aria-label="WhatsApp">◔</a></div><label>STAY CONNECTED WITH US</label></div><nav className="footer-links"><h4>Quick Links<i/></h4>{links.map(([label,href])=><a key={label} href={href}>› <span>{label}</span></a>)}</nav><div className="footer-contact"><h4>Contact Info<i/></h4><a href="https://www.google.com/maps/search/?api=1&query=Kankarbagh+Patna"><b>⌖</b>Kankarbagh, Patna - 800020</a><a href="tel:+918757911159"><b>◔</b>+91 8757911159</a><a href="mailto:sales@bshightech.com"><b>✉</b>sales@bshightech.com</a><span><b>◷</b>Mon-Sat: 10AM - 7PM</span></div><div className="footer-branding"><span>HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></span><strong>A Brighter<br/>Tomorrow<br/>Together</strong><em>More Than Homes<br/>Relationships</em></div><div className="footer-bottom"><span>© 2025 B.S. HITECH by Bigrahpurm Developers. All Rights Reserved. | RERA No: BH-RERA/Patna/123456</span><div><a href="/privacy-policy">Privacy Policy</a><b>|</b><a href="/terms">Terms &amp; Conditions</a><b>|</b><a href="/sitemap.xml">Sitemap</a></div><button onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top">⌃<small>Back to Top</small></button></div></div></footer>}
+
+export function LegalDisclosures() {
+  return (
+    <section id="legal-disclosures" className="legal-disclosures-section">
+      <div className="ld-bg-watermark" aria-hidden="true">
+        <img src="/New Assets/Hero Building2.png" alt="" />
+      </div>
+
+      <div className="legal-disclosures-inner">
+        <div className="legal-disclosures-heading">
+          <div className="ld-eyebrow">
+            <span className="ld-line" />
+            <span className="ld-eyebrow-text">TRANSPARENCY &amp; COMPLIANCE</span>
+            <span className="ld-line" />
+          </div>
+          <h2>Legal &amp; Mandatory <em>Disclosures</em></h2>
+          <p>
+            All statutory and regulatory documents related to this project are available for your reference.
+            We are committed to complete transparency and compliance with applicable laws and regulations.
+          </p>
+        </div>
+
+        <div className="ld-cards-grid">
+          {/* Card 1: RERA Registration Certificate */}
+          <div className="ld-card">
+            <div className="ld-card-badge" aria-hidden="true">
+              <FileText size={17} />
+            </div>
+            <div className="ld-card-body">
+              <div className="ld-doc-preview">
+                <img
+                  src="/images/why-choose/rera-approved.jpg"
+                  alt="RERA Registration Certificate Preview"
+                />
+              </div>
+              <div className="ld-doc-info">
+                <h3>RERA Registration Certificate</h3>
+                <p>
+                  Official registration certificate issued by the Real Estate Regulatory Authority (RERA), Bihar for this project.
+                </p>
+                <div className="ld-doc-actions">
+                  <a
+                    href="/New Assets/Revised Rera Certificate- RERAP09252024165145-1 (4).pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ld-btn-view"
+                  >
+                    <Eye size={15} />
+                    <span>View PDF</span>
+                  </a>
+                  <a
+                    href="/New Assets/Revised Rera Certificate- RERAP09252024165145-1 (4).pdf"
+                    download="RERA_Registration_Certificate_BS_HITECH.pdf"
+                    className="ld-btn-download"
+                  >
+                    <Download size={15} />
+                    <span>Download PDF</span>
+                  </a>
+                </div>
+                <div className="ld-doc-meta">
+                  <FileText size={14} />
+                  <span>2 pages • 193 KB • PDF</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Mandatory Disclosure */}
+          <div className="ld-card">
+            <div className="ld-card-badge" aria-hidden="true">
+              <FileText size={17} />
+            </div>
+            <div className="ld-card-body">
+              <div className="ld-doc-preview">
+                <img
+                  src="/New Assets/gst-certificate-preview.png"
+                  alt="Mandatory Disclosure GST Certificate Preview"
+                />
+              </div>
+              <div className="ld-doc-info">
+                <h3>Mandatory Disclosure</h3>
+                <p>
+                  Required disclosure documents and statutory registrations as per regulatory guidelines for complete transparency.
+                </p>
+                <div className="ld-doc-actions">
+                  <a
+                    href="/New Assets/GST CERTIFICATE ( BIGRAHPURM DEVELOPERS).pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ld-btn-view"
+                  >
+                    <Eye size={15} />
+                    <span>View PDF</span>
+                  </a>
+                  <a
+                    href="/New Assets/GST CERTIFICATE ( BIGRAHPURM DEVELOPERS).pdf"
+                    download="GST_Certificate_Mandatory_Disclosure_Bigrahpurm.pdf"
+                    className="ld-btn-download"
+                  >
+                    <Download size={15} />
+                    <span>Download PDF</span>
+                  </a>
+                </div>
+                <div className="ld-doc-meta">
+                  <FileText size={14} />
+                  <span>3 pages • 824 KB • PDF</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: PAN Card */}
+          <div className="ld-card">
+            <div className="ld-card-badge" aria-hidden="true">
+              <FileText size={17} />
+            </div>
+            <div className="ld-card-body">
+              <div className="ld-doc-preview ld-doc-preview--contain">
+                <img
+                  src="/New Assets/legal.jpeg"
+                  alt="Promoter PAN Card Preview"
+                />
+              </div>
+              <div className="ld-doc-info">
+                <h3>PAN Card</h3>
+                <p>
+                  Permanent Account Number (PAN) identity document of the promoter for regulatory and statutory compliance.
+                </p>
+                <div className="ld-doc-actions">
+                  <a
+                    href="/New Assets/PAN_CARD.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ld-btn-view"
+                  >
+                    <Eye size={15} />
+                    <span>View PDF</span>
+                  </a>
+                  <a
+                    href="/New Assets/PAN_CARD.pdf"
+                    download="Promoter_PAN_Card_Bigrahpurm.pdf"
+                    className="ld-btn-download"
+                  >
+                    <Download size={15} />
+                    <span>Download PDF</span>
+                  </a>
+                </div>
+                <div className="ld-doc-meta">
+                  <FileText size={14} />
+                  <span>1 page • 60 KB • PDF</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Important Notice */}
+        <div className="ld-notice-banner">
+          <div className="ld-notice-icon-lockup">
+            <div className="ld-notice-icon">
+              <Shield size={22} />
+            </div>
+            <strong className="ld-notice-title">Important Notice</strong>
+          </div>
+          <div className="ld-notice-divider" aria-hidden="true" />
+          <p className="ld-notice-text">
+            These documents are provided for informational purposes only. In case of any discrepancy,
+            please refer to the official RERA website or contact the concerned authority.
+            All project details, plans, specifications and other information are subject to regulatory approvals
+            and may change as per applicable laws.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function LegalDisclosuresPage() {
+  return (
+    <>
+      <Header projectPage />
+      <Hero />
+      <LegalDisclosures />
+      <Footer />
+    </>
+  );
+}
 
 export function LocationSection(){
   return (
