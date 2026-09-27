@@ -16,9 +16,9 @@ const nav = [
   ['Why BIGRAHPURM', 'why-choose'],
   ['Testimonials', 'testimonials'],
   ['FAQ', 'faq'],
-  ['Legal & Mandatory Disclosures', '/legal-disclosures'],
   ['Location', 'location'],
   ['Contact Us', 'contact'],
+  ['Legal & Mandatory Disclosures', '/legal-disclosures'],
 ]
 
 export function Header({ projectPage = false }: { projectPage?: boolean }) {
