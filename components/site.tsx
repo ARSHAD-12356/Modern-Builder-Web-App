@@ -1569,7 +1569,139 @@ export function Contact({full=false}) {
   );
 }
 
-export function Footer(){const links=[['Project Overview','/overview'],['Amenities','/amenities'],['Floor Plans','/floor-plans'],['Payment Plans','/payment-plan'],['Testimonials','/testimonials'],['FAQ','/faq']];return <footer className="footer-premium"><div className="footer-main"><div className="footer-leaf footer-leaf-left">〰</div><div className="footer-brand-block"><div className="footer-brand-lockup"><img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers logo"/><h3>BIGRAHPURM <em>DEVELOPERS</em></h3></div><i/><small>BUILDING BETTER TOMORROW</small><div className="footer-description">Premium luxury apartments in the heart of Kankarbagh, Patna by Bigrahpurm Developers. RERA approved project with world-class amenities and thoughtful design.</div><div className="footer-socials"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="YouTube">▶</a><a href="https://wa.me/919204649875" aria-label="WhatsApp">◔</a></div><label>STAY CONNECTED WITH US</label></div><nav className="footer-links"><h4>Quick Links<i/></h4>{links.map(([label,href])=><a key={label} href={href}>› <span>{label}</span></a>)}</nav><div className="footer-contact"><h4>Contact Info<i/></h4><a href="https://www.google.com/maps/search/?api=1&query=Sorangpur+Main+Rd%2C+East+Ram+Krishna+Nagar%2C+Ramkrishna+Nagar%2C+Patna%2C+Bihar+800027%2C+India" target="_blank" rel="noopener noreferrer"><b>⌖</b>Sorangpur Main Rd, East Ram Krishna Nagar, Ramkrishna Nagar, Patna , Bihar 800027, India</a><a href="tel:+919204649875"><b>◔</b>+91 9204649875</a><a href="mailto:bigrahpurmdevelopersprivatelim@gmail.com" style={{wordBreak:'break-word'}}><b>✉</b>bigrahpurmdevelopersprivatelim@gmail.com</a><span><b>◷</b>Mon-Sat: 10AM - 6PM</span></div><div className="footer-branding"><span>HOMES<br/>PEOPLE<br/>PROGRESS<br/>TOGETHER<i/></span><strong>A Brighter<br/>Tomorrow<br/>Together</strong><em>More Than Homes<br/>Relationships</em></div><div className="footer-bottom"><span>© 2025 B.S. HITECH by Bigrahpurm Developers. All Rights Reserved. | RERA No: BH-RERA/Patna/123456</span><div><a href="/privacy-policy">Privacy Policy</a><b>|</b><a href="/terms">Terms &amp; Conditions</a><b>|</b><a href="/sitemap.xml">Sitemap</a></div><button onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top">⌃<small>Back to Top</small></button></div></div></footer>}
+const FOOTER_SOCIAL_LINKS = [
+  {
+    name: 'Facebook',
+    href: 'https://facebook.com',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original',
+    fallback: '/images/social/facebook.png',
+    className: 'footer-social-icon circle-icon',
+  },
+  {
+    name: 'Instagram',
+    href: 'https://instagram.com',
+    iconUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpdApJcFRoTmOJkAV8ad94llJ-munmdMGjraaBPFoNrQ&s',
+    fallback: '/images/social/instagram.svg',
+    className: 'footer-social-icon',
+  },
+  {
+    name: 'X (Twitter)',
+    href: 'https://x.com',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5a/X_icon_2.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original',
+    fallback: '/images/social/x.svg',
+    className: 'footer-social-icon',
+  },
+  {
+    name: 'WhatsApp',
+    href: 'https://wa.me/919204649875',
+    iconUrl: '/images/social/whatsapp.png',
+    originalUrl: 'https://iconsvg.co/svg-icon/whatsapp-world-company-svg-logos-svg-vector.jpg',
+    fallback: '/images/social/whatsapp.png',
+    className: 'footer-social-icon circle-icon',
+  },
+];
+
+export function Footer() {
+  const links = [
+    ['Project Overview', '/overview'],
+    ['Amenities', '/amenities'],
+    ['Floor Plans', '/floor-plans'],
+    ['Payment Plans', '/payment-plan'],
+    ['Testimonials', '/testimonials'],
+    ['FAQ', '/faq'],
+  ];
+
+  return (
+    <footer className="footer-premium">
+      <div className="footer-main">
+        <div className="footer-leaf footer-leaf-left">〰</div>
+        <div className="footer-brand-block">
+          <div className="footer-brand-lockup">
+            <img className="brand-logo" src={logoImage} alt="Bigrahpurm Developers logo" />
+            <h3>BIGRAHPURM <em>DEVELOPERS</em></h3>
+          </div>
+          <i />
+          <small>BUILDING BETTER TOMORROW</small>
+          <div className="footer-description">
+            Premium luxury apartments in the heart of Kankarbagh, Patna by Bigrahpurm Developers. RERA approved project with world-class amenities and thoughtful design.
+          </div>
+          <div className="footer-socials">
+            {FOOTER_SOCIAL_LINKS.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={item.name}
+              >
+                <img
+                  src={item.iconUrl}
+                  alt={item.name}
+                  className={item.className}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const img = e.currentTarget;
+                    img.onerror = null;
+                    img.src = item.fallback;
+                  }}
+                />
+              </a>
+            ))}
+          </div>
+          <label>STAY CONNECTED WITH US</label>
+        </div>
+        <nav className="footer-links">
+          <h4>Quick Links<i /></h4>
+          {links.map(([label, href]) => (
+            <a key={label} href={href}>
+              › <span>{label}</span>
+            </a>
+          ))}
+        </nav>
+        <div className="footer-contact">
+          <h4>Contact Info<i /></h4>
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=Sorangpur+Main+Rd%2C+East+Ram+Krishna+Nagar%2C+Ramkrishna+Nagar%2C+Patna%2C+Bihar+800027%2C+India"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <b>⌖</b>Sorangpur Main Rd, East Ram Krishna Nagar, Ramkrishna Nagar, Patna , Bihar 800027, India
+          </a>
+          <a href="tel:+919204649875">
+            <b>◔</b>+91 9204649875
+          </a>
+          <a href="mailto:bigrahpurmdevelopersprivatelim@gmail.com" style={{ wordBreak: 'break-word' }}>
+            <b>✉</b>bigrahpurmdevelopersprivatelim@gmail.com
+          </a>
+          <span>
+            <b>◷</b>Mon-Sat: 10AM - 6PM
+          </span>
+        </div>
+        <div className="footer-branding">
+          <span>
+            HOMES<br />PEOPLE<br />PROGRESS<br />TOGETHER<i />
+          </span>
+          <strong>A Brighter<br />Tomorrow<br />Together</strong>
+          <em>More Than Homes<br />Relationships</em>
+        </div>
+        <div className="footer-bottom">
+          <span>© 2025 B.S. HITECH by Bigrahpurm Developers. All Rights Reserved. | RERA No: BH-RERA/Patna/123456</span>
+          <div>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <b>|</b>
+            <a href="/terms">Terms &amp; Conditions</a>
+            <b>|</b>
+            <a href="/sitemap.xml">Sitemap</a>
+          </div>
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
+            ⌃<small>Back to Top</small>
+          </button>
+        </div>
+      </div>
+    </footer>
+  );
+}
 
 export function LegalDisclosures() {
   return (
