@@ -348,7 +348,7 @@ export const AI_KNOWLEDGE_BASE = {
 
   bookingAndSiteVisit: {
     howToBookSiteVisit:
-      'You can easily schedule a site visit by:\n1. Clicking "Book Site Visit" on the website homepage to open the site visit form.\n2. Submitting your enquiry on the Contact section.\n3. Calling or messaging on WhatsApp at +91 920464875 or +91 8757911159.',
+      'You can easily schedule a site visit by:\n1. Clicking "Book Site Visit" on the website homepage to open the site visit form.\n2. Submitting your enquiry on the Contact section.\n3. Calling or messaging on WhatsApp at +91 9204649875.',
     bookingProcess:
       '1. Choose your preferred apartment configuration (1, 2, or 3 BHK).\n2. Select a suitable payment plan (Standard, Early Bird, or Bank-Linked).\n3. Submit required KYC documentation.\n4. Complete the initial booking amount (10% to 20% based on chosen plan).',
     documentsRequired:
@@ -356,14 +356,14 @@ export const AI_KNOWLEDGE_BASE = {
   },
 
   contact: {
-    primaryPhone: '+91 920464875',
-    salesPhone: '+91 8757911159',
-    whatsapp: '+91 920464875',
-    whatsappUrl: 'https://wa.me/91920464875',
-    email: 'sales@bshightech.com',
-    workingHours: 'Monday to Saturday: 10:00 AM – 6:00 PM (Sales office up to 7:00 PM)',
-    officeAddress: 'Kankarbagh, Patna - 800020, Bihar',
-    siteAddress: 'Khemni Chak, Kankarbagh, Patna - 800027, Bihar',
+    primaryPhone: '+91 9204649875',
+    salesPhone: '+91 9204649875',
+    whatsapp: '+91 9204649875',
+    whatsappUrl: 'https://wa.me/919204649875',
+    email: 'bigrahpurmdevelopersprivatelim@gmail.com',
+    workingHours: 'Monday to Saturday: 10:00 AM – 6:00 PM',
+    officeAddress: 'Sorangpur Main Rd, East Ram Krishna Nagar, Ramkrishna Nagar, Patna , Bihar 800027, India',
+    siteAddress: 'Sorangpur Main Rd, East Ram Krishna Nagar, Ramkrishna Nagar, Patna , Bihar 800027, India',
     websiteUrl: '/',
   },
 
