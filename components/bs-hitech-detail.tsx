@@ -504,6 +504,17 @@ export function BsHitechDetail() {
         <h1>B.S. HITECH<br />APARTMENT</h1>
         <p><MapPin size={16} /> Khemni Chak, Kankarbagh, Patna - 800027</p>
         <strong>2 &amp; 3 BHK Luxurious Flats</strong>
+        <div className="bs-hero-brochure-wrap">
+          <a
+            key={`hero-brochure-${heroIndex}`}
+            href="/New%20Assets/Brouchure-B.S.Hitech%20Apartment.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bs-hero-brochure-btn"
+          >
+            Download Brochure <ArrowRight size={16} />
+          </a>
+        </div>
       </div>
       <button
         type="button"
@@ -545,7 +556,7 @@ export function BsHitechDetail() {
       <ProjectBrandStrip />
     </>
     <section className="bs-location" id="location"><div className="bs-section-intro"><Eyebrow>LOCATION</Eyebrow><h2>Located In The Heart Of Patna</h2></div><div className="bs-location-grid"><div className="bs-map"><iframe title="B.S. HITECH Apartment location map" src="https://www.openstreetmap.org/export/embed.html?bbox=85.135%2C25.585%2C85.19%2C25.625&layer=mapnik&marker=25.605%2C85.162" /></div><article className="bs-distances"><h3>Key Distances</h3>{[['Railway Station', '8 Km'], ['Patna Airport', '14.3 Km'], ['Nearest School', 'Walking Distance'], ['Nearest Hospital', 'Walking Distance'], ['Nearest Shopping Mall', '1 Km']].map(([place, distance]) => <p key={place}><MapPin size={16} /><span className="leading-snug">{place}</span><b>{distance}</b></p>)}</article></div></section>
-    <section className="bs-cta" id="contact"><img src={`${projectImages}/xref_9323_p1.jpeg`} alt="B.S. HITECH Apartment at dusk" /><div><Eyebrow>GET IN TOUCH</Eyebrow><h2>Ready To Find Your Place?</h2><p>Book a site visit, get detailed pricing or download the brochure.</p></div><div className="bs-cta-actions"><a href="/#contact">Book A Site Visit <ArrowRight size={16} /></a><a href="/#contact">Get Price Details</a><a href={`${plans}/Site-Plan.jpg`} download>Download Brochure <Download size={15} /></a></div></section>
+    <section className="bs-cta" id="contact"><img src={`${projectImages}/xref_9323_p1.jpeg`} alt="B.S. HITECH Apartment at dusk" /><div><Eyebrow>GET IN TOUCH</Eyebrow><h2>Ready To Find Your Place?</h2><p>Book a site visit, get detailed pricing or download the brochure.</p></div><div className="bs-cta-actions"><a href="/#contact">Book A Site Visit <ArrowRight size={16} /></a><a href="/#contact">Get Price Details</a><a href="/New%20Assets/Brouchure-B.S.Hitech%20Apartment.pdf" target="_blank" rel="noopener noreferrer">Download Brochure <Download size={15} /></a></div></section>
     {lightbox && <div className="bs-lightbox" role="dialog" aria-modal="true" onClick={() => setLightbox(null)}><button type="button" aria-label="Close image" onClick={() => setLightbox(null)}><X /></button><img src={lightbox} alt="Enlarged B.S. HITECH project plan or image" onClick={(event) => event.stopPropagation()} /></div>}
   </main>
 }
