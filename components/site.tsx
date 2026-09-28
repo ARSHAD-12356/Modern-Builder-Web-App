@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { submitEnquiry } from '@/lib/enquiry'
 import { BsHitechDetail } from './bs-hitech-detail'
-import { ArrowRight, Award, Baby, Bath, Building2, CalendarDays, CarFront, Check, ChevronDown, ChevronLeft, ChevronRight, Coins, Compass, Download, Dumbbell, Eye, FileBadge, FileText, Home, KeyRound, Leaf, LockKeyhole, Mail, MapPin, Maximize2, Menu, PanelTop, Phone, Play, Rotate3d, Shield, ShieldCheck, Sofa, Sprout, Star, Sun, Tag, Trophy, TrendingUp, GraduationCap, Hospital, ShoppingCart, UserRound, Users, Utensils, Waves, Wine, X } from 'lucide-react'
+import { ArrowRight, Award, Baby, Bath, Building2, CalendarDays, CarFront, Check, ChevronDown, ChevronLeft, ChevronRight, Coins, Compass, Download, Dumbbell, Eye, FileBadge, FileText, Heart, Home, KeyRound, Leaf, LockKeyhole, Mail, MapPin, Maximize2, Menu, PanelTop, Phone, Play, Rotate3d, Shield, ShieldCheck, Sofa, Sprout, Star, Sun, Tag, Trophy, TrendingUp, GraduationCap, Hospital, ShoppingCart, UserRound, Users, Utensils, Waves, Wine, X } from 'lucide-react'
 
 export const heroImage = '/assets/hero/bs-hitech-hero.png'
 export const officeImage = '/assets/about/bigrahpuram-office.png'
@@ -184,7 +184,6 @@ export function Hero() {
     {/* Left hero copy — hidden on video slide */}
     {!isVideoSlide && (
       <div className="hero-carousel-copy" key={slide.image}>
-        <span className="hero-carousel-eyebrow">BIGRAHPURM DEVELOPERS</span>
         <h1>{slide.title}</h1>
         <p>{slide.text}</p>
       </div>
@@ -453,7 +452,7 @@ export function ProjectOverview() {
                 <Home size={18} />
                 <b>4 Acres<small>Land Area</small></b>
               </div>
-              <div>
+              <div className="project-image-bar-bhk">
                 <Home size={18} />
                 <b>1BHK 2BHK 3BHK<small>Premium Apartments</small></b>
               </div>
@@ -571,7 +570,6 @@ export function ProjectBrandStrip() {
               <small>Location</small>
             </div>
           </div>
-          <div className="project-brand-strip-divider" />
           <div className="project-brand-strip-item">
             <ShieldCheck size={22} />
             <div>
@@ -580,6 +578,7 @@ export function ProjectBrandStrip() {
             </div>
           </div>
         </div>
+        <div className="project-brand-strip-divider" />
         <div className="project-brand-strip-slogan">
           <span>LIVE</span>
           <i>|</i>
@@ -676,8 +675,9 @@ export function WhyChoose() {
           </div>
 
           <div className="why-trust">
-            <i className="why-trust-line" />
-            <Users size={18} strokeWidth={1.7} className="why-trust-icon" />
+            <div className="why-trust-icon-wrap">
+              <Users size={18} strokeWidth={1.8} className="why-trust-icon" />
+            </div>
             <p>
               <span>Trusted by</span>
               <strong>BIGRAHPURM DEVELOPERS</strong>
@@ -686,8 +686,6 @@ export function WhyChoose() {
           </div>
         </div>
       </section>
-
-      <ProjectBrandStrip />
     </>
   )
 }
@@ -1175,20 +1173,18 @@ export function Testimonials({full=false}) {
           <div><Users size={20}/><b>15+<small>Years of Experience</small></b></div>
           <div><Star size={20}/><b>50+<small>Happy Customers</small></b></div>
           <div><Building2 size={20}/><b>Multiple<small>Projects Completed</small></b></div>
-          <div><HeartIcon/><b>Stronger<small>Bihar Tomorrow</small></b></div>
+          <div><Heart size={20}/><b>Stronger<small>Bihar Tomorrow</small></b></div>
           <a href="/contact"><ArrowRight size={15}/>BECOME A PART<br/>OF OUR STORY</a>
         </div>
       </div>
       {!paused&&<AutoRotate onRotate={()=>go(1)}/>}
     </section>
-    <ProjectBrandStrip />
     </>
   );
 }
 function TestimonialCard({data,side=false}:{data:typeof testimonialData[number];side?:boolean}){return <><span className="testimonial-quote">“</span><StarRow/><p>{data.review}</p><div className="testimonial-author"><img src={data.image} alt={data.name}/><span><b>{data.name}</b><small>{data.role}</small></span><strong>”</strong></div></>}
 function StarRow(){return <div className="testimonial-stars"><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/></div>}
 function AutoRotate({onRotate}:{onRotate:()=>void}){useEffect(()=>{const timer=window.setInterval(onRotate,2200);return()=>window.clearInterval(timer)},[onRotate]);return null}
-function HeartIcon(){return <span className="heart-icon">♡</span>}
 const faqData=[{q:'Is BIGRAHPURM DEVELOPERS RERA approved?',a:'Yes, BIGRAHPURM DEVELOPERS is fully RERA approved with registration number BH-RERA/Patna/123456. All necessary approvals and clearances are in place.',c:'Project'},{q:'Is the location good for my family?',a:'BIGRAHPURM DEVELOPERS is located at Khemni Chak, Kankarbagh, Patna-800027, approximately 3 km from Patna Junction with convenient access to schools, hospitals and daily essentials.',c:'Location'},{q:'Is the area safe?',a:'The community is designed as a secure, gated development with 24/7 surveillance and trained security personnel.',c:'Location'},{q:'Is the price negotiable?',a:'Our team will guide you through the latest pricing, offers and available payment options for your preferred apartment.',c:'Pricing'},{q:'Why costlier than others nearby?',a:'The pricing reflects premium specifications, thoughtful planning, generous green areas and world-class amenities.',c:'Pricing'},{q:'Do you have flexible payment plans?',a:'Yes. Standard, Early Bird and Bank Linked plans are available with construction-linked milestones.',c:'Payments'},{q:'What facilities will I get?',a:'Residents can enjoy a swimming pool, gym, club house, children’s play area, sports facilities, parking, landscaped gardens and 24/7 security.',c:'Amenities'},{q:'What are the maintenance charges?',a:'Maintenance charges are shared transparently before booking and depend on the apartment configuration and selected services.',c:'Amenities'},{q:'Is resale easy?',a:'The prime location, thoughtful planning and strong project specifications support long-term livability and resale value.',c:'Project'},{q:'Will my family be happy here?',a:'With open green areas, family-friendly amenities and connected everyday spaces, BIGRAHPURM DEVELOPERS is planned around happier living.',c:'Amenities'},{q:'Will you help with renting/resale?',a:'Our relationship team will support homeowners with guidance for renting or resale after possession.',c:'Project'},{q:'What is the expected possession date?',a:'The expected possession schedule is shared clearly with buyers as part of the booking and agreement process.',c:'Possession'},{q:'Do you offer home loan assistance?',a:'Yes. We work with trusted banking partners and help buyers understand suitable home loan options.',c:'Payments'},{q:'Can I customize my apartment?',a:'Customization options may be discussed with the project team subject to design, construction and approval guidelines.',c:'Project'},{q:'What documents are required for booking?',a:'The booking process generally requires identity, address and payment documentation. Our team will provide the complete checklist.',c:'Legal'}]
 const faqCategories = [
   { name: 'All', icon: Home, label: 'All FAQs' },
@@ -1296,7 +1292,6 @@ export function FAQ({ full = false }: { full?: boolean }) {
             </button>
           </div>
         </div>
-        <ProjectBrandStrip />
       </section>
 
       {/* Premium Modal Popup */}
@@ -1564,7 +1559,6 @@ export function Contact({full=false}) {
       </div>
       <div className="contact-bottom-script">A<br/>Brighter<br/>Tomorrow<br/>Together</div>
       <div className="contact-brand"><b>B.S. HITECH</b><small>KANKARBAGH, PATNA</small><i/></div>
-      <ProjectBrandStrip />
     </section>
   );
 }
@@ -1572,23 +1566,23 @@ export function Contact({full=false}) {
 const FOOTER_SOCIAL_LINKS = [
   {
     name: 'Facebook',
-    href: 'https://facebook.com',
+    href: 'https://www.facebook.com/profile.php?id=61573243904024',
     iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original',
     fallback: '/images/social/facebook.png',
     className: 'footer-social-icon circle-icon',
   },
   {
     name: 'Instagram',
-    href: 'https://instagram.com',
+    href: 'https://www.instagram.com/bigrahpuram_developers?stkn=MXhnZmphZWYwanIwcg==',
     iconUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpdApJcFRoTmOJkAV8ad94llJ-munmdMGjraaBPFoNrQ&s',
     fallback: '/images/social/instagram.svg',
     className: 'footer-social-icon',
   },
   {
-    name: 'X (Twitter)',
-    href: 'https://x.com',
-    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5a/X_icon_2.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original',
-    fallback: '/images/social/x.svg',
+    name: 'Gmail',
+    href: 'mailto:bigrahpurmdevelopersprivatelim@gmail.com',
+    iconUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Gmail_icon_%282026%29.svg/1280px-Gmail_icon_%282026%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail',
+    fallback: '/images/social/gmail.png',
     className: 'footer-social-icon',
   },
   {
@@ -1662,11 +1656,11 @@ export function Footer() {
         <div className="footer-contact">
           <h4>Contact Info<i /></h4>
           <a
-            href="https://www.google.com/maps/search/?api=1&query=Sorangpur+Main+Rd%2C+East+Ram+Krishna+Nagar%2C+Ramkrishna+Nagar%2C+Patna%2C+Bihar+800027%2C+India"
+            href="https://www.google.com/maps/search/?api=1&query=BIGRAHPURAM+DEVELOPERS+PRIVATE+LIMITED%2C+Pillar+no+69%2C+near+kidzee+school%2C+East+Ram+Krishna+Nagar%2C+Ramkrishan+Nagar%2C+Patna%2C+Bihar+800027"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <b>⌖</b>Sorangpur Main Rd, East Ram Krishna Nagar, Ramkrishna Nagar, Patna , Bihar 800027, India
+            <b>⌖</b>Pillar no 69, near kidzee school, East Ram Krishna Nagar, Ramkrishan Nagar, Patna, Bihar 800027
           </a>
           <a href="tel:+919204649875">
             <b>◔</b>+91 9204649875
@@ -1895,18 +1889,18 @@ export function LocationSection(){
     <section id="location" className="location-editorial">
       <div className="location-inner">
         <div className="location-heading">
-          <h2><i/>Our <em>Location</em><i/></h2>
+          <h2><i/><span>Our <em>Location</em></span><i/></h2>
         </div>
         <div className="location-map-landscape">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3598.7286055406494!2d85.14055327517679!3d25.580694477466146!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f2a78756fdd04b%3A0xcef206f62c614b7c!2sSorangpur%20Rd%2C%20East%20Ram%20Krishna%20Nagar%2C%20Ramkrishan%20Nagar%2C%20Patna%2C%20Bihar%20800027!5e0!3m2!1sen!2sin!4v1790280833955!5m2!1sen!2sin"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3598.646952984281!2d85.14323279999999!3d25.583409999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed59d4236c52d7%3A0x48688309bf1486ab!2sBIGRAHPURAM%20DEVELOPERS%20PRIVATE%20LIMITED!5e0!3m2!1sen!2sin!4v1790575280697!5m2!1sen!2sin"
             width="100%"
             height="400"
             style={{ border: 0 }}
             allowFullScreen
             loading="lazy"
             referrerPolicy="strict-origin-when-cross-origin"
-            title="B.S. HITECH Location Map"
+            title="BIGRAHPURAM DEVELOPERS Location Map"
           />
         </div>
       </div>
