@@ -40,6 +40,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" style={{ backgroundColor: '#063c32' }}>
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/New Assets/Hero Building.png"
+          fetchPriority="high"
+        />
+      </head>
       <body className="antialiased" style={{ backgroundColor: '#063c32' }}>
         {children}
         <GlobalFloatingActions />
