@@ -475,6 +475,24 @@ export function BsHitechDetail() {
     return () => clearInterval(timer)
   }, [heroIndex])
 
+  useEffect(() => {
+    const scrollToHash = () => {
+      if (typeof window !== 'undefined' && window.location.hash) {
+        const id = window.location.hash.replace('#', '')
+        const el = document.getElementById(id)
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    }
+    const timer = setTimeout(scrollToHash, 200)
+    window.addEventListener('hashchange', scrollToHash)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('hashchange', scrollToHash)
+    }
+  }, [])
+
   const goPrevHero = (e?: React.MouseEvent) => {
     e?.stopPropagation()
     setHeroIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)

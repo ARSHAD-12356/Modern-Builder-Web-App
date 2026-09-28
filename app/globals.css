@@ -5163,4 +5163,157 @@ html {
   }
 }
 
+/* ==========================================================================
+   PAGE HERO COMPONENT (Detail Pages: Payment Plan, Amenities, Gallery, etc.)
+   Ensures ample top clearance below absolute header & RERA badge
+   ========================================================================== */
+.page-hero {
+  position: relative !important;
+  min-height: clamp(520px, 62vh, 660px) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  padding: clamp(145px, 16vh, 175px) clamp(24px, 7vw, 100px) clamp(55px, 8vh, 85px) !important;
+  box-sizing: border-box !important;
+  color: #ffffff !important;
+}
+
+.page-hero > div {
+  max-width: 860px !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.page-hero .breadcrumb {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  color: rgba(255, 255, 255, 0.78) !important;
+  margin-bottom: 14px !important;
+  padding: 4px 14px !important;
+  background: rgba(6, 40, 34, 0.6) !important;
+  border: 1px solid rgba(214, 168, 79, 0.32) !important;
+  border-radius: 20px !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  width: max-content !important;
+}
+
+.page-hero .breadcrumb a {
+  color: #e4be68 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+  font-weight: 600 !important;
+}
+
+.page-hero .breadcrumb a:hover {
+  color: #ffffff !important;
+  text-decoration: underline !important;
+}
+
+.page-hero .breadcrumb span:first-of-type {
+  color: rgba(214, 168, 79, 0.6) !important;
+  font-size: 12px !important;
+}
+
+.page-hero .breadcrumb span:last-child {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.page-hero .eyebrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  color: #d6a84f !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.24em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 16px !important;
+}
+
+.page-hero h1 {
+  font-family: Georgia, 'Times New Roman', serif !important;
+  font-weight: 500 !important;
+  font-size: clamp(38px, 4.3vw, 64px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.025em !important;
+  margin: 0 0 18px !important;
+  color: #ffffff !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4) !important;
+}
+
+.page-hero h1 em {
+  font-style: normal !important;
+  color: #d6a84f !important;
+}
+
+.page-hero p {
+  font-size: clamp(15px, 1.25vw, 18px) !important;
+  max-width: 620px !important;
+  line-height: 1.58 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin: 0 !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.page-hero .hero-rule {
+  display: block !important;
+  width: 52px !important;
+  height: 2px !important;
+  background: #d6a84f !important;
+  margin-top: 22px !important;
+}
+
+@media (max-width: 800px) {
+  .page-hero {
+    min-height: 480px !important;
+    padding: 130px 6% 45px !important;
+    align-items: flex-end !important;
+  }
+  .page-hero .breadcrumb {
+    font-size: 11.5px !important;
+    padding: 3px 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .page-hero .eyebrow {
+    font-size: 10px !important;
+    letter-spacing: 0.2em !important;
+    margin-bottom: 12px !important;
+  }
+  .page-hero h1 {
+    font-size: clamp(32px, 8.5vw, 46px) !important;
+    line-height: 1.1 !important;
+    margin-bottom: 14px !important;
+  }
+  .page-hero p {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+  }
+  .page-hero .hero-rule {
+    margin-top: 18px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-hero {
+    min-height: 440px !important;
+    padding: 115px 5% 40px !important;
+  }
+}
+
+#amenities,
+.bs-amenities {
+  scroll-margin-top: 84px !important;
+}
+
+
 
